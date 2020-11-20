@@ -1,4 +1,6 @@
-Feature: Scaffolder
+Feature: Lerna
 
-  Scenario: Scaffold
+  Scenario: Add Package
+    Given nvm is properly configured
     When the project is scaffolded
+    Then the package is added to the monorepo

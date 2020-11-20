@@ -14,6 +14,8 @@ opinionated scaffolder for adding a JavaScript package to an existing monorepo
 * [Usage](#usage)
   * [Installation](#installation)
   * [Example](#example)
+    * [Import](#import)
+    * [Execute](#execute)
 * [Contributing](#contributing)
   * [Dependencies](#dependencies)
   * [Verification](#verification)
@@ -39,14 +41,14 @@ $ npm install @form8ion/add-package-to-monorepo --save-prod
 #### Import
 
 ```javascript
-import {scaffold} from '@form8ion/add-package-to-monorepo';
+import {questionNames, scaffold} from '@form8ion/add-package-to-monorepo';
 ```
 
 #### Execute
 
 ```javascript
 (async () => {
-  await scaffold({projectRoot: process.cwd()});
+  await scaffold({decisions: {[questionNames.PROJECT_NAME]: 'foo'}});
 })();
 ```
 

@@ -1,0 +1,8 @@
+_extends: .github
+repository:
+  name: add-package-to-monorepo
+  description: >-
+    opinionated scaffolder for adding a JavaScript package to an existing
+    monorepo
+  homepage: 'https://npm.im/@form8ion/add-package-to-monorepo'
+  private: false

@@ -2,6 +2,7 @@ import {resolve} from 'path';
 import {promises as fs} from 'fs';
 import {After, Before, When} from '@cucumber/cucumber';
 import stubbedFs from 'mock-fs';
+import importFresh from 'import-fresh';
 import nock from 'nock';
 import td from 'testdouble';
 import any from '@travi/any';
@@ -20,7 +21,7 @@ Before(function () {
   this.shell = td.replace('shelljs');
   this.execa = td.replace('execa');
 
-  const jsScaffolder = require('@travi/javascript-scaffolder');
+  const jsScaffolder = importFresh('@travi/javascript-scaffolder');
   jsQuestionNames = jsScaffolder.questionNames;
 
   nock.disableNetConnect();
@@ -82,9 +83,9 @@ When('the project is scaffolded', async function () {
         [jsQuestionNames.AUTHOR_NAME]: any.word(),
         [jsQuestionNames.AUTHOR_EMAIL]: any.email(),
         [jsQuestionNames.AUTHOR_URL]: any.url(),
-        [jsQuestionNames.UNIT_TESTS]: any.boolean(),
-        [jsQuestionNames.INTEGRATION_TESTS]: any.boolean(),
-        [jsQuestionNames.TRANSPILE_LINT]: any.boolean()
+        [jsQuestionNames.UNIT_TESTS]: this.tested,
+        [jsQuestionNames.INTEGRATION_TESTS]: this.tested,
+        [jsQuestionNames.TRANSPILE_LINT]: this.transpiled
       },
       unitTestFrameworks: {}
     });

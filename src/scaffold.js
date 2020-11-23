@@ -13,7 +13,7 @@ export default async function (options) {
   const {
     [questionNames.PROJECT_NAME]: projectName,
     [questionNames.VISIBILITY]: visibility,
-    [questionNames.LICENSE]: license
+    [questionNames.LICENSE]: chosenLicense
   } = answers;
   const projectRoot = `${process.cwd()}/packages/${projectName}`;
 
@@ -24,7 +24,7 @@ export default async function (options) {
       projectRoot,
       projectName,
       visibility,
-      license,
+      license: chosenLicense || 'UNLICENSED',
       decisions: {[jsQuestionNames.PROJECT_TYPE]: projectTypes.PACKAGE}
     }
   ));

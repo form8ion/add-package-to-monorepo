@@ -10,6 +10,12 @@ import scaffold from './scaffold';
 
 suite('scaffold', () => {
   let sandbox;
+  const monorepoRoot = any.simpleObject();
+  const projectName = any.word();
+  const projectRoot = `${monorepoRoot}/packages/${projectName}`;
+  const scaffoldResults = any.simpleObject();
+  const visibility = any.word();
+  const license = any.word();
 
   setup(() => {
     sandbox = sinon.createSandbox();
@@ -24,12 +30,6 @@ suite('scaffold', () => {
   teardown(() => sandbox.restore());
 
   test('that the package is scaffolded in the packages/ directory', async () => {
-    const monorepoRoot = any.simpleObject();
-    const projectName = any.word();
-    const projectRoot = `${monorepoRoot}/packages/${projectName}`;
-    const scaffoldResults = any.simpleObject();
-    const visibility = any.word();
-    const license = any.word();
     const promptAnswers = {
       ...any.simpleObject(),
       [core.questionNames.PROJECT_NAME]: projectName,
@@ -59,12 +59,6 @@ suite('scaffold', () => {
   });
 
   test('that overrides are optional in the provided options', async () => {
-    const monorepoRoot = any.simpleObject();
-    const projectName = any.word();
-    const projectRoot = `${monorepoRoot}/packages/${projectName}`;
-    const scaffoldResults = any.simpleObject();
-    const visibility = any.word();
-    const license = any.word();
     const promptAnswers = {
       ...any.simpleObject(),
       [core.questionNames.PROJECT_NAME]: projectName,
@@ -83,6 +77,33 @@ suite('scaffold', () => {
         projectName,
         visibility,
         license,
+        decisions: {...options.decisions, [javascriptScaffolder.questionNames.PROJECT_TYPE]: projectTypes.PACKAGE}
+      })
+      .resolves(scaffoldResults);
+    process.cwd.returns(monorepoRoot);
+
+    assert.deepEqual(await scaffold(options), scaffoldResults);
+    assert.calledWith(mkdir.default, projectRoot);
+  });
+
+  test('that license is determined to be `UNLICENSED` when not chosen during prompting', async () => {
+    const promptAnswers = {
+      ...any.simpleObject(),
+      [core.questionNames.PROJECT_NAME]: projectName,
+      [core.questionNames.VISIBILITY]: visibility
+    };
+    const decisions = any.simpleObject();
+    const options = {...any.simpleObject(), decisions};
+    const questions = any.listOf(any.simpleObject);
+    core.questionsForBaseDetails.withArgs(decisions, undefined, undefined).returns(questions);
+    prompts.prompt.withArgs(questions, decisions).resolves(promptAnswers);
+    javascriptScaffolder.scaffold
+      .withArgs({
+        ...options,
+        projectRoot,
+        projectName,
+        visibility,
+        license: 'UNLICENSED',
         decisions: {...options.decisions, [javascriptScaffolder.questionNames.PROJECT_TYPE]: projectTypes.PACKAGE}
       })
       .resolves(scaffoldResults);

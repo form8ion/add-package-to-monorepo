@@ -1,13 +1,12 @@
 import {resolve} from 'path';
 import {promises as fs} from 'fs';
 import {After, Before, When} from '@cucumber/cucumber';
-import stubbedFs from 'mock-fs';
 import importFresh from 'import-fresh';
+import stubbedFs from 'mock-fs';
 import nock from 'nock';
 import td from 'testdouble';
 import any from '@travi/any';
 
-let jsQuestionNames;
 const pathToNodeModules = [__dirname, '..', '..', '..', '..', 'node_modules'];
 const stubbedNodeModules = stubbedFs.load(resolve(...pathToNodeModules));
 const packagePreviewDirectory = '../__package_previews__/add-package-to-monorepo';
@@ -21,9 +20,6 @@ Before(function () {
   this.shell = td.replace('shelljs');
   this.execa = td.replace('execa');
 
-  const jsScaffolder = importFresh('@travi/javascript-scaffolder');
-  jsQuestionNames = jsScaffolder.questionNames;
-
   nock.disableNetConnect();
 });
 
@@ -35,8 +31,11 @@ After(function () {
 });
 
 When('the project is scaffolded', async function () {
+  // busts whatever the caching issue is with shelljs at the step to determine the node version
+  importFresh('@travi/javascript-scaffolder');
   // eslint-disable-next-line import/no-extraneous-dependencies,import/no-unresolved
   const {questionNames, scaffold} = require('@form8ion/add-package-to-monorepo');
+  const visibility = any.fromList(['Public', 'Private']);
   this.projectName = any.word();
   this.packageName = any.word();
 
@@ -79,13 +78,21 @@ When('the project is scaffolded', async function () {
     await scaffold({
       decisions: {
         [questionNames.PROJECT_NAME]: this.projectName,
-        [jsQuestionNames.NODE_VERSION_CATEGORY]: 'LTS',
-        [jsQuestionNames.AUTHOR_NAME]: any.word(),
-        [jsQuestionNames.AUTHOR_EMAIL]: any.email(),
-        [jsQuestionNames.AUTHOR_URL]: any.url(),
-        [jsQuestionNames.UNIT_TESTS]: this.tested,
-        [jsQuestionNames.INTEGRATION_TESTS]: this.tested,
-        [jsQuestionNames.TRANSPILE_LINT]: this.transpiled
+        [questionNames.DESCRIPTION]: any.sentence(),
+        [questionNames.VISIBILITY]: visibility,
+        ...'Public' === visibility && {
+          [questionNames.LICENSE]: 'MIT',
+          [questionNames.COPYRIGHT_HOLDER]: any.word(),
+          [questionNames.COPYRIGHT_YEAR]: 2000
+        },
+        ...'Private' === visibility && {[questionNames.UNLICENSED]: true},
+        [questionNames.NODE_VERSION_CATEGORY]: 'LTS',
+        [questionNames.AUTHOR_NAME]: any.word(),
+        [questionNames.AUTHOR_EMAIL]: any.email(),
+        [questionNames.AUTHOR_URL]: any.url(),
+        [questionNames.UNIT_TESTS]: this.tested,
+        [questionNames.INTEGRATION_TESTS]: this.tested,
+        [questionNames.TRANSPILE_LINT]: this.transpiled
       },
       unitTestFrameworks: {}
     });

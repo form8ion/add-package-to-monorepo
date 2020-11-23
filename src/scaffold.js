@@ -1,22 +1,30 @@
 import deepmerge from 'deepmerge';
-import {scaffold, questionNames as jsQuestionNames} from '@travi/javascript-scaffolder';
+import {questionNames, questionsForBaseDetails} from '@form8ion/core';
 import {projectTypes} from '@form8ion/javascript-core';
+import {prompt} from '@form8ion/overridable-prompts';
+import {scaffold, questionNames as jsQuestionNames} from '@travi/javascript-scaffolder';
 import mkdir from '../thirdparty-wrappers/make-dir';
-import {questionNames} from './question-names';
 
 export default async function (options) {
-  const projectName = options.decisions[questionNames.PROJECT_NAME];
+  const {overrides, decisions} = options;
+  const questions = questionsForBaseDetails(decisions, undefined, overrides?.copyrightHolder);
+  const answers = await prompt(questions, decisions);
+
+  const {
+    [questionNames.PROJECT_NAME]: projectName,
+    [questionNames.VISIBILITY]: visibility,
+    [questionNames.LICENSE]: license
+  } = answers;
   const projectRoot = `${process.cwd()}/packages/${projectName}`;
 
   await mkdir(projectRoot);
-
   return scaffold(deepmerge(
     options,
     {
       projectRoot,
       projectName,
-      visibility: 'Public',
-      license: 'MIT',
+      visibility,
+      license,
       decisions: {[jsQuestionNames.PROJECT_TYPE]: projectTypes.PACKAGE}
     }
   ));

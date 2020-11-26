@@ -14,6 +14,8 @@ opinionated scaffolder for adding a JavaScript package to an existing monorepo
 * [Usage](#usage)
   * [Installation](#installation)
   * [Example](#example)
+    * [Import](#import)
+    * [Register with yargs](#register-with-yargs)
 * [Contributing](#contributing)
   * [Dependencies](#dependencies)
   * [Verification](#verification)
@@ -39,15 +41,23 @@ $ npm install @form8ion/add-package-to-monorepo --save-prod
 #### Import
 
 ```javascript
+import yargs from 'yargs';
 import {scaffold} from '@form8ion/add-package-to-monorepo';
 ```
 
-#### Execute
+#### Register with yargs
 
 ```javascript
-(async () => {
-  await scaffold({projectRoot: process.cwd()});
-})();
+yargs
+  .scriptName('form8ion-utils')
+  .usage('Usage: $0 <cmd> [args]')
+  .command('add-package', 'Add a JavaScript package to an existing monorepo', () => scaffold({
+    decisions: {},
+    overrides: {copyrightHolder: 'Foo Bar'}
+  }))
+  .help('h')
+  .alias('h', 'help')
+  .argv;
 ```
 
 ## Contributing

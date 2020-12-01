@@ -62,7 +62,7 @@
     "ban-sensitive-files": "1.9.14",
     "chai": "4.2.0",
     "codecov": "3.8.1",
-    "cross-env": "7.0.2",
+    "cross-env": "7.0.3",
     "cz-conventional-changelog": "3.3.0",
     "debug": "4.3.1",
     "gherkin-lint": "4.1.3",

@@ -6,13 +6,15 @@ import {assert} from 'chai';
 import sinon from 'sinon';
 import any from '@travi/any';
 import * as mkdir from '../thirdparty-wrappers/make-dir';
+import * as monorepoConfig from './monorepo-config';
 import scaffold from './scaffold';
 
 suite('scaffold', () => {
   let sandbox;
-  const monorepoRoot = any.simpleObject();
+  const monorepoRoot = any.string();
   const projectName = any.word();
-  const projectRoot = `${monorepoRoot}/packages/${projectName}`;
+  const packagesDirectory = any.string();
+  const projectRoot = `${monorepoRoot}/${packagesDirectory}/${projectName}`;
   const scaffoldResults = any.simpleObject();
   const visibility = any.word();
   const license = any.word();
@@ -25,6 +27,9 @@ suite('scaffold', () => {
     sandbox.stub(core, 'questionsForBaseDetails');
     sandbox.stub(prompts, 'prompt');
     sandbox.stub(javascriptScaffolder, 'scaffold');
+    sandbox.stub(monorepoConfig, 'default');
+
+    monorepoConfig.default.resolves({...any.simpleObject(), packagesDirectory});
   });
 
   teardown(() => sandbox.restore());

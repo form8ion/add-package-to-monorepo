@@ -29,7 +29,7 @@ suite('scaffold', () => {
     sandbox.stub(javascriptScaffolder, 'scaffold');
     sandbox.stub(monorepoConfig, 'default');
 
-    monorepoConfig.default.resolves({...any.simpleObject(), packagesDirectory});
+    monorepoConfig.default.withArgs(monorepoRoot).resolves({...any.simpleObject(), packagesDirectory});
   });
 
   teardown(() => sandbox.restore());

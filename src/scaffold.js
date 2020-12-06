@@ -7,10 +7,11 @@ import getMonorepoConfig from './monorepo-config';
 import mkdir from '../thirdparty-wrappers/make-dir';
 
 export default async function (options) {
+  const monorepoRoot = process.cwd();
   const {overrides, decisions} = options;
   const questions = questionsForBaseDetails(decisions, undefined, overrides?.copyrightHolder);
   const [monorepoConfig, answers] = await Promise.all([
-    getMonorepoConfig(),
+    getMonorepoConfig(monorepoRoot),
     prompt(questions, decisions)
   ]);
 
@@ -19,7 +20,7 @@ export default async function (options) {
     [questionNames.VISIBILITY]: visibility,
     [questionNames.LICENSE]: chosenLicense
   } = answers;
-  const projectRoot = `${process.cwd()}/${monorepoConfig.packagesDirectory}/${projectName}`;
+  const projectRoot = `${monorepoRoot}/${monorepoConfig.packagesDirectory}/${projectName}`;
 
   await mkdir(projectRoot);
   return scaffold(deepmerge(

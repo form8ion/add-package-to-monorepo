@@ -12,32 +12,13 @@ const stubbedNodeModules = stubbedFs.load(resolve(...pathToNodeModules));
 const packagePreviewDirectory = '../__package_previews__/add-package-to-monorepo';
 const debug = require('debug')('test');
 
-Before(function () {
+Before(async function () {
   // work around for overly aggressive mock-fs, see:
   // https://github.com/tschaub/mock-fs/issues/213#issuecomment-347002795
   require('validate-npm-package-name'); // eslint-disable-line import/no-extraneous-dependencies
 
   this.shell = td.replace('shelljs');
   this.execa = td.replace('execa');
-
-  nock.disableNetConnect();
-});
-
-After(function () {
-  nock.enableNetConnect();
-  nock.cleanAll();
-  stubbedFs.restore();
-  td.reset();
-});
-
-When('the project is scaffolded', async function () {
-  // busts whatever the caching issue is with shelljs at the step to determine the node version
-  importFresh('@travi/javascript-scaffolder');
-  // eslint-disable-next-line import/no-extraneous-dependencies,import/no-unresolved
-  const {questionNames, scaffold} = require('@form8ion/add-package-to-monorepo');
-  const visibility = any.fromList(['Public', 'Private']);
-  this.projectName = any.word();
-  this.packageName = any.word();
 
   stubbedFs({
     node_modules: stubbedNodeModules,
@@ -74,6 +55,25 @@ When('the project is scaffolded', async function () {
     packages: {}
   });
 
+  nock.disableNetConnect();
+});
+
+After(function () {
+  nock.enableNetConnect();
+  nock.cleanAll();
+  stubbedFs.restore();
+  td.reset();
+});
+
+When('the project is scaffolded', async function () {
+  // busts whatever the caching issue is with shelljs at the step to determine the node version
+  importFresh('@travi/javascript-scaffolder');
+  // eslint-disable-next-line import/no-extraneous-dependencies,import/no-unresolved
+  const {questionNames, scaffold} = require('@form8ion/add-package-to-monorepo');
+  const visibility = any.fromList(['Public', 'Private']);
+  this.projectName = any.word();
+  this.packageName = any.word();
+
   try {
     await scaffold({
       decisions: {
@@ -98,6 +98,6 @@ When('the project is scaffolded', async function () {
     });
   } catch (e) {
     debug(e);
-    throw e;
+    this.error = e;
   }
 });

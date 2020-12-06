@@ -40,6 +40,10 @@ Then('the package will have no repository details defined', async function () {
 Then('the package will have repository details defined', async function () {
   assert.deepEqual(
     JSON.parse(await fs.readFile(`${process.cwd()}/packages/${this.projectName}/package.json`)).repository,
-    `${this.repoOwner}/${this.repoName}`
+    {
+      type: 'git',
+      url: `https://github.com/${this.repoOwner}/${this.repoName}.git`,
+      path: `packages/${this.projectName}`
+    }
   );
 });

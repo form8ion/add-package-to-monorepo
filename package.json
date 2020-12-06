@@ -92,6 +92,7 @@
     "@travi/cli-messages": "^1.0.4",
     "@travi/javascript-scaffolder": "^11.13.1",
     "deepmerge": "^4.2.2",
+    "hosted-git-info": "^3.0.7",
     "make-dir": "^3.1.0"
   }
 }

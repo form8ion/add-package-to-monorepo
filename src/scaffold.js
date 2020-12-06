@@ -10,7 +10,7 @@ export default async function (options) {
   const monorepoRoot = process.cwd();
   const {overrides, decisions} = options;
   const questions = questionsForBaseDetails(decisions, undefined, overrides?.copyrightHolder);
-  const [monorepoConfig, answers] = await Promise.all([
+  const [{packagesDirectory, vcs}, answers] = await Promise.all([
     getMonorepoConfig(monorepoRoot),
     prompt(questions, decisions)
   ]);
@@ -20,7 +20,7 @@ export default async function (options) {
     [questionNames.VISIBILITY]: visibility,
     [questionNames.LICENSE]: chosenLicense
   } = answers;
-  const projectRoot = `${monorepoRoot}/${monorepoConfig.packagesDirectory}/${projectName}`;
+  const projectRoot = `${monorepoRoot}/${packagesDirectory}/${projectName}`;
 
   await mkdir(projectRoot);
   return scaffold(deepmerge(
@@ -30,7 +30,11 @@ export default async function (options) {
       projectName,
       visibility,
       license: chosenLicense || 'UNLICENSED',
-      decisions: {[jsQuestionNames.PROJECT_TYPE]: projectTypes.PACKAGE}
+      decisions: {
+        [jsQuestionNames.PROJECT_TYPE]: projectTypes.PACKAGE,
+        [jsQuestionNames.CI_SERVICE]: 'Other'
+      },
+      vcs
     }
   ));
 }

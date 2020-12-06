@@ -30,3 +30,16 @@ Then('the project is configured as a package', async function () {
 Then('the project is configured as a config package', async function () {
   assert.isTrue(await fileExists(`${process.cwd()}/packages/${this.projectName}/index.js`));
 });
+
+Then('the package will have no repository details defined', async function () {
+  assert.isUndefined(
+    JSON.parse(await fs.readFile(`${process.cwd()}/packages/${this.projectName}/package.json`)).repository
+  );
+});
+
+Then('the package will have repository details defined', async function () {
+  assert.deepEqual(
+    JSON.parse(await fs.readFile(`${process.cwd()}/packages/${this.projectName}/package.json`)).repository,
+    `${this.repoOwner}/${this.repoName}`
+  );
+});

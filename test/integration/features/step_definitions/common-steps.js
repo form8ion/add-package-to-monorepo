@@ -22,6 +22,8 @@ Before(async function () {
 
   stubbedFs({
     node_modules: stubbedNodeModules,
+    packages: {},
+    'package.json': JSON.stringify({}),
     [packagePreviewDirectory]: {
       '@form8ion': {
         'add-package-to-monorepo': {
@@ -51,8 +53,7 @@ Before(async function () {
           }
         }
       }
-    },
-    packages: {}
+    }
   });
 
   nock.disableNetConnect();
@@ -72,7 +73,6 @@ When('the project is scaffolded', async function () {
   const {questionNames, scaffold} = require('@form8ion/add-package-to-monorepo');
   const visibility = any.fromList(['Public', 'Private']);
   this.projectName = any.word();
-  this.packageName = any.word();
 
   try {
     await scaffold({

@@ -1,5 +1,7 @@
+import {promises as fs} from 'fs';
 import {info} from '@travi/cli-messages';
 import {fileExists} from '@form8ion/core';
+import {fromUrl} from '../thirdparty-wrappers/hosted-git-info';
 
 export default async function (monorepoRoot) {
   info('Inspecting existing monorepo');
@@ -12,5 +14,7 @@ export default async function (monorepoRoot) {
 
   info('Found `lerna.json`', {level: 'secondary'});
 
-  return {packagesDirectory: 'packages'};
+  const {repository} = JSON.parse(await fs.readFile(`${monorepoRoot}/package.json`));
+
+  return {packagesDirectory: 'packages', ...repository && {vcs: {host: 'GitHub', ...fromUrl(repository)}}};
 }

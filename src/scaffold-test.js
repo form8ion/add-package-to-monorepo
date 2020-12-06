@@ -18,6 +18,7 @@ suite('scaffold', () => {
   const scaffoldResults = any.simpleObject();
   const visibility = any.word();
   const license = any.word();
+  const vcs = any.simpleObject();
 
   setup(() => {
     sandbox = sinon.createSandbox();
@@ -29,7 +30,7 @@ suite('scaffold', () => {
     sandbox.stub(javascriptScaffolder, 'scaffold');
     sandbox.stub(monorepoConfig, 'default');
 
-    monorepoConfig.default.withArgs(monorepoRoot).resolves({...any.simpleObject(), packagesDirectory});
+    monorepoConfig.default.withArgs(monorepoRoot).resolves({...any.simpleObject(), packagesDirectory, vcs});
   });
 
   teardown(() => sandbox.restore());
@@ -54,7 +55,12 @@ suite('scaffold', () => {
         projectName,
         visibility,
         license,
-        decisions: {...options.decisions, [javascriptScaffolder.questionNames.PROJECT_TYPE]: projectTypes.PACKAGE}
+        decisions: {
+          ...options.decisions,
+          [javascriptScaffolder.questionNames.PROJECT_TYPE]: projectTypes.PACKAGE,
+          [javascriptScaffolder.questionNames.CI_SERVICE]: 'Other'
+        },
+        vcs
       })
       .resolves(scaffoldResults);
     process.cwd.returns(monorepoRoot);
@@ -82,7 +88,12 @@ suite('scaffold', () => {
         projectName,
         visibility,
         license,
-        decisions: {...options.decisions, [javascriptScaffolder.questionNames.PROJECT_TYPE]: projectTypes.PACKAGE}
+        decisions: {
+          ...options.decisions,
+          [javascriptScaffolder.questionNames.PROJECT_TYPE]: projectTypes.PACKAGE,
+          [javascriptScaffolder.questionNames.CI_SERVICE]: 'Other'
+        },
+        vcs
       })
       .resolves(scaffoldResults);
     process.cwd.returns(monorepoRoot);
@@ -109,7 +120,12 @@ suite('scaffold', () => {
         projectName,
         visibility,
         license: 'UNLICENSED',
-        decisions: {...options.decisions, [javascriptScaffolder.questionNames.PROJECT_TYPE]: projectTypes.PACKAGE}
+        decisions: {
+          ...options.decisions,
+          [javascriptScaffolder.questionNames.PROJECT_TYPE]: projectTypes.PACKAGE,
+          [javascriptScaffolder.questionNames.CI_SERVICE]: 'Other'
+        },
+        vcs
       })
       .resolves(scaffoldResults);
     process.cwd.returns(monorepoRoot);

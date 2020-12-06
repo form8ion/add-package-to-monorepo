@@ -7,6 +7,7 @@ Feature: Lerna
     When the project is scaffolded
     Then the package is added to the monorepo
     And the project is configured as a package
+    And project-level tools are not installed for the new package
 
   Scenario: Add Config Package
     Given the monorepo is lerna
@@ -15,3 +16,4 @@ Feature: Lerna
     When the project is scaffolded
     Then the package is added to the monorepo
     And the project is configured as a config package
+    And project-level tools are not installed for the new package

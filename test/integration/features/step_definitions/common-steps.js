@@ -86,7 +86,6 @@ When('the project is scaffolded', async function () {
           [questionNames.COPYRIGHT_YEAR]: 2000
         },
         ...'Private' === visibility && {[questionNames.UNLICENSED]: true},
-        [questionNames.NODE_VERSION_CATEGORY]: 'LTS',
         [questionNames.AUTHOR_NAME]: any.word(),
         [questionNames.AUTHOR_EMAIL]: any.email(),
         [questionNames.AUTHOR_URL]: any.url(),

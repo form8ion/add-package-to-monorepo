@@ -20,9 +20,11 @@ export default async function (options) {
     [questionNames.VISIBILITY]: visibility,
     [questionNames.LICENSE]: chosenLicense
   } = answers;
-  const projectRoot = `${monorepoRoot}/${packagesDirectory}/${projectName}`;
+  const pathWithinMonorepo = `${packagesDirectory}/${projectName}`;
+  const projectRoot = `${monorepoRoot}/${pathWithinMonorepo}`;
 
   await mkdir(projectRoot);
+
   return scaffold(deepmerge(
     options,
     {
@@ -30,11 +32,9 @@ export default async function (options) {
       projectName,
       visibility,
       license: chosenLicense || 'UNLICENSED',
-      decisions: {
-        [jsQuestionNames.PROJECT_TYPE]: projectTypes.PACKAGE,
-        [jsQuestionNames.CI_SERVICE]: 'Other'
-      },
-      vcs
+      decisions: {[jsQuestionNames.PROJECT_TYPE]: projectTypes.PACKAGE},
+      vcs,
+      pathWithinParent: pathWithinMonorepo
     }
   ));
 }

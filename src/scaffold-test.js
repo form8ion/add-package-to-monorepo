@@ -55,12 +55,9 @@ suite('scaffold', () => {
         projectName,
         visibility,
         license,
-        decisions: {
-          ...options.decisions,
-          [javascriptScaffolder.questionNames.PROJECT_TYPE]: projectTypes.PACKAGE,
-          [javascriptScaffolder.questionNames.CI_SERVICE]: 'Other'
-        },
-        vcs
+        decisions: {...options.decisions, [javascriptScaffolder.questionNames.PROJECT_TYPE]: projectTypes.PACKAGE},
+        vcs,
+        pathWithinParent: `${packagesDirectory}/${projectName}`
       })
       .resolves(scaffoldResults);
     process.cwd.returns(monorepoRoot);
@@ -88,12 +85,9 @@ suite('scaffold', () => {
         projectName,
         visibility,
         license,
-        decisions: {
-          ...options.decisions,
-          [javascriptScaffolder.questionNames.PROJECT_TYPE]: projectTypes.PACKAGE,
-          [javascriptScaffolder.questionNames.CI_SERVICE]: 'Other'
-        },
-        vcs
+        decisions: {...options.decisions, [javascriptScaffolder.questionNames.PROJECT_TYPE]: projectTypes.PACKAGE},
+        vcs,
+        pathWithinParent: `${packagesDirectory}/${projectName}`
       })
       .resolves(scaffoldResults);
     process.cwd.returns(monorepoRoot);
@@ -120,12 +114,9 @@ suite('scaffold', () => {
         projectName,
         visibility,
         license: 'UNLICENSED',
-        decisions: {
-          ...options.decisions,
-          [javascriptScaffolder.questionNames.PROJECT_TYPE]: projectTypes.PACKAGE,
-          [javascriptScaffolder.questionNames.CI_SERVICE]: 'Other'
-        },
-        vcs
+        decisions: {...options.decisions, [javascriptScaffolder.questionNames.PROJECT_TYPE]: projectTypes.PACKAGE},
+        vcs,
+        pathWithinParent: `${packagesDirectory}/${projectName}`
       })
       .resolves(scaffoldResults);
     process.cwd.returns(monorepoRoot);

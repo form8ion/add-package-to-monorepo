@@ -16,6 +16,9 @@ Then('feedback is provided that the monorepo is unsupported', async function () 
 
 Then('project-level tools are not installed for the new package', async function () {
   assert.isFalse(await fileExists(`${process.cwd()}/packages/${this.projectName}/.nvmrc`));
+  assert.isFalse(await fileExists(`${process.cwd()}/packages/${this.projectName}/.huskyrc.json`));
+  assert.isFalse(await fileExists(`${process.cwd()}/packages/${this.projectName}/.czrc`));
+  assert.isFalse(await fileExists(`${process.cwd()}/packages/${this.projectName}/.commitlintrc.js`));
   assert.isFalse(await fileExists(`${process.cwd()}/packages/${this.projectName}/.gitattributes`));
   assert.isFalse(await fileExists(`${process.cwd()}/packages/${this.projectName}/.gitignore`));
 });

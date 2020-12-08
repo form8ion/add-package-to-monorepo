@@ -43,7 +43,7 @@ Then('the package will have repository details defined', async function () {
     {
       type: 'git',
       url: `https://github.com/${this.repoOwner}/${this.repoName}.git`,
-      path: `packages/${this.projectName}`
+      directory: `packages/${this.projectName}`
     }
   );
 });

@@ -10,10 +10,8 @@ export default async function (options) {
   const monorepoRoot = process.cwd();
   const {overrides, decisions} = options;
   const questions = questionsForBaseDetails(decisions, undefined, overrides?.copyrightHolder);
-  const [{packagesDirectory, vcs}, answers] = await Promise.all([
-    getMonorepoConfig(monorepoRoot),
-    prompt(questions, decisions)
-  ]);
+  const {packagesDirectory, vcs} = await getMonorepoConfig(monorepoRoot);
+  const answers = await prompt(questions, decisions);
 
   const {
     [questionNames.PROJECT_NAME]: projectName,

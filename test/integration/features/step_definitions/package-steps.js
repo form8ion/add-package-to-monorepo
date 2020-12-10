@@ -16,7 +16,7 @@ Given('the package will be tested', async function () {
 Then('the package is added to the monorepo', async function () {
   assert.equal(
     JSON.parse(await fs.readFile(`${process.cwd()}/packages/${this.projectName}/package.json`)).name,
-    this.projectName
+    this.packageName
   );
 });
 

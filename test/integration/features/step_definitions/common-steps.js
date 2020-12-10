@@ -72,7 +72,10 @@ When('the project is scaffolded', async function () {
   // eslint-disable-next-line import/no-extraneous-dependencies,import/no-unresolved
   const {questionNames, scaffold} = require('@form8ion/add-package-to-monorepo');
   const visibility = any.fromList(['Public', 'Private']);
+  const shouldBeScoped = any.boolean();
+  const scope = shouldBeScoped || 'Private' === visibility ? any.word() : undefined;
   this.projectName = any.word();
+  this.packageName = scope ? `@${scope}/${this.projectName}` : this.projectName;
 
   try {
     await scaffold({
@@ -91,7 +94,9 @@ When('the project is scaffolded', async function () {
         [questionNames.AUTHOR_URL]: any.url(),
         [questionNames.UNIT_TESTS]: this.tested,
         [questionNames.INTEGRATION_TESTS]: this.tested,
-        [questionNames.TRANSPILE_LINT]: this.transpiled
+        [questionNames.TRANSPILE_LINT]: this.transpiled,
+        [questionNames.SHOULD_BE_SCOPED]: shouldBeScoped,
+        [questionNames.SCOPE]: scope
       },
       unitTestFrameworks: {}
     });

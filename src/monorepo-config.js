@@ -16,5 +16,11 @@ export default async function (monorepoRoot) {
 
   const {repository} = JSON.parse(await fs.readFile(`${monorepoRoot}/package.json`));
 
-  return {packagesDirectory: 'packages', ...repository && {vcs: {host: 'GitHub', ...fromUrl(repository)}}};
+  if (repository) {
+    const {user, project, type} = fromUrl(repository);
+
+    return {packagesDirectory: 'packages', vcs: {owner: user, name: project, host: type}};
+  }
+
+  return {packagesDirectory: 'packages'};
 }

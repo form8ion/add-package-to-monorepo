@@ -58,6 +58,7 @@
     "@istanbuljs/nyc-config-babel": "3.0.0",
     "@rollup/plugin-babel": "5.2.2",
     "@travi/any": "2.0.15",
+    "@travi/project-scaffolder": "9.0.1",
     "babel-plugin-istanbul": "6.0.0",
     "ban-sensitive-files": "1.9.14",
     "chai": "4.2.0",
@@ -90,7 +91,7 @@
     "@form8ion/javascript-core": "^2.6.0",
     "@form8ion/overridable-prompts": "^1.1.0",
     "@travi/cli-messages": "^1.0.4",
-    "@travi/javascript-scaffolder": "^11.18.4",
+    "@travi/javascript-scaffolder": "^12.0.0",
     "deepmerge": "^4.2.2",
     "hosted-git-info": "^3.0.7",
     "make-dir": "^3.1.0"

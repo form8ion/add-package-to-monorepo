@@ -24,13 +24,14 @@ suite('monorepo config', () => {
     core.fileExists.withArgs(`${monorepoRoot}/lerna.json`).resolves(true);
     const repoOwner = any.word();
     const repoName = any.word();
+    const repoHost = any.word();
     const repository = any.string();
     fs.readFile.withArgs(`${monorepoRoot}/package.json`).resolves(JSON.stringify({repository}));
-    hostedGitInfo.fromUrl.withArgs(repository).returns({owner: repoOwner, name: repoName});
+    hostedGitInfo.fromUrl.withArgs(repository).returns({user: repoOwner, project: repoName, type: repoHost});
 
     assert.deepEqual(
       await getConfig(monorepoRoot),
-      {packagesDirectory: 'packages', vcs: {host: 'GitHub', owner: repoOwner, name: repoName}}
+      {packagesDirectory: 'packages', vcs: {host: repoHost, owner: repoOwner, name: repoName}}
     );
   });
 

@@ -1,10 +1,11 @@
-import {promises as fs} from 'fs';
 import {fileExists} from '@form8ion/core';
 import {Given, Then} from '@cucumber/cucumber';
 import {assert} from 'chai';
+import td from 'testdouble';
 
 Given('the monorepo is lerna', async function () {
-  await fs.writeFile(`${process.cwd()}/lerna.json`, JSON.stringify({}));
+  this.monorepoType = 'lerna';
+  td.when(this.execa('npm', ['ls', 'husky', '--json'])).thenResolve({stdout: JSON.stringify({})});
 });
 
 Then('feedback is provided that the monorepo is unsupported', async function () {

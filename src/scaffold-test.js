@@ -7,6 +7,7 @@ import sinon from 'sinon';
 import any from '@travi/any';
 import * as mkdir from '../thirdparty-wrappers/make-dir';
 import * as monorepoConfig from './monorepo-config';
+import * as packageManager from './package-manager';
 import scaffold from './scaffold';
 
 suite('scaffold', () => {
@@ -18,6 +19,7 @@ suite('scaffold', () => {
   const scaffoldResults = any.simpleObject();
   const visibility = any.word();
   const license = any.word();
+  const manager = any.word();
   const vcs = any.simpleObject();
 
   setup(() => {
@@ -29,8 +31,10 @@ suite('scaffold', () => {
     sandbox.stub(prompts, 'prompt');
     sandbox.stub(javascriptScaffolder, 'scaffold');
     sandbox.stub(monorepoConfig, 'default');
+    sandbox.stub(packageManager, 'default');
 
     monorepoConfig.default.withArgs(monorepoRoot).resolves({...any.simpleObject(), packagesDirectory, vcs});
+    packageManager.default.withArgs(monorepoRoot).resolves(manager);
   });
 
   teardown(() => sandbox.restore());
@@ -55,7 +59,11 @@ suite('scaffold', () => {
         projectName,
         visibility,
         license,
-        decisions: {...options.decisions, [javascriptScaffolder.questionNames.PROJECT_TYPE]: projectTypes.PACKAGE},
+        decisions: {
+          ...options.decisions,
+          [javascriptScaffolder.questionNames.PROJECT_TYPE]: projectTypes.PACKAGE,
+          [javascriptScaffolder.questionNames.PACKAGE_MANAGER]: manager
+        },
         vcs,
         pathWithinParent: `${packagesDirectory}/${projectName}`
       })
@@ -85,7 +93,11 @@ suite('scaffold', () => {
         projectName,
         visibility,
         license,
-        decisions: {...options.decisions, [javascriptScaffolder.questionNames.PROJECT_TYPE]: projectTypes.PACKAGE},
+        decisions: {
+          ...options.decisions,
+          [javascriptScaffolder.questionNames.PROJECT_TYPE]: projectTypes.PACKAGE,
+          [javascriptScaffolder.questionNames.PACKAGE_MANAGER]: manager
+        },
         vcs,
         pathWithinParent: `${packagesDirectory}/${projectName}`
       })
@@ -114,7 +126,11 @@ suite('scaffold', () => {
         projectName,
         visibility,
         license: 'UNLICENSED',
-        decisions: {...options.decisions, [javascriptScaffolder.questionNames.PROJECT_TYPE]: projectTypes.PACKAGE},
+        decisions: {
+          ...options.decisions,
+          [javascriptScaffolder.questionNames.PROJECT_TYPE]: projectTypes.PACKAGE,
+          [javascriptScaffolder.questionNames.PACKAGE_MANAGER]: manager
+        },
         vcs,
         pathWithinParent: `${packagesDirectory}/${projectName}`
       })

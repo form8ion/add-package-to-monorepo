@@ -3,8 +3,9 @@ import {questionNames, questionsForBaseDetails} from '@form8ion/core';
 import {projectTypes} from '@form8ion/javascript-core';
 import {prompt} from '@form8ion/overridable-prompts';
 import {scaffold, questionNames as jsQuestionNames} from '@travi/javascript-scaffolder';
-import getMonorepoConfig from './monorepo-config';
 import mkdir from '../thirdparty-wrappers/make-dir';
+import getMonorepoConfig from './monorepo-config';
+import determinePackageManager from './package-manager';
 
 export default async function (options) {
   const monorepoRoot = process.cwd();
@@ -30,7 +31,10 @@ export default async function (options) {
       projectName,
       visibility,
       license: chosenLicense || 'UNLICENSED',
-      decisions: {[jsQuestionNames.PROJECT_TYPE]: projectTypes.PACKAGE},
+      decisions: {
+        [jsQuestionNames.PROJECT_TYPE]: projectTypes.PACKAGE,
+        [jsQuestionNames.PACKAGE_MANAGER]: await determinePackageManager(monorepoRoot)
+      },
       vcs,
       pathWithinParent: pathWithinMonorepo
     }

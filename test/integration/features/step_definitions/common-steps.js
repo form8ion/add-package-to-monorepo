@@ -2,6 +2,7 @@ import {resolve} from 'path';
 import {promises as fs} from 'fs';
 import {After, Before, When} from '@cucumber/cucumber';
 import importFresh from 'import-fresh';
+import clearModule from 'clear-module';
 import stubbedFs from 'mock-fs';
 import nock from 'nock';
 import td from 'testdouble';
@@ -19,10 +20,41 @@ Before(async function () {
 
   this.execa = td.replace('execa');
 
+  nock.disableNetConnect();
+});
+
+After(function () {
+  nock.enableNetConnect();
+  nock.cleanAll();
+  stubbedFs.restore();
+  td.reset();
+  clearModule('@form8ion/add-package-to-monorepo');
+  clearModule('@travi/javascript-scaffolder');
+  clearModule('@form8ion/lift-javascript');
+  clearModule('@form8ion/javascript-core');
+  clearModule('@form8ion/core');
+  clearModule('execa');
+});
+
+When('the project is scaffolded', async function () {
+  // eslint-disable-next-line import/no-extraneous-dependencies,import/no-unresolved
+  const {questionNames, scaffold} = importFresh('@form8ion/add-package-to-monorepo');
+  const visibility = any.fromList(['Public', 'Private']);
+  const shouldBeScoped = any.boolean();
+  const scope = shouldBeScoped || 'Private' === visibility ? any.word() : undefined;
+  this.projectName = any.word();
+  this.packageName = scope ? `@${scope}/${this.projectName}` : this.projectName;
+
   stubbedFs({
     node_modules: stubbedNodeModules,
     packages: {},
-    'package.json': JSON.stringify({}),
+    ...'lerna' === this.monorepoType && {'lerna.json': JSON.stringify(any.simpleObject())},
+    'package.json': JSON.stringify({
+      ...any.simpleObject(),
+      ...'GitHub' === this.vcsHost && {repository: `${this.repoOwner}/${this.repoName}`}
+    }),
+    ...'npm' === this.packageManager && {'package-lock.json': JSON.stringify(any.simpleObject())},
+    ...'yarn' === this.packageManager && {'yarn.lock': any.string()},
     [packagePreviewDirectory]: {
       '@form8ion': {
         'add-package-to-monorepo': {
@@ -54,27 +86,6 @@ Before(async function () {
       }
     }
   });
-
-  nock.disableNetConnect();
-});
-
-After(function () {
-  nock.enableNetConnect();
-  nock.cleanAll();
-  stubbedFs.restore();
-  td.reset();
-});
-
-When('the project is scaffolded', async function () {
-  // busts whatever the caching issue is with shelljs at the step to determine the node version
-  importFresh('@travi/javascript-scaffolder');
-  // eslint-disable-next-line import/no-extraneous-dependencies,import/no-unresolved
-  const {questionNames, scaffold} = require('@form8ion/add-package-to-monorepo');
-  const visibility = any.fromList(['Public', 'Private']);
-  const shouldBeScoped = any.boolean();
-  const scope = shouldBeScoped || 'Private' === visibility ? any.word() : undefined;
-  this.projectName = any.word();
-  this.packageName = scope ? `@${scope}/${this.projectName}` : this.projectName;
 
   try {
     await scaffold({

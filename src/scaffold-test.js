@@ -1,4 +1,5 @@
 import * as javascriptScaffolder from '@travi/javascript-scaffolder';
+import * as readmeScaffolder from '@form8ion/readme';
 import * as core from '@form8ion/core';
 import {projectTypes} from '@form8ion/javascript-core';
 import * as prompts from '@form8ion/overridable-prompts';
@@ -30,6 +31,7 @@ suite('scaffold', () => {
     sandbox.stub(core, 'questionsForBaseDetails');
     sandbox.stub(prompts, 'prompt');
     sandbox.stub(javascriptScaffolder, 'scaffold');
+    sandbox.stub(readmeScaffolder, 'scaffold');
     sandbox.stub(monorepoConfig, 'default');
     sandbox.stub(packageManager, 'default');
 
@@ -40,11 +42,13 @@ suite('scaffold', () => {
   teardown(() => sandbox.restore());
 
   test('that the package is scaffolded in the packages/ directory', async () => {
+    const description = any.sentence();
     const promptAnswers = {
       ...any.simpleObject(),
       [core.questionNames.PROJECT_NAME]: projectName,
       [core.questionNames.VISIBILITY]: visibility,
-      [core.questionNames.LICENSE]: license
+      [core.questionNames.LICENSE]: license,
+      [core.questionNames.DESCRIPTION]: description
     };
     const decisions = any.simpleObject();
     const copyrightHolder = any.word();
@@ -72,6 +76,7 @@ suite('scaffold', () => {
 
     assert.deepEqual(await scaffold(options), scaffoldResults);
     assert.calledWith(mkdir.default, projectRoot);
+    assert.calledWith(readmeScaffolder.scaffold, {projectRoot, projectName, description});
   });
 
   test('that overrides are optional in the provided options', async () => {

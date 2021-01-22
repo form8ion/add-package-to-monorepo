@@ -43,6 +43,7 @@ When('the project is scaffolded', async function () {
   const shouldBeScoped = any.boolean();
   const scope = shouldBeScoped || 'Private' === visibility ? any.word() : undefined;
   this.projectName = any.word();
+  this.projectDescription = any.sentence();
   this.packageName = scope ? `@${scope}/${this.projectName}` : this.projectName;
 
   stubbedFs({
@@ -91,7 +92,7 @@ When('the project is scaffolded', async function () {
     await scaffold({
       decisions: {
         [questionNames.PROJECT_NAME]: this.projectName,
-        [questionNames.DESCRIPTION]: any.sentence(),
+        [questionNames.DESCRIPTION]: this.projectDescription,
         [questionNames.VISIBILITY]: visibility,
         ...'Public' === visibility && {
           [questionNames.LICENSE]: 'MIT',

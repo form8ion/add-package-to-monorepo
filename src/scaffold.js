@@ -3,6 +3,7 @@ import {questionNames, questionsForBaseDetails} from '@form8ion/core';
 import {projectTypes} from '@form8ion/javascript-core';
 import {prompt} from '@form8ion/overridable-prompts';
 import {scaffold, questionNames as jsQuestionNames} from '@travi/javascript-scaffolder';
+import {scaffold as scaffoldReadme} from '@form8ion/readme';
 import mkdir from '../thirdparty-wrappers/make-dir';
 import getMonorepoConfig from './monorepo-config';
 import determinePackageManager from './package-manager';
@@ -17,12 +18,15 @@ export default async function (options) {
   const {
     [questionNames.PROJECT_NAME]: projectName,
     [questionNames.VISIBILITY]: visibility,
-    [questionNames.LICENSE]: chosenLicense
+    [questionNames.LICENSE]: chosenLicense,
+    [questionNames.DESCRIPTION]: description
   } = answers;
   const pathWithinMonorepo = `${packagesDirectory}/${projectName}`;
   const projectRoot = `${monorepoRoot}/${pathWithinMonorepo}`;
 
   await mkdir(projectRoot);
+
+  await scaffoldReadme({projectRoot, projectName, description});
 
   return scaffold(deepmerge(
     options,

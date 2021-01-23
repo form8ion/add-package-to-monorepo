@@ -3,7 +3,7 @@ import {questionNames, questionsForBaseDetails} from '@form8ion/core';
 import {projectTypes} from '@form8ion/javascript-core';
 import {prompt} from '@form8ion/overridable-prompts';
 import {scaffold, questionNames as jsQuestionNames} from '@travi/javascript-scaffolder';
-import {scaffold as scaffoldReadme} from '@form8ion/readme';
+import {lift as liftReadme, scaffold as scaffoldReadme} from '@form8ion/readme';
 import mkdir from '../thirdparty-wrappers/make-dir';
 import getMonorepoConfig from './monorepo-config';
 import determinePackageManager from './package-manager';
@@ -28,7 +28,7 @@ export default async function (options) {
 
   await scaffoldReadme({projectRoot, projectName, description});
 
-  return scaffold(deepmerge(
+  const results = await scaffold(deepmerge(
     options,
     {
       projectRoot,
@@ -43,4 +43,8 @@ export default async function (options) {
       pathWithinParent: pathWithinMonorepo
     }
   ));
+
+  await liftReadme({projectRoot, results});
+
+  return results;
 }

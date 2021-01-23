@@ -32,6 +32,7 @@ suite('scaffold', () => {
     sandbox.stub(prompts, 'prompt');
     sandbox.stub(javascriptScaffolder, 'scaffold');
     sandbox.stub(readmeScaffolder, 'scaffold');
+    sandbox.stub(readmeScaffolder, 'lift');
     sandbox.stub(monorepoConfig, 'default');
     sandbox.stub(packageManager, 'default');
 
@@ -77,6 +78,7 @@ suite('scaffold', () => {
     assert.deepEqual(await scaffold(options), scaffoldResults);
     assert.calledWith(mkdir.default, projectRoot);
     assert.calledWith(readmeScaffolder.scaffold, {projectRoot, projectName, description});
+    assert.calledWith(readmeScaffolder.lift, {projectRoot, results: scaffoldResults});
   });
 
   test('that overrides are optional in the provided options', async () => {

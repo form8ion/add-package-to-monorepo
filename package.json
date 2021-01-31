@@ -60,7 +60,7 @@
     "@travi/any": "2.0.15",
     "@travi/project-scaffolder": "9.0.4",
     "babel-plugin-istanbul": "6.0.0",
-    "ban-sensitive-files": "1.9.14",
+    "ban-sensitive-files": "1.9.15",
     "chai": "4.2.0",
     "clear-module": "4.1.1",
     "codecov": "3.8.1",

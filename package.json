@@ -100,6 +100,7 @@
     "@travi/cli-messages": "^1.0.4",
     "@travi/javascript-scaffolder": "12.2.1",
     "deepmerge": "^4.2.2",
+    "execa": "^5.0.0",
     "hosted-git-info": "^3.0.7",
     "make-dir": "^3.1.0"
   }

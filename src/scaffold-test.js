@@ -8,22 +8,24 @@ import {assert} from 'chai';
 import sinon from 'sinon';
 import any from '@travi/any';
 import * as mkdir from '../thirdparty-wrappers/make-dir';
+import * as execa from '../thirdparty-wrappers/execa';
 import * as monorepoConfig from './monorepo-config';
 import * as packageManager from './package-manager';
 import scaffold from './scaffold';
 
 suite('scaffold', () => {
-  let sandbox;
+  let sandbox, execaPipe;
   const monorepoRoot = any.string();
   const projectName = any.word();
   const packagesDirectory = any.string();
   const projectRoot = `${monorepoRoot}/${packagesDirectory}/${projectName}`;
   const nextSteps = any.listOf(any.word);
-  const scaffoldResults = {...any.simpleObject(), nextSteps};
   const visibility = any.word();
   const license = any.word();
   const manager = any.word();
   const vcs = any.simpleObject();
+  const verificationCommand = any.string();
+  const scaffoldResults = {...any.simpleObject(), nextSteps, verificationCommand};
 
   setup(() => {
     sandbox = sinon.createSandbox();
@@ -38,9 +40,13 @@ suite('scaffold', () => {
     sandbox.stub(monorepoConfig, 'default');
     sandbox.stub(packageManager, 'default');
     sandbox.stub(resultsReporter, 'reportResults');
+    sandbox.stub(execa, 'default');
 
     monorepoConfig.default.withArgs(monorepoRoot).resolves({...any.simpleObject(), packagesDirectory, vcs});
     packageManager.default.withArgs(monorepoRoot).resolves(manager);
+
+    execaPipe = sinon.spy();
+    execa.default.withArgs(verificationCommand, {shell: true}).returns({stdout: {pipe: execaPipe}});
   });
 
   teardown(() => sandbox.restore());
@@ -83,6 +89,7 @@ suite('scaffold', () => {
     assert.calledWith(readmeScaffolder.scaffold, {projectRoot, projectName, description});
     assert.calledWith(readmeScaffolder.lift, {projectRoot, results: scaffoldResults});
     assert.calledWith(resultsReporter.reportResults, {nextSteps});
+    assert.calledWith(execaPipe, process.stdout);
   });
 
   test('that overrides are optional in the provided options', async () => {

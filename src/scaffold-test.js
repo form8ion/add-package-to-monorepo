@@ -3,6 +3,7 @@ import * as readmeScaffolder from '@form8ion/readme';
 import * as core from '@form8ion/core';
 import {projectTypes} from '@form8ion/javascript-core';
 import * as prompts from '@form8ion/overridable-prompts';
+import * as resultsReporter from '@form8ion/results-reporter';
 import {assert} from 'chai';
 import sinon from 'sinon';
 import any from '@travi/any';
@@ -17,7 +18,8 @@ suite('scaffold', () => {
   const projectName = any.word();
   const packagesDirectory = any.string();
   const projectRoot = `${monorepoRoot}/${packagesDirectory}/${projectName}`;
-  const scaffoldResults = any.simpleObject();
+  const nextSteps = any.listOf(any.word);
+  const scaffoldResults = {...any.simpleObject(), nextSteps};
   const visibility = any.word();
   const license = any.word();
   const manager = any.word();
@@ -35,6 +37,7 @@ suite('scaffold', () => {
     sandbox.stub(readmeScaffolder, 'lift');
     sandbox.stub(monorepoConfig, 'default');
     sandbox.stub(packageManager, 'default');
+    sandbox.stub(resultsReporter, 'reportResults');
 
     monorepoConfig.default.withArgs(monorepoRoot).resolves({...any.simpleObject(), packagesDirectory, vcs});
     packageManager.default.withArgs(monorepoRoot).resolves(manager);
@@ -79,6 +82,7 @@ suite('scaffold', () => {
     assert.calledWith(mkdir.default, projectRoot);
     assert.calledWith(readmeScaffolder.scaffold, {projectRoot, projectName, description});
     assert.calledWith(readmeScaffolder.lift, {projectRoot, results: scaffoldResults});
+    assert.calledWith(resultsReporter.reportResults, {nextSteps});
   });
 
   test('that overrides are optional in the provided options', async () => {

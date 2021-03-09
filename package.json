@@ -101,7 +101,7 @@
     "@travi/javascript-scaffolder": "12.2.1",
     "deepmerge": "^4.2.2",
     "execa": "^5.0.0",
-    "hosted-git-info": "^3.0.7",
+    "hosted-git-info": "^4.0.0",
     "make-dir": "^3.1.0"
   }
 }

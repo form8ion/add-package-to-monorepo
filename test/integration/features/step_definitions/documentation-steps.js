@@ -91,6 +91,7 @@ Then('a README is created for the new package', async function () {
   //     link: `https://www.npmjs.com/package/${this.packageName}`
   //   }
   // );
+
   assertGroupContainsBadge(
     badgeGroups.contribution,
     references,

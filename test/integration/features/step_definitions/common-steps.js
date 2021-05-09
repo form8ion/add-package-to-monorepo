@@ -1,5 +1,4 @@
 import {resolve} from 'path';
-import {promises as fs} from 'fs';
 import {After, Before, When} from '@cucumber/cucumber';
 import importFresh from 'import-fresh';
 import clearModule from 'clear-module';

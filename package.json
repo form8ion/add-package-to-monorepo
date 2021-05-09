@@ -44,7 +44,8 @@
     "test:unit": "cross-env NODE_ENV=test nyc run-s test:unit:base",
     "coverage:report": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
     "test:unit:base": "DEBUG=any mocha 'src/**/*-test.js'",
-    "lint:peer": "npm ls >/dev/null"
+    "lint:peer": "npm ls >/dev/null",
+    "prepare": "husky install"
   },
   "devDependencies": {
     "@babel/register": "7.13.16",
@@ -98,7 +99,7 @@
     "@form8ion/readme": "1.2.0",
     "@form8ion/results-reporter": "^1.1.0",
     "@travi/cli-messages": "^1.0.4",
-    "@travi/javascript-scaffolder": "12.2.1",
+    "@travi/javascript-scaffolder": "13.0.1",
     "deepmerge": "^4.2.2",
     "execa": "^5.0.0",
     "hosted-git-info": "^4.0.0",

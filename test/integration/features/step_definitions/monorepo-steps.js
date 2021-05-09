@@ -5,7 +5,12 @@ import td from 'testdouble';
 
 Given('the monorepo is lerna', async function () {
   this.monorepoType = 'lerna';
-  td.when(this.execa('npm', ['ls', 'husky', '--json'])).thenResolve({stdout: JSON.stringify({})});
+  const error = new Error('Command failed with exit code 1: npm ls husky --json');
+  error.exitCode = 1;
+  error.stdout = JSON.stringify({});
+  error.command = 'npm ls husky --json';
+
+  td.when(this.execa('npm', ['ls', 'husky', '--json'])).thenReject(error);
 });
 
 Then('feedback is provided that the monorepo is unsupported', async function () {

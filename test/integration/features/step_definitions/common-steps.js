@@ -1,5 +1,4 @@
 import {resolve} from 'path';
-import {promises as fs} from 'fs';
 import {After, Before, When} from '@cucumber/cucumber';
 import importFresh from 'import-fresh';
 import clearModule from 'clear-module';
@@ -10,7 +9,6 @@ import any from '@travi/any';
 
 const pathToNodeModules = [__dirname, '..', '..', '..', '..', 'node_modules'];
 const stubbedNodeModules = stubbedFs.load(resolve(...pathToNodeModules));
-const packagePreviewDirectory = '../__package_previews__/add-package-to-monorepo';
 const debug = require('debug')('test');
 
 Before(async function () {
@@ -32,6 +30,7 @@ After(function () {
   clearModule('@travi/javascript-scaffolder');
   clearModule('@form8ion/lift-javascript');
   clearModule('@form8ion/javascript-core');
+  clearModule('@form8ion/husky');
   clearModule('@form8ion/core');
   clearModule('execa');
 });
@@ -55,37 +54,7 @@ When('the project is scaffolded', async function () {
       ...'GitHub' === this.vcsHost && {repository: `${this.repoOwner}/${this.repoName}`}
     }),
     ...'npm' === this.packageManager && {'package-lock.json': JSON.stringify(any.simpleObject())},
-    ...'yarn' === this.packageManager && {'yarn.lock': any.string()},
-    [packagePreviewDirectory]: {
-      '@form8ion': {
-        'add-package-to-monorepo': {
-          node_modules: {
-            '.pnpm': {
-              '@travi': {
-                'javascript-scaffolder@11.13.0': {
-                  node_modules: {
-                    '@travi': {
-                      'javascript-scaffolder': {
-                        templates: {
-                          'rollup.config.js': await fs.readFile(resolve(
-                            ...pathToNodeModules,
-                            '@travi/javascript-scaffolder/templates/rollup.config.js'
-                          )),
-                          'example.mustache': await fs.readFile(resolve(
-                            ...pathToNodeModules,
-                            '@travi/javascript-scaffolder/templates/example.mustache'
-                          ))
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
+    ...'yarn' === this.packageManager && {'yarn.lock': any.string()}
   });
 
   try {

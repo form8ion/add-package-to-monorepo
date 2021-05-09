@@ -3,6 +3,9 @@
   "description": "opinionated scaffolder for adding a JavaScript package to an existing monorepo",
   "license": "MIT",
   "version": "0.0.0-semantically-released",
+  "engines": {
+    "node": ">=12.17"
+  },
   "files": [
     "example.js",
     "lib/"

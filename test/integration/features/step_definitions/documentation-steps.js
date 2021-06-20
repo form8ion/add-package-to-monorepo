@@ -36,6 +36,14 @@ function assertBadgesSectionExists(tree, badgeSection) {
   }));
 }
 
+function assertSectionHeadingExists(tree, section) {
+  assert.isDefined(find(tree, {
+    type: 'heading',
+    depth: 2,
+    children: [{type: 'text', value: section}]
+  }));
+}
+
 function assertGroupContainsBadge(badgeGroup, references, badgeDetails) {
   const badgeFromGroup = badgeGroup[badgeDetails.link ? badgeDetails.label : badgeDetails.imageReferenceLabel];
   const imageReference = badgeDetails.link ? badgeFromGroup.children[0] : badgeFromGroup;
@@ -77,6 +85,7 @@ Then('a README is created for the new package', async function () {
   assertTitleIsIncluded(readmeTree, this.projectName);
   assertDescriptionIsIncluded(readmeTree, this.projectDescription);
   assertBadgesSectionExists(readmeTree, 'status');
+  assertSectionHeadingExists(readmeTree, 'Usage');
   assertBadgesSectionExists(readmeTree, 'consumer');
   assertBadgesSectionExists(readmeTree, 'contribution');
 

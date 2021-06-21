@@ -76,6 +76,22 @@ function groupBadges(tree) {
   return groups;
 }
 
+function assertUsageSectionPopulatedAsExpected(readmeTree) {
+  assertSectionHeadingExists(readmeTree, 'Usage');
+  assertBadgesSectionExists(readmeTree, 'consumer');
+
+  assert.isDefined(find(readmeTree, {
+    type: 'heading',
+    depth: 3,
+    children: [{type: 'text', value: 'Installation'}]
+  }));
+  assert.isDefined(find(readmeTree, {
+    type: 'heading',
+    depth: 3,
+    children: [{type: 'text', value: 'Example'}]
+  }));
+}
+
 Then('a README is created for the new package', async function () {
   const readmeContents = await fs.readFile(`${process.cwd()}/packages/${this.projectName}/README.md`, 'utf8');
   const readmeTree = remark().parse(readmeContents);
@@ -85,8 +101,7 @@ Then('a README is created for the new package', async function () {
   assertTitleIsIncluded(readmeTree, this.projectName);
   assertDescriptionIsIncluded(readmeTree, this.projectDescription);
   assertBadgesSectionExists(readmeTree, 'status');
-  assertSectionHeadingExists(readmeTree, 'Usage');
-  assertBadgesSectionExists(readmeTree, 'consumer');
+  assertUsageSectionPopulatedAsExpected(readmeTree);
   assertBadgesSectionExists(readmeTree, 'contribution');
 
   // assertGroupContainsBadge(

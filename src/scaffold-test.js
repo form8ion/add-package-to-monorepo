@@ -18,7 +18,8 @@ suite('scaffold', () => {
   const monorepoRoot = any.string();
   const projectName = any.word();
   const packagesDirectory = any.string();
-  const projectRoot = `${monorepoRoot}/${packagesDirectory}/${projectName}`;
+  const pathWithinMonorepo = `${packagesDirectory}/${projectName}`;
+  const projectRoot = `${monorepoRoot}/${pathWithinMonorepo}`;
   const nextSteps = any.listOf(any.word);
   const visibility = any.word();
   const license = any.word();
@@ -46,7 +47,9 @@ suite('scaffold', () => {
     packageManager.default.withArgs(monorepoRoot).resolves(manager);
 
     execaPipe = sinon.spy();
-    execa.default.withArgs(verificationCommand, {shell: true}).returns({stdout: {pipe: execaPipe}});
+    execa.default
+      .withArgs(verificationCommand, {shell: true, cwd: pathWithinMonorepo})
+      .returns({stdout: {pipe: execaPipe}});
   });
 
   teardown(() => sandbox.restore());

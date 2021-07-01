@@ -51,7 +51,7 @@ export default async function (options) {
 
   info('Verifying the generated project');
 
-  const subprocess = execa(results.verificationCommand, {shell: true});
+  const subprocess = execa(results.verificationCommand, {shell: true, cwd: pathWithinMonorepo});
   subprocess.stdout.pipe(process.stdout);
   await subprocess;
 

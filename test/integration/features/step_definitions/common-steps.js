@@ -1,5 +1,4 @@
 import {resolve} from 'path';
-import {dialects} from '@form8ion/javascript-core';
 import {After, Before, When} from '@cucumber/cucumber';
 import importFresh from 'import-fresh';
 import clearModule from 'clear-module';
@@ -75,12 +74,13 @@ When('the project is scaffolded', async function () {
         [questionNames.AUTHOR_URL]: any.url(),
         [questionNames.UNIT_TESTS]: this.tested,
         [questionNames.INTEGRATION_TESTS]: this.tested,
-        [questionNames.TRANSPILE_LINT]: this.transpiled,
+        [questionNames.CONFIGURE_LINTING]: this.configureLinting,
         [questionNames.SHOULD_BE_SCOPED]: shouldBeScoped,
         [questionNames.SCOPE]: scope,
-        [questionNames.DIALECT]: dialects.BABEL
+        [questionNames.DIALECT]: this.dialect
       },
-      unitTestFrameworks: {}
+      unitTestFrameworks: {},
+      configs: {...this.babelPreset && {babelPreset: this.babelPreset}}
     });
   } catch (e) {
     debug(e);

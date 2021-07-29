@@ -4,6 +4,7 @@ Feature: Package Manager
     Given the monorepo is lerna
     And the package will be tested
     And the monorepo uses "npm" as the package manager
+    And the dialect is "babel"
     And nvm is properly configured
     When the project is scaffolded
     Then the package is added to the monorepo
@@ -13,6 +14,7 @@ Feature: Package Manager
     Given the monorepo is lerna
     And the package will be tested
     And the monorepo uses "yarn" as the package manager
+    And the dialect is "babel"
     And nvm is properly configured
     When the project is scaffolded
     Then the package is added to the monorepo

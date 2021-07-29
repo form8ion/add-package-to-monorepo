@@ -4,14 +4,14 @@ import {Given, Then} from '@cucumber/cucumber';
 import {assert} from 'chai';
 import td from 'testdouble';
 
-Given('the package will not be tested or transpiled', async function () {
+Given('the package will not be tested or linted', async function () {
   this.tested = false;
-  this.transpiled = false;
+  this.configureLinting = false;
 });
 
 Given('the package will be tested', async function () {
   this.tested = true;
-  this.transpiled = true;
+  this.configureLinting = true;
 });
 
 Then('the package is added to the monorepo', async function () {

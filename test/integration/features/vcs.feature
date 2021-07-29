@@ -3,7 +3,8 @@ Feature: VCS
   Scenario: Project that is not versioned
     Given the monorepo is lerna
     And the monorepo uses "npm" as the package manager
-    And the package will not be tested or transpiled
+    And the dialect is "babel"
+    And the package will not be tested or linted
     And nvm is properly configured
     When the project is scaffolded
     Then the package will have no repository details defined
@@ -11,8 +12,9 @@ Feature: VCS
   Scenario: Project that is versioned
     Given the project is versioned on GitHub
     And the monorepo uses "npm" as the package manager
+    And the dialect is "babel"
     And the monorepo is lerna
-    And the package will not be tested or transpiled
+    And the package will not be tested or linted
     And nvm is properly configured
     When the project is scaffolded
     Then the package will have repository details defined

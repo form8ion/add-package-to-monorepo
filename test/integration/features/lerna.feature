@@ -3,6 +3,7 @@ Feature: Lerna
   Scenario: Add Package
     Given the monorepo is lerna
     And the monorepo uses "npm" as the package manager
+    And the dialect is "babel"
     And the package will be tested
     And nvm is properly configured
     When the project is scaffolded
@@ -14,7 +15,8 @@ Feature: Lerna
   Scenario: Add Config Package
     Given the monorepo is lerna
     And the monorepo uses "npm" as the package manager
-    And the package will not be tested or transpiled
+    And the dialect is "common-js"
+    And the package will not be tested or linted
     And nvm is properly configured
     When the project is scaffolded
     Then the package is added to the monorepo

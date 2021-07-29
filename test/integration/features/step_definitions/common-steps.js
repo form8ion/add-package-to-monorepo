@@ -74,11 +74,13 @@ When('the project is scaffolded', async function () {
         [questionNames.AUTHOR_URL]: any.url(),
         [questionNames.UNIT_TESTS]: this.tested,
         [questionNames.INTEGRATION_TESTS]: this.tested,
-        [questionNames.TRANSPILE_LINT]: this.transpiled,
+        [questionNames.CONFIGURE_LINTING]: this.configureLinting,
         [questionNames.SHOULD_BE_SCOPED]: shouldBeScoped,
-        [questionNames.SCOPE]: scope
+        [questionNames.SCOPE]: scope,
+        [questionNames.DIALECT]: this.dialect
       },
-      unitTestFrameworks: {}
+      unitTestFrameworks: {},
+      configs: {...this.babelPreset && {babelPreset: this.babelPreset}}
     });
   } catch (e) {
     debug(e);

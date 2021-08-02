@@ -36,6 +36,7 @@ export default async function (options) {
     {
       projectRoot,
       projectName,
+      description,
       visibility,
       license: chosenLicense || 'UNLICENSED',
       decisions: {

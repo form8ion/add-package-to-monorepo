@@ -16,11 +16,12 @@ Given('the package will be tested', async function () {
 
 Then('the package is added to the monorepo', async function () {
   const {packageManagers: {YARN, NPM}} = require('@form8ion/javascript-core');
-
-  assert.equal(
-    JSON.parse(await fs.readFile(`${process.cwd()}/packages/${this.projectName}/package.json`, 'utf-8')).name,
-    this.packageName
+  const {name, description} = JSON.parse(
+    await fs.readFile(`${process.cwd()}/packages/${this.projectName}/package.json`, 'utf-8')
   );
+
+  assert.equal(name, this.packageName);
+  assert.equal(description, this.projectDescription);
   td.verify(this.execa(
     `${YARN === this.packageManager ? YARN : `${NPM} run`} generate:md && ${this.packageManager} test`,
     {shell: true, cwd: `packages/${this.projectName}`}

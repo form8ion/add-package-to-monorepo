@@ -17,6 +17,7 @@ suite('scaffold', () => {
   let sandbox, execaPipe;
   const monorepoRoot = any.string();
   const projectName = any.word();
+  const description = any.sentence();
   const packagesDirectory = any.string();
   const pathWithinMonorepo = `${packagesDirectory}/${projectName}`;
   const projectRoot = `${monorepoRoot}/${pathWithinMonorepo}`;
@@ -55,7 +56,6 @@ suite('scaffold', () => {
   teardown(() => sandbox.restore());
 
   test('that the package is scaffolded in the packages/ directory', async () => {
-    const description = any.sentence();
     const promptAnswers = {
       ...any.simpleObject(),
       [core.questionNames.PROJECT_NAME]: projectName,
@@ -74,6 +74,7 @@ suite('scaffold', () => {
         ...options,
         projectRoot,
         projectName,
+        description,
         visibility,
         license,
         decisions: {
@@ -100,7 +101,8 @@ suite('scaffold', () => {
       ...any.simpleObject(),
       [core.questionNames.PROJECT_NAME]: projectName,
       [core.questionNames.VISIBILITY]: visibility,
-      [core.questionNames.LICENSE]: license
+      [core.questionNames.LICENSE]: license,
+      [core.questionNames.DESCRIPTION]: description
     };
     const decisions = any.simpleObject();
     const options = {...any.simpleObject(), decisions};
@@ -112,6 +114,7 @@ suite('scaffold', () => {
         ...options,
         projectRoot,
         projectName,
+        description,
         visibility,
         license,
         decisions: {
@@ -133,7 +136,8 @@ suite('scaffold', () => {
     const promptAnswers = {
       ...any.simpleObject(),
       [core.questionNames.PROJECT_NAME]: projectName,
-      [core.questionNames.VISIBILITY]: visibility
+      [core.questionNames.VISIBILITY]: visibility,
+      [core.questionNames.DESCRIPTION]: description
     };
     const decisions = any.simpleObject();
     const options = {...any.simpleObject(), decisions};
@@ -145,6 +149,7 @@ suite('scaffold', () => {
         ...options,
         projectRoot,
         projectName,
+        description,
         visibility,
         license: 'UNLICENSED',
         decisions: {

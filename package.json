@@ -71,7 +71,7 @@
     "cz-conventional-changelog": "3.3.0",
     "debug": "4.3.2",
     "gherkin-lint": "4.2.2",
-    "husky": "7.0.1",
+    "husky": "7.0.2",
     "import-fresh": "3.3.0",
     "lockfile-lint": "4.6.2",
     "mdast-zone": "4.0.1",

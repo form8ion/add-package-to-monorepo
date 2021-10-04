@@ -4,11 +4,6 @@ import zone from 'mdast-zone';
 import {Then} from '@cucumber/cucumber';
 import {promises as fs} from 'fs';
 import {assert} from 'chai';
-import fromEntries from 'object.fromentries';
-
-if (!Object.fromEntries) {
-  fromEntries.shim();
-}
 
 function assertTitleIsIncluded(readmeTree, projectName) {
   const title = readmeTree.children[0];

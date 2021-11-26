@@ -117,8 +117,8 @@ Then('a README is created for the new package', async function () {
     {
       label: 'semantic-release-link',
       imageReferenceLabel: 'semantic-release-badge',
-      imageAltText: 'semantic-release',
-      imageSrc: 'https://img.shields.io/badge/semantic-release-e10079.svg?logo=semantic-release',
+      imageAltText: 'semantic-release: angular',
+      imageSrc: 'https://img.shields.io/badge/semantic--release-angular-e10079?logo=semantic-release',
       link: 'https://github.com/semantic-release/semantic-release'
     }
   );

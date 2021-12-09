@@ -1,4 +1,4 @@
-import * as javascriptScaffolder from '@travi/javascript-scaffolder';
+import * as javascriptScaffolder from '@form8ion/javascript';
 import * as readmeScaffolder from '@form8ion/readme';
 import * as core from '@form8ion/core';
 import {projectTypes} from '@form8ion/javascript-core';

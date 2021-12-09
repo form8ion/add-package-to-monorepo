@@ -2,7 +2,7 @@ import deepmerge from 'deepmerge';
 import {questionNames, questionsForBaseDetails} from '@form8ion/core';
 import {projectTypes} from '@form8ion/javascript-core';
 import {prompt} from '@form8ion/overridable-prompts';
-import {scaffold, questionNames as jsQuestionNames} from '@travi/javascript-scaffolder';
+import {scaffold, questionNames as jsQuestionNames} from '@form8ion/javascript';
 import {info} from '@travi/cli-messages';
 import {lift as liftReadme, scaffold as scaffoldReadme} from '@form8ion/readme';
 import {reportResults} from '@form8ion/results-reporter';

@@ -73,7 +73,7 @@
     "gherkin-lint": "4.2.2",
     "husky": "7.0.4",
     "import-fresh": "3.3.0",
-    "lockfile-lint": "4.7.3",
+    "lockfile-lint": "4.7.4",
     "mdast-zone": "4.0.1",
     "mocha": "9.2.2",
     "mock-fs": "5.1.2",

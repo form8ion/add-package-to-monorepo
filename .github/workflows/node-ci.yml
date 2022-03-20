@@ -17,6 +17,18 @@ env:
 jobs:
   verify:
     runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+      - uses: bahmutov/npm-install@v1
+      - run: npm test
+      - name: Upload coverage data to Codecov
+        run: npm run coverage:report
+  verify-matrix:
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         node:
@@ -31,10 +43,10 @@ jobs:
           node-version: ${{ matrix.node }}
       - uses: bahmutov/npm-install@v1
       - run: npm test
-      - name: Upload coverage data to Codecov
-        run: npm run coverage:report
   release:
-    needs: verify
+    needs:
+      - verify
+      - verify-matrix
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3

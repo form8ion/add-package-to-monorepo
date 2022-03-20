@@ -47,7 +47,8 @@
     "test:unit": "cross-env NODE_ENV=test c8 run-s test:unit:base",
     "test:unit:base": "DEBUG=any mocha 'src/**/*-test.js'",
     "lint:peer": "npm ls >/dev/null",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "lint:engines": "ls-engines"
   },
   "devDependencies": {
     "@babel/register": "7.17.7",
@@ -72,6 +73,7 @@
     "husky": "7.0.4",
     "import-fresh": "3.3.0",
     "lockfile-lint": "4.7.4",
+    "ls-engines": "0.6.5",
     "mdast-zone": "4.0.1",
     "mocha": "9.2.2",
     "mock-fs": "5.1.2",

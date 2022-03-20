@@ -22,8 +22,9 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v3
         with:
-          node-version-file: '.nvmrc'
-      - uses: bahmutov/npm-install@v1
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm clean-install
       - run: npm test
       - uses: codecov/codecov-action@v2
   verify-matrix:
@@ -40,7 +41,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node }}
-      - uses: bahmutov/npm-install@v1
+          cache: npm
+      - run: npm clean-install
       - run: npm test
   release:
     needs:

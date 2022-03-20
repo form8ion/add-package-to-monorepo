@@ -27,6 +27,7 @@ opinionated scaffolder for adding a JavaScript package to an existing monorepo
 [![MIT license][license-badge]][license-link]
 [![npm][npm-badge]][npm-link]
 [![Try @form8ion/add-package-to-monorepo on RunKit][runkit-badge]][runkit-link]
+![node][node-badge]
 
 <!--consumer-badges end -->
 
@@ -124,3 +125,5 @@ $ npm test
 [runkit-link]: https://npm.runkit.com/@form8ion/add-package-to-monorepo
 
 [runkit-badge]: https://badge.runkitcdn.com/@form8ion/add-package-to-monorepo.svg
+
+[node-badge]: https://img.shields.io/node/v/@form8ion/add-package-to-monorepo?logo=node.js

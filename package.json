@@ -74,7 +74,7 @@
     "import-fresh": "3.3.0",
     "lockfile-lint": "4.7.5",
     "ls-engines": "0.7.0",
-    "mdast-zone": "5.1.0",
+    "mdast-zone": "4.0.1",
     "mocha": "10.0.0",
     "mock-fs": "5.1.2",
     "nock": "13.2.7",

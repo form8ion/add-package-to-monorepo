@@ -4,7 +4,7 @@
   "license": "MIT",
   "version": "0.0.0-semantically-released",
   "engines": {
-    "node": "^14.15.0 || >=16"
+    "node": "^14.18 || >=16"
   },
   "files": [
     "example.js",

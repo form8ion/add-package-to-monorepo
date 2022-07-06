@@ -75,7 +75,7 @@
     "husky": "8.0.1",
     "lockfile-lint": "4.7.6",
     "ls-engines": "0.7.0",
-    "mdast-zone": "4.0.1",
+    "mdast-zone": "5.1.0",
     "mocha": "10.0.0",
     "mock-fs": "5.1.2",
     "nock": "13.2.8",

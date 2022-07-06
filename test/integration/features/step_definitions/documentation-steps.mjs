@@ -1,4 +1,4 @@
-import remark from 'remark';
+import {remark} from 'remark';
 import find from 'unist-util-find';
 import zone from 'mdast-zone';
 import {Then} from '@cucumber/cucumber';

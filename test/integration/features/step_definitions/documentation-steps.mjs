@@ -1,6 +1,6 @@
 import {remark} from 'remark';
 import find from 'unist-util-find';
-import zone from 'mdast-zone';
+import {zone} from 'mdast-zone';
 import {Then} from '@cucumber/cucumber';
 import {promises as fs} from 'fs';
 import {assert} from 'chai';

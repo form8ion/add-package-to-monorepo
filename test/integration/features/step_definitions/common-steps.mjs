@@ -1,22 +1,30 @@
-import {resolve} from 'path';
+import {dirname, resolve} from 'node:path';
+import {fileURLToPath} from 'node:url';
+
 import {After, Before, When} from '@cucumber/cucumber';
-import importFresh from 'import-fresh';
-import clearModule from 'clear-module';
 import stubbedFs from 'mock-fs';
 import nock from 'nock';
-import td from 'testdouble';
+import * as td from 'testdouble';
 import any from '@travi/any';
+import debug from 'debug';
 
+// work around for overly aggressive mock-fs, see:
+// https://github.com/tschaub/mock-fs/issues/213#issuecomment-347002795
+import validate_npm_package_name from 'validate-npm-package-name';
+
+let questionNames, scaffold;
+const __dirname = dirname(fileURLToPath(import.meta.url));
 const pathToNodeModules = [__dirname, '..', '..', '..', '..', 'node_modules'];
 const stubbedNodeModules = stubbedFs.load(resolve(...pathToNodeModules));
-const debug = require('debug')('test');
+const debugTest = debug('test');
 
 Before(async function () {
-  // work around for overly aggressive mock-fs, see:
-  // https://github.com/tschaub/mock-fs/issues/213#issuecomment-347002795
-  require('validate-npm-package-name'); // eslint-disable-line import/no-extraneous-dependencies
+  // validate_npm_package_name(any.word());
 
-  this.execa = td.replace('@form8ion/execa-wrapper');
+  this.execa = await td.replaceEsm('@form8ion/execa-wrapper');
+
+  // eslint-disable-next-line import/no-extraneous-dependencies,import/no-unresolved
+  ({questionNames, scaffold} = await import('@form8ion/add-package-to-monorepo'));
 
   nock.disableNetConnect();
 });
@@ -26,17 +34,9 @@ After(function () {
   nock.cleanAll();
   stubbedFs.restore();
   td.reset();
-  clearModule('@form8ion/add-package-to-monorepo');
-  clearModule('@form8ion/lift-javascript');
-  clearModule('@form8ion/javascript-core');
-  clearModule('@form8ion/husky');
-  clearModule('@form8ion/core');
-  clearModule('execa');
 });
 
 When('the project is scaffolded', async function () {
-  // eslint-disable-next-line import/no-extraneous-dependencies,import/no-unresolved
-  const {questionNames, scaffold} = importFresh('@form8ion/add-package-to-monorepo');
   const visibility = any.fromList(['Public', 'Private']);
   const shouldBeScoped = any.boolean();
   const scope = shouldBeScoped || 'Private' === visibility ? any.word() : undefined;
@@ -82,7 +82,7 @@ When('the project is scaffolded', async function () {
       configs: {...this.babelPreset && {babelPreset: this.babelPreset}}
     });
   } catch (e) {
-    debug(e);
+    debugTest(e);
     this.error = e;
   }
 });

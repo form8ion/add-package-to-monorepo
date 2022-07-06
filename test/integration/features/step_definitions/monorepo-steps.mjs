@@ -1,7 +1,7 @@
 import {fileExists} from '@form8ion/core';
 import {Given, Then} from '@cucumber/cucumber';
 import {assert} from 'chai';
-import td from 'testdouble';
+import * as td from 'testdouble';
 
 Given('the monorepo is lerna', async function () {
   this.monorepoType = 'lerna';
@@ -10,7 +10,7 @@ Given('the monorepo is lerna', async function () {
   error.stdout = JSON.stringify({});
   error.command = 'npm ls husky --json';
 
-  td.when(this.execa('npm', ['ls', 'husky', '--json'])).thenReject(error);
+  td.when(this.execa.default('npm', ['ls', 'husky', '--json'])).thenReject(error);
 });
 
 Then('feedback is provided that the monorepo is unsupported', async function () {

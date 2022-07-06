@@ -1,8 +1,11 @@
-import {promises as fs} from 'fs';
+import {promises as fs} from 'node:fs';
+
 import {fileExists} from '@form8ion/core';
+import {packageManagers} from '@form8ion/javascript-core';
+
 import {Given, Then} from '@cucumber/cucumber';
 import {assert} from 'chai';
-import td from 'testdouble';
+import * as td from 'testdouble';
 
 Given('the package will not be tested or linted', async function () {
   this.tested = false;
@@ -15,14 +18,14 @@ Given('the package will be tested', async function () {
 });
 
 Then('the package is added to the monorepo', async function () {
-  const {packageManagers: {YARN, NPM}} = require('@form8ion/javascript-core');
+  const {YARN, NPM} = packageManagers;
   const {name, description} = JSON.parse(
     await fs.readFile(`${process.cwd()}/packages/${this.projectName}/package.json`, 'utf-8')
   );
 
   assert.equal(name, this.packageName);
   assert.equal(description, this.projectDescription);
-  td.verify(this.execa(
+  td.verify(this.execa.default(
     `${YARN === this.packageManager ? YARN : `${NPM} run`} generate:md && ${this.packageManager} test`,
     {shell: true, cwd: `packages/${this.projectName}`}
   ));

@@ -2,7 +2,7 @@
 // remark-usage-ignore-next
 import stubbedFs from 'mock-fs';
 import yargs from 'yargs';
-import {scaffold} from './lib/index.cjs';
+import {scaffold} from './lib/index.js';
 
 // remark-usage-ignore-next
 stubbedFs();

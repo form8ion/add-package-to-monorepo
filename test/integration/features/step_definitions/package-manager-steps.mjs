@@ -1,5 +1,5 @@
 import {Given, Then} from '@cucumber/cucumber';
-import td from 'testdouble';
+import * as td from 'testdouble';
 
 Given('the monorepo uses {string} as the package manager', async function (manager) {
   this.packageManager = manager;
@@ -7,14 +7,14 @@ Given('the monorepo uses {string} as the package manager', async function (manag
 
 Then('npm is used to manage the new package', async function () {
   td.verify(
-    this.execa(td.matchers.contains('. ~/.nvm/nvm.sh && nvm use && npm install')),
+    this.execa.default(td.matchers.contains('. ~/.nvm/nvm.sh && nvm use && npm install')),
     {ignoreExtraArgs: true}
   );
 });
 
 Then('yarn is used to manage the new package', async function () {
   td.verify(
-    this.execa(td.matchers.contains('. ~/.nvm/nvm.sh && nvm use && yarn add')),
+    this.execa.default(td.matchers.contains('. ~/.nvm/nvm.sh && nvm use && yarn add')),
     {ignoreExtraArgs: true}
   );
 });

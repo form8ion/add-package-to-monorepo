@@ -37,8 +37,8 @@ Then('the project is configured as a package', async function () {
     'utf-8'
   ));
 
-  assert.equal(packageContents.main, './lib/index.cjs.js');
-  assert.equal(packageContents.module, './lib/index.es.js');
+  assert.equal(packageContents.main, './lib/index.js');
+  assert.equal(packageContents.module, './lib/index.mjs');
 });
 
 Then('the project is configured as a config package', async function () {

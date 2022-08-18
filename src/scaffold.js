@@ -9,7 +9,7 @@ import {reportResults} from '@form8ion/results-reporter';
 
 import mkdir from '../thirdparty-wrappers/make-dir';
 import execa from '../thirdparty-wrappers/execa';
-import getMonorepoConfig from './monorepo-config';
+import getMonorepoConfig from './monorepo-config/config-reader';
 import determinePackageManager from './package-manager';
 
 export default async function (options) {

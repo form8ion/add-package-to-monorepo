@@ -3,8 +3,8 @@ import * as core from '@form8ion/core';
 import {assert} from 'chai';
 import sinon from 'sinon';
 import any from '@travi/any';
-import * as hostedGitInfo from '../thirdparty-wrappers/hosted-git-info';
-import getConfig from './monorepo-config';
+import * as hostedGitInfo from '../../thirdparty-wrappers/hosted-git-info';
+import getConfig from './config-reader';
 
 suite('monorepo config', () => {
   let sandbox;

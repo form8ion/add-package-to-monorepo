@@ -1,7 +1,10 @@
 import {promises as fs} from 'fs';
+
 import {info} from '@travi/cli-messages';
 import {fileExists} from '@form8ion/core';
-import {fromUrl} from '../thirdparty-wrappers/hosted-git-info';
+
+import {fromUrl} from '../../thirdparty-wrappers/hosted-git-info';
+import normalizePackagesDirectories from './packages-directories-normalizer';
 
 export default async function (monorepoRoot) {
   info('Inspecting existing monorepo');
@@ -20,7 +23,7 @@ export default async function (monorepoRoot) {
   ]);
   const {repository} = JSON.parse(packageContent);
   const {packages: packagesDirectories} = JSON.parse(lernaContent);
-  const packagesDirectory = packagesDirectories[0].replace(/\/\*/, '');
+  const packagesDirectory = normalizePackagesDirectories(packagesDirectories)[0];
 
   if (repository) {
     const {user, project, type} = fromUrl(repository);

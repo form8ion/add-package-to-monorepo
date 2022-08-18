@@ -11,7 +11,7 @@ import any from '@travi/any';
 
 import * as mkdir from '../thirdparty-wrappers/make-dir';
 import * as execa from '../thirdparty-wrappers/execa';
-import * as monorepoConfig from './monorepo-config';
+import * as monorepoConfig from './monorepo-config/config-reader';
 import * as packageManager from './package-manager';
 import scaffold from './scaffold';
 

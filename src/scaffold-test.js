@@ -2,7 +2,6 @@ import * as javascriptScaffolder from '@form8ion/javascript';
 import * as readmeScaffolder from '@form8ion/readme';
 import * as core from '@form8ion/core';
 import {projectTypes} from '@form8ion/javascript-core';
-import * as prompts from '@form8ion/overridable-prompts';
 import * as resultsReporter from '@form8ion/results-reporter';
 
 import {assert} from 'chai';
@@ -12,6 +11,7 @@ import any from '@travi/any';
 import * as mkdir from '../thirdparty-wrappers/make-dir';
 import * as execa from '../thirdparty-wrappers/execa';
 import * as monorepoConfig from './monorepo-config/config-reader';
+import * as prompt from './prompts/questions';
 import * as packageManager from './package-manager';
 import scaffold from './scaffold';
 
@@ -36,12 +36,11 @@ suite('scaffold', () => {
 
     sandbox.stub(process, 'cwd');
     sandbox.stub(mkdir, 'default');
-    sandbox.stub(core, 'questionsForBaseDetails');
-    sandbox.stub(prompts, 'prompt');
     sandbox.stub(javascriptScaffolder, 'scaffold');
     sandbox.stub(readmeScaffolder, 'scaffold');
     sandbox.stub(readmeScaffolder, 'lift');
     sandbox.stub(monorepoConfig, 'default');
+    sandbox.stub(prompt, 'default');
     sandbox.stub(packageManager, 'default');
     sandbox.stub(resultsReporter, 'reportResults');
     sandbox.stub(execa, 'default');
@@ -68,9 +67,7 @@ suite('scaffold', () => {
     const decisions = any.simpleObject();
     const copyrightHolder = any.word();
     const options = {...any.simpleObject(), decisions, overrides: {copyrightHolder}};
-    const questions = any.listOf(any.simpleObject);
-    core.questionsForBaseDetails.withArgs(decisions, undefined, copyrightHolder).returns(questions);
-    prompts.prompt.withArgs(questions, decisions).resolves(promptAnswers);
+    prompt.default.withArgs({decisions, overrides: {copyrightHolder}}).resolves(promptAnswers);
     javascriptScaffolder.scaffold
       .withArgs({
         ...options,
@@ -98,42 +95,6 @@ suite('scaffold', () => {
     assert.calledWith(execaPipe, process.stdout);
   });
 
-  test('that overrides are optional in the provided options', async () => {
-    const promptAnswers = {
-      ...any.simpleObject(),
-      [core.questionNames.PROJECT_NAME]: projectName,
-      [core.questionNames.VISIBILITY]: visibility,
-      [core.questionNames.LICENSE]: license,
-      [core.questionNames.DESCRIPTION]: description
-    };
-    const decisions = any.simpleObject();
-    const options = {...any.simpleObject(), decisions};
-    const questions = any.listOf(any.simpleObject);
-    core.questionsForBaseDetails.withArgs(decisions, undefined, undefined).returns(questions);
-    prompts.prompt.withArgs(questions, decisions).resolves(promptAnswers);
-    javascriptScaffolder.scaffold
-      .withArgs({
-        ...options,
-        projectRoot,
-        projectName,
-        description,
-        visibility,
-        license,
-        decisions: {
-          ...options.decisions,
-          [javascriptScaffolder.questionNames.PROJECT_TYPE]: projectTypes.PACKAGE,
-          [javascriptScaffolder.questionNames.PACKAGE_MANAGER]: manager
-        },
-        vcs,
-        pathWithinParent: `${packagesDirectory}/${projectName}`
-      })
-      .resolves(scaffoldResults);
-    process.cwd.returns(monorepoRoot);
-
-    assert.deepEqual(await scaffold(options), scaffoldResults);
-    assert.calledWith(mkdir.default, projectRoot);
-  });
-
   test('that license is determined to be `UNLICENSED` when not chosen during prompting', async () => {
     const promptAnswers = {
       ...any.simpleObject(),
@@ -143,9 +104,7 @@ suite('scaffold', () => {
     };
     const decisions = any.simpleObject();
     const options = {...any.simpleObject(), decisions};
-    const questions = any.listOf(any.simpleObject);
-    core.questionsForBaseDetails.withArgs(decisions, undefined, undefined).returns(questions);
-    prompts.prompt.withArgs(questions, decisions).resolves(promptAnswers);
+    prompt.default.withArgs({decisions, overrides: undefined}).resolves(promptAnswers);
     javascriptScaffolder.scaffold
       .withArgs({
         ...options,

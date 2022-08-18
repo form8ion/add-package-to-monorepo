@@ -1,29 +1,28 @@
 import deepmerge from 'deepmerge';
 import {info} from '@travi/cli-messages';
-import {questionNames, questionsForBaseDetails} from '@form8ion/core';
+import {questionNames as coreQuestionNames} from '@form8ion/core';
 import {projectTypes} from '@form8ion/javascript-core';
-import {prompt} from '@form8ion/overridable-prompts';
-import {scaffold, questionNames as jsQuestionNames} from '@form8ion/javascript';
+import {questionNames as jsQuestionNames, scaffold} from '@form8ion/javascript';
 import {lift as liftReadme, scaffold as scaffoldReadme} from '@form8ion/readme';
 import {reportResults} from '@form8ion/results-reporter';
 
 import mkdir from '../thirdparty-wrappers/make-dir';
 import execa from '../thirdparty-wrappers/execa';
 import getMonorepoConfig from './monorepo-config/config-reader';
+import prompt from './prompts/questions';
 import determinePackageManager from './package-manager';
 
 export default async function (options) {
   const monorepoRoot = process.cwd();
   const {overrides, decisions} = options;
-  const questions = questionsForBaseDetails(decisions, undefined, overrides?.copyrightHolder);
   const {packagesDirectory, vcs} = await getMonorepoConfig(monorepoRoot);
-  const answers = await prompt(questions, decisions);
+  const answers = await prompt({decisions, overrides});
 
   const {
-    [questionNames.PROJECT_NAME]: projectName,
-    [questionNames.VISIBILITY]: visibility,
-    [questionNames.LICENSE]: chosenLicense,
-    [questionNames.DESCRIPTION]: description
+    [coreQuestionNames.PROJECT_NAME]: projectName,
+    [coreQuestionNames.VISIBILITY]: visibility,
+    [coreQuestionNames.LICENSE]: chosenLicense,
+    [coreQuestionNames.DESCRIPTION]: description
   } = answers;
   const pathWithinMonorepo = `${packagesDirectory}/${projectName}`;
   const projectRoot = `${monorepoRoot}/${pathWithinMonorepo}`;

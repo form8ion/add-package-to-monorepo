@@ -14,13 +14,19 @@ export default async function (monorepoRoot) {
 
   info('Found `lerna.json`', {level: 'secondary'});
 
-  const {repository} = JSON.parse(await fs.readFile(`${monorepoRoot}/package.json`));
+  const [packageContent, lernaContent] = await Promise.all([
+    fs.readFile(`${monorepoRoot}/package.json`),
+    fs.readFile(`${monorepoRoot}/lerna.json`)
+  ]);
+  const {repository} = JSON.parse(packageContent);
+  const {packages: packagesDirectories} = JSON.parse(lernaContent);
+  const packagesDirectory = packagesDirectories[0].replace(/\/\*/, '');
 
   if (repository) {
     const {user, project, type} = fromUrl(repository);
 
-    return {packagesDirectory: 'packages', vcs: {owner: user, name: project, host: type}};
+    return {packagesDirectory, vcs: {owner: user, name: project, host: type}};
   }
 
-  return {packagesDirectory: 'packages'};
+  return {packagesDirectory};
 }

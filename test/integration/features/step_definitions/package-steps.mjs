@@ -20,20 +20,20 @@ Given('the package will be tested', async function () {
 Then('the package is added to the monorepo', async function () {
   const {YARN, NPM} = packageManagers;
   const {name, description} = JSON.parse(
-    await fs.readFile(`${process.cwd()}/packages/${this.projectName}/package.json`, 'utf-8')
+    await fs.readFile(`${this.packagesDirectory}/${this.projectName}/package.json`, 'utf-8')
   );
 
   assert.equal(name, this.packageName);
   assert.equal(description, this.projectDescription);
   td.verify(this.execa.default(
     `${YARN === this.packageManager ? YARN : `${NPM} run`} generate:md && ${this.packageManager} test`,
-    {shell: true, cwd: `packages/${this.projectName}`}
+    {shell: true, cwd: `${this.packagesDirectory}/${this.projectName}`}
   ));
 });
 
 Then('the project is configured as a package', async function () {
   const packageContents = JSON.parse(await fs.readFile(
-    `${process.cwd()}/packages/${this.projectName}/package.json`,
+    `${this.packagesDirectory}/${this.projectName}/package.json`,
     'utf-8'
   ));
 
@@ -42,22 +42,22 @@ Then('the project is configured as a package', async function () {
 });
 
 Then('the project is configured as a config package', async function () {
-  assert.isTrue(await fileExists(`${process.cwd()}/packages/${this.projectName}/index.js`));
+  assert.isTrue(await fileExists(`${this.packagesDirectory}/${this.projectName}/index.js`));
 });
 
 Then('the package will have no repository details defined', async function () {
   assert.isUndefined(
-    JSON.parse(await fs.readFile(`${process.cwd()}/packages/${this.projectName}/package.json`, 'utf-8')).repository
+    JSON.parse(await fs.readFile(`${this.packagesDirectory}/${this.projectName}/package.json`, 'utf-8')).repository
   );
 });
 
 Then('the package will have repository details defined', async function () {
   assert.deepEqual(
-    JSON.parse(await fs.readFile(`${process.cwd()}/packages/${this.projectName}/package.json`)).repository,
+    JSON.parse(await fs.readFile(`${this.packagesDirectory}/${this.projectName}/package.json`)).repository,
     {
       type: 'git',
       url: `https://github.com/${this.repoOwner}/${this.repoName}.git`,
-      directory: `packages/${this.projectName}`
+      directory: `${this.packagesDirectory}/${this.projectName}`
     }
   );
 });

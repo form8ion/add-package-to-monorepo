@@ -88,7 +88,7 @@ function assertUsageSectionPopulatedAsExpected(readmeTree) {
 }
 
 Then('a README is created for the new package', async function () {
-  const readmeContents = await fs.readFile(`${process.cwd()}/packages/${this.projectName}/README.md`, 'utf8');
+  const readmeContents = await fs.readFile(`${this.packagesDirectory}/${this.projectName}/README.md`, 'utf8');
   const readmeTree = remark().parse(readmeContents);
   const references = extractReferences(readmeTree.children);
   const badgeGroups = groupBadges(readmeTree);

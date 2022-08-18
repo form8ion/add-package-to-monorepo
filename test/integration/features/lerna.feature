@@ -2,6 +2,7 @@ Feature: Lerna
 
   Scenario: Add Package
     Given the monorepo is lerna
+    And a single packages directory is defined
     And the monorepo uses "npm" as the package manager
     And the dialect is "babel"
     And the package will be tested
@@ -14,6 +15,7 @@ Feature: Lerna
 
   Scenario: Add Config Package
     Given the monorepo is lerna
+    And a single packages directory is defined
     And the monorepo uses "npm" as the package manager
     And the dialect is "common-js"
     And the package will not be tested or linted

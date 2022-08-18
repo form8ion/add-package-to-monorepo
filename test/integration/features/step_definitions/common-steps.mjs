@@ -47,7 +47,7 @@ When('the project is scaffolded', async function () {
   stubbedFs({
     node_modules: stubbedNodeModules,
     packages: {},
-    ...'lerna' === this.monorepoType && {'lerna.json': JSON.stringify(any.simpleObject())},
+    ...'lerna' === this.monorepoType && {'lerna.json': JSON.stringify({...any.simpleObject(), packages: this.packagesDirectories})},
     'package.json': JSON.stringify({
       ...any.simpleObject(),
       ...'GitHub' === this.vcsHost && {repository: `${this.repoOwner}/${this.repoName}`}

@@ -2,10 +2,22 @@ import {questionsForBaseDetails} from '@form8ion/core';
 import {prompt} from '@form8ion/overridable-prompts';
 import {questionNames} from './question-names';
 
-export default async function ({decisions, overrides: {copyrightHolder} = {}, packagesDirectories}) {
+export default function ({decisions, overrides: {copyrightHolder} = {}, packagesDirectories}) {
   const questions = questionsForBaseDetails(decisions, undefined, copyrightHolder);
 
-  const answers = await prompt(questions, decisions);
-
-  return {...answers, [questionNames.PACKAGES_DIRECTORY]: packagesDirectories[0]};
+  return prompt(
+    [
+      ...questions,
+      {
+        name: questionNames.TARGET_PACKAGES_DIRECTORY,
+        message: 'Which packages directory should be targeted?',
+        type: 'list',
+        choices: packagesDirectories
+      }
+    ],
+    {
+      ...decisions,
+      ...1 === packagesDirectories.length && {[questionNames.TARGET_PACKAGES_DIRECTORY]: packagesDirectories[0]}
+    }
+  );
 }

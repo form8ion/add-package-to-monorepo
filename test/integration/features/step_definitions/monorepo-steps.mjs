@@ -20,6 +20,12 @@ Given('a single packages directory is defined', async function () {
   this.packagesDirectories = [`${this.packagesDirectory}/*`];
 });
 
+Given('multiple packages directories are defined', async function () {
+  this.packagesDirectory = any.word();
+  this.targetDirectoryAnswer = this.packagesDirectory;
+  this.packagesDirectories = [...any.listOf(any.word), this.packagesDirectory, ...any.listOf(any.word)];
+});
+
 Then('feedback is provided that the monorepo is unsupported', async function () {
   assert.equal(
     this.error.message,

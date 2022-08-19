@@ -1,7 +1,7 @@
 import {dirname, resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
 
-import {After, Before, When} from '@cucumber/cucumber';
+import {After, Before, Then, When} from '@cucumber/cucumber';
 import stubbedFs from 'mock-fs';
 import nock from 'nock';
 import * as td from 'testdouble';
@@ -76,7 +76,8 @@ When('the project is scaffolded', async function () {
         [questionNames.CONFIGURE_LINTING]: this.configureLinting,
         [questionNames.SHOULD_BE_SCOPED]: shouldBeScoped,
         [questionNames.SCOPE]: scope,
-        [questionNames.DIALECT]: this.dialect
+        [questionNames.DIALECT]: this.dialect,
+        ...this.targetDirectoryAnswer && {[questionNames.TARGET_PACKAGES_DIRECTORY]: this.targetDirectoryAnswer}
       },
       unitTestFrameworks: {},
       configs: {...this.babelPreset && {babelPreset: this.babelPreset}}
@@ -84,5 +85,11 @@ When('the project is scaffolded', async function () {
   } catch (e) {
     debugTest(e);
     this.error = e;
+  }
+});
+
+Then('no error is thrown', async function () {
+  if (this.error) {
+    throw this.error;
   }
 });

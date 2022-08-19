@@ -8,7 +8,8 @@ Feature: Package Manager
     And the dialect is "babel"
     And nvm is properly configured
     When the project is scaffolded
-    Then the package is added to the monorepo
+    Then no error is thrown
+    And the package is added to the monorepo
     And npm is used to manage the new package
 
   Scenario: yarn
@@ -19,5 +20,6 @@ Feature: Package Manager
     And the dialect is "babel"
     And nvm is properly configured
     When the project is scaffolded
-    Then the package is added to the monorepo
+    Then no error is thrown
+    And the package is added to the monorepo
     And yarn is used to manage the new package

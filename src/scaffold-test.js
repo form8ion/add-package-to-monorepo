@@ -65,7 +65,7 @@ suite('scaffold', () => {
       [core.questionNames.VISIBILITY]: visibility,
       [core.questionNames.LICENSE]: license,
       [core.questionNames.DESCRIPTION]: description,
-      [questionNames.PACKAGES_DIRECTORY]: packagesDirectory
+      [questionNames.TARGET_PACKAGES_DIRECTORY]: packagesDirectory
     };
     const decisions = any.simpleObject();
     const copyrightHolder = any.word();
@@ -104,7 +104,7 @@ suite('scaffold', () => {
       [core.questionNames.PROJECT_NAME]: projectName,
       [core.questionNames.VISIBILITY]: visibility,
       [core.questionNames.DESCRIPTION]: description,
-      [questionNames.PACKAGES_DIRECTORY]: packagesDirectory
+      [questionNames.TARGET_PACKAGES_DIRECTORY]: packagesDirectory
     };
     const decisions = any.simpleObject();
     const options = {...any.simpleObject(), decisions};

@@ -1,3 +1,3 @@
 export const questionNames = {
-  PACKAGES_DIRECTORY: 'packagesDirectory'
+  TARGET_PACKAGES_DIRECTORY: 'packagesDirectory'
 };

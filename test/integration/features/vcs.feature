@@ -8,7 +8,8 @@ Feature: VCS
     And the package will not be tested or linted
     And nvm is properly configured
     When the project is scaffolded
-    Then the package will have no repository details defined
+    Then no error is thrown
+    And the package will have no repository details defined
 
   Scenario: Project that is versioned
     Given the project is versioned on GitHub
@@ -19,4 +20,5 @@ Feature: VCS
     And the package will not be tested or linted
     And nvm is properly configured
     When the project is scaffolded
-    Then the package will have repository details defined
+    Then no error is thrown
+    And the package will have repository details defined

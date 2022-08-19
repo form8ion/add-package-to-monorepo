@@ -24,7 +24,7 @@ export default async function (options) {
     [coreQuestionNames.VISIBILITY]: visibility,
     [coreQuestionNames.LICENSE]: chosenLicense,
     [coreQuestionNames.DESCRIPTION]: description,
-    [questionNames.PACKAGES_DIRECTORY]: packagesDirectory
+    [questionNames.TARGET_PACKAGES_DIRECTORY]: packagesDirectory
   } = answers;
   const pathWithinMonorepo = `${packagesDirectory}/${projectName}`;
   const projectRoot = `${monorepoRoot}/${pathWithinMonorepo}`;

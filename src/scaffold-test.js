@@ -14,12 +14,14 @@ import * as monorepoConfig from './monorepo-config/config-reader';
 import * as prompt from './prompts/questions';
 import * as packageManager from './package-manager';
 import scaffold from './scaffold';
+import {questionNames} from './prompts/question-names';
 
 suite('scaffold', () => {
   let sandbox, execaPipe;
   const monorepoRoot = any.string();
   const projectName = any.word();
   const description = any.sentence();
+  const packagesDirectories = any.listOf(any.word);
   const packagesDirectory = any.string();
   const pathWithinMonorepo = `${packagesDirectory}/${projectName}`;
   const projectRoot = `${monorepoRoot}/${pathWithinMonorepo}`;
@@ -45,7 +47,7 @@ suite('scaffold', () => {
     sandbox.stub(resultsReporter, 'reportResults');
     sandbox.stub(execa, 'default');
 
-    monorepoConfig.default.withArgs(monorepoRoot).resolves({...any.simpleObject(), packagesDirectory, vcs});
+    monorepoConfig.default.withArgs(monorepoRoot).resolves({...any.simpleObject(), packagesDirectories, vcs});
     packageManager.default.withArgs(monorepoRoot).resolves(manager);
 
     execaPipe = sinon.spy();
@@ -62,12 +64,13 @@ suite('scaffold', () => {
       [core.questionNames.PROJECT_NAME]: projectName,
       [core.questionNames.VISIBILITY]: visibility,
       [core.questionNames.LICENSE]: license,
-      [core.questionNames.DESCRIPTION]: description
+      [core.questionNames.DESCRIPTION]: description,
+      [questionNames.PACKAGES_DIRECTORY]: packagesDirectory
     };
     const decisions = any.simpleObject();
     const copyrightHolder = any.word();
     const options = {...any.simpleObject(), decisions, overrides: {copyrightHolder}};
-    prompt.default.withArgs({decisions, overrides: {copyrightHolder}}).resolves(promptAnswers);
+    prompt.default.withArgs({decisions, overrides: {copyrightHolder}, packagesDirectories}).resolves(promptAnswers);
     javascriptScaffolder.scaffold
       .withArgs({
         ...options,
@@ -100,11 +103,12 @@ suite('scaffold', () => {
       ...any.simpleObject(),
       [core.questionNames.PROJECT_NAME]: projectName,
       [core.questionNames.VISIBILITY]: visibility,
-      [core.questionNames.DESCRIPTION]: description
+      [core.questionNames.DESCRIPTION]: description,
+      [questionNames.PACKAGES_DIRECTORY]: packagesDirectory
     };
     const decisions = any.simpleObject();
     const options = {...any.simpleObject(), decisions};
-    prompt.default.withArgs({decisions, overrides: undefined}).resolves(promptAnswers);
+    prompt.default.withArgs({decisions, overrides: undefined, packagesDirectories}).resolves(promptAnswers);
     javascriptScaffolder.scaffold
       .withArgs({
         ...options,

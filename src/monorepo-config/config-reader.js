@@ -22,14 +22,14 @@ export default async function (monorepoRoot) {
     fs.readFile(`${monorepoRoot}/lerna.json`)
   ]);
   const {repository} = JSON.parse(packageContent);
-  const {packages: packagesDirectories} = JSON.parse(lernaContent);
-  const packagesDirectory = normalizePackagesDirectories(packagesDirectories)[0];
+  const {packages: rawPackagesDirectories} = JSON.parse(lernaContent);
+  const packagesDirectories = normalizePackagesDirectories(rawPackagesDirectories);
 
   if (repository) {
     const {user, project, type} = fromUrl(repository);
 
-    return {packagesDirectory, vcs: {owner: user, name: project, host: type}};
+    return {packagesDirectories, vcs: {owner: user, name: project, host: type}};
   }
 
-  return {packagesDirectory};
+  return {packagesDirectories};
 }

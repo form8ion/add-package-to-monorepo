@@ -10,19 +10,21 @@ import mkdir from '../thirdparty-wrappers/make-dir';
 import execa from '../thirdparty-wrappers/execa';
 import getMonorepoConfig from './monorepo-config/config-reader';
 import prompt from './prompts/questions';
+import {questionNames} from './prompts/question-names';
 import determinePackageManager from './package-manager';
 
 export default async function (options) {
   const monorepoRoot = process.cwd();
   const {overrides, decisions} = options;
-  const {packagesDirectory, vcs} = await getMonorepoConfig(monorepoRoot);
-  const answers = await prompt({decisions, overrides});
+  const {packagesDirectories, vcs} = await getMonorepoConfig(monorepoRoot);
+  const answers = await prompt({decisions, overrides, packagesDirectories});
 
   const {
     [coreQuestionNames.PROJECT_NAME]: projectName,
     [coreQuestionNames.VISIBILITY]: visibility,
     [coreQuestionNames.LICENSE]: chosenLicense,
-    [coreQuestionNames.DESCRIPTION]: description
+    [coreQuestionNames.DESCRIPTION]: description,
+    [questionNames.PACKAGES_DIRECTORY]: packagesDirectory
   } = answers;
   const pathWithinMonorepo = `${packagesDirectory}/${projectName}`;
   const projectRoot = `${monorepoRoot}/${pathWithinMonorepo}`;

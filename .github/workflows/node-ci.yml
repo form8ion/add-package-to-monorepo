@@ -31,7 +31,6 @@ jobs:
     strategy:
       matrix:
         node:
-          - 14.18.0
           - 16.0.0
           - 16
     steps:
@@ -39,8 +38,8 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node }}
           cache: npm
+          node-version: ${{ matrix.node }}
       - run: npm clean-install
       - run: npm test
   trigger-release:

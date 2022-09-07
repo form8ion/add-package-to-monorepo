@@ -62,6 +62,7 @@ When('the project is scaffolded', async function () {
         [questionNames.PROJECT_NAME]: this.projectName,
         [questionNames.DESCRIPTION]: this.projectDescription,
         [questionNames.VISIBILITY]: visibility,
+        [questionNames.PROVIDE_EXAMPLE]: true,
         ...'Public' === visibility && {
           [questionNames.LICENSE]: 'MIT',
           [questionNames.COPYRIGHT_HOLDER]: any.word(),

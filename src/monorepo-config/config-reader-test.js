@@ -1,11 +1,11 @@
 import {promises as fs} from 'fs';
+import hostedGitInfo from 'hosted-git-info';
 import * as core from '@form8ion/core';
 
 import {assert} from 'chai';
 import sinon from 'sinon';
 import any from '@travi/any';
 
-import * as hostedGitInfo from '../../thirdparty-wrappers/hosted-git-info';
 import * as packagesDirectoriesNormalizer from './packages-directories-normalizer';
 import getConfig from './config-reader';
 

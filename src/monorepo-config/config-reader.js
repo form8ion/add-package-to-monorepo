@@ -1,9 +1,9 @@
 import {promises as fs} from 'fs';
+import hostedGitInfo from 'hosted-git-info';
 
 import {info} from '@travi/cli-messages';
 import {fileExists} from '@form8ion/core';
 
-import {fromUrl} from '../../thirdparty-wrappers/hosted-git-info';
 import normalizePackagesDirectories from './packages-directories-normalizer';
 
 export default async function (monorepoRoot) {
@@ -26,7 +26,7 @@ export default async function (monorepoRoot) {
   const packagesDirectories = normalizePackagesDirectories(rawPackagesDirectories);
 
   if (repository) {
-    const {user, project, type} = fromUrl(repository);
+    const {user, project, type} = hostedGitInfo.fromUrl(repository);
 
     return {packagesDirectories, vcs: {owner: user, name: project, host: type}};
   }

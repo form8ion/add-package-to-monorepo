@@ -103,6 +103,6 @@
     "sinon": "14.0.1",
     "testdouble": "3.16.6",
     "unist-util-find": "1.0.2",
-    "yargs": "17.6.0"
+    "yargs": "17.6.1"
   }
 }

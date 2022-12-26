@@ -86,7 +86,7 @@
     "debug": "4.3.4",
     "gherkin-lint": "4.2.2",
     "husky": "8.0.2",
-    "lockfile-lint": "4.9.6",
+    "lockfile-lint": "4.10.0",
     "ls-engines": "0.8.0",
     "mdast-zone": "5.1.0",
     "mocha": "10.2.0",

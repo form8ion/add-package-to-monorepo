@@ -13,7 +13,7 @@ suite('questions', () => {
   const answers = any.simpleObject();
   const coreQuestions = any.listOf(any.simpleObject, {size: any.integer({min: 2, max: 10})});
   const decisions = any.simpleObject();
-  const packagesDirectories = any.listOf(any.word);
+  const packagesDirectories = any.listOf(any.word, {size: any.integer({min: 2, max: 10})});
   const questions = [
     ...coreQuestions,
     {

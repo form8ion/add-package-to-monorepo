@@ -42,7 +42,9 @@
     "watch": "run-s 'build:js -- --watch'",
     "prepack": "run-s build",
     "test:unit": "cross-env NODE_ENV=test c8 run-s test:unit:base",
-    "test:unit:base": "DEBUG=any mocha 'src/**/*-test.js'",
+    "test:unit:base": "npm-run-all --print-label --parallel test:unit:mocha test:unit:vitest",
+    "test:unit:mocha": "DEBUG=any mocha 'src/**/*-test.js'",
+    "test:unit:vitest": "DEBUG=any vitest run",
     "lint:peer": "npm ls >/dev/null",
     "prepare": "husky install",
     "lint:engines": "ls-engines"
@@ -87,6 +89,7 @@
     "debug": "4.3.4",
     "gherkin-lint": "4.2.2",
     "husky": "8.0.3",
+    "jest-when": "3.5.2",
     "lockfile-lint": "4.10.1",
     "ls-engines": "0.9.0",
     "mdast-zone": "5.1.1",
@@ -104,6 +107,7 @@
     "sinon": "15.0.3",
     "testdouble": "3.17.2",
     "unist-util-find": "1.0.2",
+    "vitest": "0.29.7",
     "yargs": "17.7.1"
   }
 }

@@ -102,7 +102,7 @@
     "rollup": "3.20.2",
     "rollup-plugin-auto-external": "2.0.0",
     "sinon": "15.0.3",
-    "testdouble": "3.17.1",
+    "testdouble": "3.17.2",
     "unist-util-find": "1.0.2",
     "yargs": "17.7.1"
   }

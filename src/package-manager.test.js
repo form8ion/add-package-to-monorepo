@@ -5,7 +5,7 @@ import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
 import {when} from 'jest-when';
 
-import determinePackageManager from './package-manager';
+import determinePackageManager from './package-manager.js';
 
 describe('package manager', () => {
   const monorepoRoot = any.string();

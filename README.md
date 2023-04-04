@@ -43,13 +43,14 @@ $ npm install @form8ion/add-package-to-monorepo --save-prod
 
 ```javascript
 import yargs from 'yargs';
+import {hideBin} from 'yargs/helpers';
 import {scaffold} from '@form8ion/add-package-to-monorepo';
 ```
 
 #### Register with yargs
 
 ```javascript
-yargs
+yargs(hideBin(process.argv))
   .scriptName('form8ion-utils')
   .usage('Usage: $0 <cmd> [args]')
   .command('add-package', 'Add a JavaScript package to an existing monorepo', () => scaffold({

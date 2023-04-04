@@ -5,8 +5,8 @@ import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
 import {when} from 'jest-when';
 
-import {questionNames} from './question-names';
-import prompt from './questions';
+import {questionNames} from './question-names.js';
+import prompt from './questions.js';
 
 describe('questions', () => {
   const answers = any.simpleObject();

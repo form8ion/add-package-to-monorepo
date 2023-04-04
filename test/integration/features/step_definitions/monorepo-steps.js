@@ -12,7 +12,7 @@ Given('the monorepo is lerna', async function () {
   error.stdout = JSON.stringify({});
   error.command = 'npm ls husky --json';
 
-  td.when(this.execa.default('npm', ['ls', 'husky', '--json'])).thenReject(error);
+  td.when(this.execa('npm', ['ls', 'husky', '--json'])).thenReject(error);
 });
 
 Given('a single packages directory is defined', async function () {

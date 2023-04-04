@@ -6,8 +6,8 @@ import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
 import {when} from 'jest-when';
 
-import * as packagesDirectoriesNormalizer from './packages-directories-normalizer';
-import getConfig from './config-reader';
+import * as packagesDirectoriesNormalizer from './packages-directories-normalizer.js';
+import getConfig from './config-reader.js';
 
 describe('config reader', () => {
   const monorepoRoot = any.string();

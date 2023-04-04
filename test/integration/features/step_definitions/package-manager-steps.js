@@ -8,21 +8,15 @@ Given('the monorepo uses {string} as the package manager', async function (manag
   this.packageManager = manager;
 
   td.when(
-    this.execa.default(`${YARN === this.packageManager ? YARN : `${NPM} run`} generate:md && ${this.packageManager} test`),
+    this.execa(`${YARN === this.packageManager ? YARN : `${NPM} run`} generate:md && ${this.packageManager} test`),
     {ignoreExtraArgs: true}
   ).thenReturn({stdout: {pipe: () => undefined}});
 });
 
 Then('npm is used to manage the new package', async function () {
-  td.verify(
-    this.execa.default(td.matchers.contains('. ~/.nvm/nvm.sh && nvm use && npm install')),
-    {ignoreExtraArgs: true}
-  );
+  td.verify(this.execa(td.matchers.contains('. ~/.nvm/nvm.sh && nvm use && npm install')), {ignoreExtraArgs: true});
 });
 
 Then('yarn is used to manage the new package', async function () {
-  td.verify(
-    this.execa.default(td.matchers.contains('. ~/.nvm/nvm.sh && nvm use && yarn add')),
-    {ignoreExtraArgs: true}
-  );
+  td.verify(this.execa(td.matchers.contains('. ~/.nvm/nvm.sh && nvm use && yarn add')), {ignoreExtraArgs: true});
 });

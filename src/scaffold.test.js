@@ -4,20 +4,29 @@ import * as core from '@form8ion/core';
 import {projectTypes} from '@form8ion/javascript-core';
 import * as resultsReporter from '@form8ion/results-reporter';
 
-import {assert} from 'chai';
-import sinon from 'sinon';
+import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
+import {when} from 'jest-when';
 
 import * as mkdir from '../thirdparty-wrappers/make-dir';
 import * as execa from '../thirdparty-wrappers/execa';
 import * as monorepoConfig from './monorepo-config/config-reader';
 import * as prompt from './prompts/questions';
 import * as packageManager from './package-manager';
-import scaffold from './scaffold';
 import {questionNames} from './prompts/question-names';
+import scaffold from './scaffold';
 
-suite('scaffold', () => {
-  let sandbox, execaPipe;
+vi.mock('@form8ion/javascript');
+vi.mock('@form8ion/readme');
+vi.mock('@form8ion/results-reporter');
+vi.mock('../thirdparty-wrappers/make-dir');
+vi.mock('../thirdparty-wrappers/execa');
+vi.mock('./monorepo-config/config-reader');
+vi.mock('./prompts/questions');
+vi.mock('./package-manager');
+describe('scaffold', () => {
+  let execaPipe;
+  const originalProcessCwd = process.cwd;
   const monorepoRoot = any.string();
   const projectName = any.word();
   const description = any.sentence();
@@ -33,32 +42,27 @@ suite('scaffold', () => {
   const verificationCommand = any.string();
   const scaffoldResults = {...any.simpleObject(), nextSteps, verificationCommand};
 
-  setup(() => {
-    sandbox = sinon.createSandbox();
+  beforeEach(() => {
+    process.cwd = vi.fn();
 
-    sandbox.stub(process, 'cwd');
-    sandbox.stub(mkdir, 'default');
-    sandbox.stub(javascriptScaffolder, 'scaffold');
-    sandbox.stub(readmeScaffolder, 'scaffold');
-    sandbox.stub(readmeScaffolder, 'lift');
-    sandbox.stub(monorepoConfig, 'default');
-    sandbox.stub(prompt, 'default');
-    sandbox.stub(packageManager, 'default');
-    sandbox.stub(resultsReporter, 'reportResults');
-    sandbox.stub(execa, 'default');
+    execaPipe = vi.fn();
 
-    monorepoConfig.default.withArgs(monorepoRoot).resolves({...any.simpleObject(), packagesDirectories, vcs});
-    packageManager.default.withArgs(monorepoRoot).resolves(manager);
-
-    execaPipe = sinon.spy();
-    execa.default
-      .withArgs(verificationCommand, {shell: true, cwd: pathWithinMonorepo})
-      .returns({stdout: {pipe: execaPipe}});
+    when(monorepoConfig.default)
+      .calledWith(monorepoRoot)
+      .mockResolvedValue({...any.simpleObject(), packagesDirectories, vcs});
+    when(packageManager.default).calledWith(monorepoRoot).mockResolvedValue(manager);
+    when(execa.default)
+      .calledWith(verificationCommand, {shell: true, cwd: pathWithinMonorepo})
+      .mockReturnValue({stdout: {pipe: execaPipe}});
   });
 
-  teardown(() => sandbox.restore());
+  afterEach(() => {
+    vi.clearAllMocks();
 
-  test('that the package is scaffolded in the packages/ directory', async () => {
+    execaPipe = originalProcessCwd;
+  });
+
+  it('should scaffold the package in the `packages/` directory', async () => {
     const promptAnswers = {
       ...any.simpleObject(),
       [core.questionNames.PROJECT_NAME]: projectName,
@@ -70,9 +74,12 @@ suite('scaffold', () => {
     const decisions = any.simpleObject();
     const copyrightHolder = any.word();
     const options = {...any.simpleObject(), decisions, overrides: {copyrightHolder}};
-    prompt.default.withArgs({decisions, overrides: {copyrightHolder}, packagesDirectories}).resolves(promptAnswers);
-    javascriptScaffolder.scaffold
-      .withArgs({
+    process.cwd.mockReturnValue(monorepoRoot);
+    when(prompt.default)
+      .calledWith({decisions, overrides: {copyrightHolder}, packagesDirectories})
+      .mockResolvedValue(promptAnswers);
+    when(javascriptScaffolder.scaffold)
+      .calledWith({
         ...options,
         projectRoot,
         projectName,
@@ -87,18 +94,17 @@ suite('scaffold', () => {
         vcs,
         pathWithinParent: `${packagesDirectory}/${projectName}`
       })
-      .resolves(scaffoldResults);
-    process.cwd.returns(monorepoRoot);
+      .mockResolvedValue(scaffoldResults);
 
-    assert.deepEqual(await scaffold(options), scaffoldResults);
-    assert.calledWith(mkdir.default, projectRoot);
-    assert.calledWith(readmeScaffolder.scaffold, {projectRoot, projectName, description});
-    assert.calledWith(readmeScaffolder.lift, {projectRoot, results: scaffoldResults});
-    assert.calledWith(resultsReporter.reportResults, {nextSteps});
-    assert.calledWith(execaPipe, process.stdout);
+    expect(await scaffold(options)).toEqual(scaffoldResults);
+    expect(mkdir.default).toHaveBeenCalledWith(projectRoot);
+    expect(readmeScaffolder.scaffold).toHaveBeenCalledWith({projectRoot, projectName, description});
+    expect(readmeScaffolder.lift).toHaveBeenCalledWith({projectRoot, results: scaffoldResults});
+    expect(resultsReporter.reportResults).toHaveBeenCalledWith({nextSteps});
+    expect(execaPipe).toHaveBeenCalledWith(process.stdout);
   });
 
-  test('that license is determined to be `UNLICENSED` when not chosen during prompting', async () => {
+  it('should determine the license as `UNLICENSED` when not chosen during prompting', async () => {
     const promptAnswers = {
       ...any.simpleObject(),
       [core.questionNames.PROJECT_NAME]: projectName,
@@ -108,9 +114,12 @@ suite('scaffold', () => {
     };
     const decisions = any.simpleObject();
     const options = {...any.simpleObject(), decisions};
-    prompt.default.withArgs({decisions, overrides: undefined, packagesDirectories}).resolves(promptAnswers);
-    javascriptScaffolder.scaffold
-      .withArgs({
+    process.cwd.mockReturnValue(monorepoRoot);
+    when(prompt.default)
+      .calledWith({decisions, overrides: undefined, packagesDirectories})
+      .mockResolvedValue(promptAnswers);
+    when(javascriptScaffolder.scaffold)
+      .calledWith({
         ...options,
         projectRoot,
         projectName,
@@ -125,10 +134,9 @@ suite('scaffold', () => {
         vcs,
         pathWithinParent: `${packagesDirectory}/${projectName}`
       })
-      .resolves(scaffoldResults);
-    process.cwd.returns(monorepoRoot);
+      .mockResolvedValue(scaffoldResults);
 
-    assert.deepEqual(await scaffold(options), scaffoldResults);
-    assert.calledWith(mkdir.default, projectRoot);
+    expect(await scaffold(options)).toEqual(scaffoldResults);
+    expect(mkdir.default).toHaveBeenCalledWith(projectRoot);
   });
 });

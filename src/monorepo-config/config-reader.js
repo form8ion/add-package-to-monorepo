@@ -4,7 +4,7 @@ import hostedGitInfo from 'hosted-git-info';
 import {info} from '@travi/cli-messages';
 import {fileExists} from '@form8ion/core';
 
-import normalizePackagesDirectories from './packages-directories-normalizer';
+import normalizePackagesDirectories from './packages-directories-normalizer.js';
 
 export default async function (monorepoRoot) {
   info('Inspecting existing monorepo');

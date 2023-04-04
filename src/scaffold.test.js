@@ -8,13 +8,13 @@ import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
 import {when} from 'jest-when';
 
-import * as mkdir from '../thirdparty-wrappers/make-dir';
-import * as execa from '../thirdparty-wrappers/execa';
-import * as monorepoConfig from './monorepo-config/config-reader';
-import * as prompt from './prompts/questions';
-import * as packageManager from './package-manager';
-import {questionNames} from './prompts/question-names';
-import scaffold from './scaffold';
+import * as mkdir from '../thirdparty-wrappers/make-dir.js';
+import * as execa from '../thirdparty-wrappers/execa.js';
+import * as monorepoConfig from './monorepo-config/config-reader.js';
+import * as prompt from './prompts/questions.js';
+import * as packageManager from './package-manager.js';
+import {questionNames} from './prompts/question-names.js';
+import scaffold from './scaffold.js';
 
 vi.mock('@form8ion/javascript');
 vi.mock('@form8ion/readme');

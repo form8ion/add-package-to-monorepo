@@ -8,12 +8,8 @@ import * as td from 'testdouble';
 import any from '@travi/any';
 import debug from 'debug';
 
-// work around for overly aggressive mock-fs, see:
-// https://github.com/tschaub/mock-fs/issues/213#issuecomment-347002795
-import validate_npm_package_name from 'validate-npm-package-name';
-
 let questionNames, scaffold;
-const __dirname = dirname(fileURLToPath(import.meta.url));
+const __dirname = dirname(fileURLToPath(import.meta.url));                  // eslint-disable-line no-underscore-dangle
 const pathToNodeModules = [__dirname, '..', '..', '..', '..', 'node_modules'];
 const stubbedNodeModules = stubbedFs.load(resolve(...pathToNodeModules));
 const debugTest = debug('test');
@@ -21,7 +17,7 @@ const debugTest = debug('test');
 Before(async function () {
   // validate_npm_package_name(any.word());
 
-  this.execa = await td.replaceEsm('@form8ion/execa-wrapper');
+  ({default: this.execa} = (await td.replaceEsm('@form8ion/execa-wrapper')));
 
   // eslint-disable-next-line import/no-extraneous-dependencies,import/no-unresolved
   ({questionNames, scaffold} = await import('@form8ion/add-package-to-monorepo'));
@@ -47,7 +43,9 @@ When('the project is scaffolded', async function () {
   stubbedFs({
     node_modules: stubbedNodeModules,
     packages: {},
-    ...'lerna' === this.monorepoType && {'lerna.json': JSON.stringify({...any.simpleObject(), packages: this.packagesDirectories})},
+    ...'lerna' === this.monorepoType && {
+      'lerna.json': JSON.stringify({...any.simpleObject(), packages: this.packagesDirectories})
+    },
     'package.json': JSON.stringify({
       ...any.simpleObject(),
       ...'GitHub' === this.vcsHost && {repository: `${this.repoOwner}/${this.repoName}`}

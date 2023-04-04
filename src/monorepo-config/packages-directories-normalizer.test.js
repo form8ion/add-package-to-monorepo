@@ -1,7 +1,7 @@
 import {describe, expect, it} from 'vitest';
 import any from '@travi/any';
 
-import normalizeDirectories from './packages-directories-normalizer';
+import normalizeDirectories from './packages-directories-normalizer.js';
 
 describe('packages-directories normalizer', () => {
   it('should strip the `/*` from each directory', async () => {

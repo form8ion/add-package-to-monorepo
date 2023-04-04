@@ -3,6 +3,7 @@
   "description": "opinionated scaffolder for adding a JavaScript package to an existing monorepo",
   "license": "MIT",
   "version": "0.0.0-semantically-released",
+  "type": "module",
   "engines": {
     "node": "^16.13 || >=18"
   },
@@ -11,12 +12,8 @@
   "bugs": "https://github.com/form8ion/add-package-to-monorepo/issues",
   "homepage": "https://npm.im/@form8ion/add-package-to-monorepo",
   "runkitExampleFilename": "./example.js",
-  "exports": {
-    "require": "./lib/index.js",
-    "import": "./lib/index.mjs"
-  },
+  "exports": "./lib/index.js",
   "main": "./lib/index.js",
-  "module": "./lib/index.mjs",
   "sideEffects": false,
   "scripts": {
     "test": "npm-run-all --print-label build --parallel lint:* --parallel test:*",
@@ -69,15 +66,12 @@
     "make-dir": "^3.1.0"
   },
   "devDependencies": {
-    "@babel/register": "7.21.0",
     "@cucumber/cucumber": "9.1.0",
-    "@form8ion/babel-preset": "1.6.99",
     "@form8ion/commitlint-config": "1.0.47",
     "@form8ion/eslint-config": "5.0.28",
     "@form8ion/eslint-config-cucumber": "1.4.1",
     "@form8ion/remark-lint-preset": "5.0.0",
     "@travi/any": "2.1.8",
-    "babel-plugin-istanbul": "6.1.1",
     "ban-sensitive-files": "1.9.19",
     "c8": "7.13.0",
     "chai": "4.3.7",

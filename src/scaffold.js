@@ -6,12 +6,12 @@ import {questionNames as jsQuestionNames, scaffold} from '@form8ion/javascript';
 import {lift as liftReadme, scaffold as scaffoldReadme} from '@form8ion/readme';
 import {reportResults} from '@form8ion/results-reporter';
 
-import mkdir from '../thirdparty-wrappers/make-dir';
-import execa from '../thirdparty-wrappers/execa';
-import getMonorepoConfig from './monorepo-config/config-reader';
-import prompt from './prompts/questions';
-import {questionNames} from './prompts/question-names';
-import determinePackageManager from './package-manager';
+import mkdir from '../thirdparty-wrappers/make-dir.js';
+import execa from '../thirdparty-wrappers/execa.js';
+import getMonorepoConfig from './monorepo-config/config-reader.js';
+import prompt from './prompts/questions.js';
+import {questionNames} from './prompts/question-names.js';
+import determinePackageManager from './package-manager.js';
 
 export default async function (options) {
   const monorepoRoot = process.cwd();

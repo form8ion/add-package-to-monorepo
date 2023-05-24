@@ -81,7 +81,7 @@
     "gherkin-lint": "4.2.2",
     "husky": "8.0.3",
     "jest-when": "3.5.2",
-    "lockfile-lint": "4.10.4",
+    "lockfile-lint": "4.10.5",
     "ls-engines": "0.9.0",
     "mdast-zone": "5.1.1",
     "mock-fs": "5.2.0",

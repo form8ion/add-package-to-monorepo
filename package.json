@@ -96,7 +96,7 @@
     "rollup-plugin-auto-external": "2.0.0",
     "testdouble": "3.19.0",
     "unist-util-find": "3.0.0",
-    "vitest": "0.34.5",
+    "vitest": "0.34.6",
     "yargs": "17.7.2"
   }
 }

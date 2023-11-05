@@ -6,6 +6,7 @@ opinionated scaffolder for adding a JavaScript package to an existing monorepo
 
 [![Node CI Workflow Status][github-actions-ci-badge]][github-actions-ci-link]
 [![Codecov][coverage-badge]][coverage-link]
+![SLSA Level 2][slsa-badge]
 
 <!--status-badges end -->
 
@@ -128,3 +129,5 @@ $ npm test
 [runkit-badge]: https://badge.runkitcdn.com/@form8ion/add-package-to-monorepo.svg
 
 [node-badge]: https://img.shields.io/node/v/@form8ion/add-package-to-monorepo?logo=node.js
+
+[slsa-badge]: https://slsa.dev/images/gh-badge-level2.svg

@@ -5,7 +5,7 @@
   "version": "0.0.0-semantically-released",
   "type": "module",
   "engines": {
-    "node": "^16.14 || >=18"
+    "node": "^18.17 || >=20.6.1"
   },
   "author": "Matt Travi <npm@travi.org> (https://matt.travi.org)",
   "repository": "form8ion/add-package-to-monorepo",
@@ -42,7 +42,8 @@
     "test:unit:base": "DEBUG=any vitest run",
     "lint:peer": "npm ls >/dev/null",
     "prepare": "husky install",
-    "lint:engines": "ls-engines"
+    "lint:engines": "ls-engines",
+    "lint:publish": "publint --strict"
   },
   "files": [
     "example.js",
@@ -66,7 +67,7 @@
     "make-dir": "^4.0.0"
   },
   "devDependencies": {
-    "@cucumber/cucumber": "9.6.0",
+    "@cucumber/cucumber": "10.0.1",
     "@form8ion/commitlint-config": "1.0.61",
     "@form8ion/eslint-config": "7.0.4",
     "@form8ion/eslint-config-cucumber": "1.4.1",
@@ -87,6 +88,7 @@
     "mock-fs": "5.2.0",
     "nock": "13.3.8",
     "npm-run-all2": "6.1.1",
+    "publint": "0.2.5",
     "remark": "15.0.1",
     "remark-cli": "12.0.0",
     "remark-toc": "9.0.0",

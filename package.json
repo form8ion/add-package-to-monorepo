@@ -84,7 +84,7 @@
     "jest-when": "3.6.0",
     "lockfile-lint": "4.12.1",
     "ls-engines": "0.9.1",
-    "mdast-zone": "6.0.1",
+    "mdast-zone": "6.1.0",
     "mock-fs": "5.2.0",
     "nock": "13.4.0",
     "npm-run-all2": "6.1.1",

@@ -78,7 +78,7 @@ When('the project is scaffolded', async function () {
         [questionNames.DIALECT]: this.dialect,
         ...this.targetDirectoryAnswer && {[questionNames.TARGET_PACKAGES_DIRECTORY]: this.targetDirectoryAnswer}
       },
-      unitTestFrameworks: {},
+      plugins: {unitTestFrameworks: {}},
       configs: {...this.babelPreset && {babelPreset: this.babelPreset}}
     });
   } catch (e) {

@@ -15,8 +15,6 @@ const stubbedNodeModules = stubbedFs.load(resolve(...pathToNodeModules));
 const debugTest = debug('test');
 
 Before(async function () {
-  // validate_npm_package_name(any.word());
-
   ({default: this.execa} = (await td.replaceEsm('@form8ion/execa-wrapper')));
 
   // eslint-disable-next-line import/no-extraneous-dependencies,import/no-unresolved
@@ -78,7 +76,7 @@ When('the project is scaffolded', async function () {
         [questionNames.DIALECT]: this.dialect,
         ...this.targetDirectoryAnswer && {[questionNames.TARGET_PACKAGES_DIRECTORY]: this.targetDirectoryAnswer}
       },
-      unitTestFrameworks: {},
+      plugins: {unitTestFrameworks: {}},
       configs: {...this.babelPreset && {babelPreset: this.babelPreset}}
     });
   } catch (e) {

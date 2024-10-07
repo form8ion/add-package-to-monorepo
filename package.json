@@ -64,7 +64,7 @@
     "@travi/cli-messages": "^1.0.4",
     "deepmerge": "^4.2.2",
     "hosted-git-info": "^8.0.0",
-    "make-dir": "^4.0.0"
+    "make-dir": "^5.0.0"
   },
   "devDependencies": {
     "@cucumber/cucumber": "11.0.1",

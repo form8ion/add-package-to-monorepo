@@ -85,7 +85,7 @@
     "lockfile-lint": "4.14.0",
     "ls-engines": "0.9.3",
     "mdast-zone": "6.1.0",
-    "mock-fs": "5.4.0",
+    "mock-fs": "5.4.1",
     "nock": "13.5.5",
     "npm-run-all2": "7.0.1",
     "publint": "0.2.12",

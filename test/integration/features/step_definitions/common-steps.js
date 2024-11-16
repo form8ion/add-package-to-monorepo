@@ -15,7 +15,7 @@ const stubbedNodeModules = stubbedFs.load(resolve(...pathToNodeModules));
 const debugTest = debug('test');
 
 Before(async function () {
-  ({default: this.execa} = (await td.replaceEsm('@form8ion/execa-wrapper')));
+  ({execa: this.execa} = (await td.replaceEsm('execa')));
 
   // eslint-disable-next-line import/no-extraneous-dependencies,import/no-unresolved
   ({questionNames, scaffold} = await import('@form8ion/add-package-to-monorepo'));

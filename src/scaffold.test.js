@@ -1,7 +1,8 @@
-import * as javascriptScaffolder from '@form8ion/javascript';
-import * as readmeScaffolder from '@form8ion/readme';
+import {execa} from 'execa';
 import * as core from '@form8ion/core';
 import {projectTypes} from '@form8ion/javascript-core';
+import * as javascriptScaffolder from '@form8ion/javascript';
+import * as readmeScaffolder from '@form8ion/readme';
 import * as resultsReporter from '@form8ion/results-reporter';
 
 import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest';
@@ -9,18 +10,17 @@ import any from '@travi/any';
 import {when} from 'jest-when';
 
 import * as mkdir from '../thirdparty-wrappers/make-dir.js';
-import * as execa from '../thirdparty-wrappers/execa.js';
 import * as monorepoConfig from './monorepo-config/config-reader.js';
 import * as prompt from './prompts/questions.js';
 import * as packageManager from './package-manager.js';
 import {questionNames} from './prompts/question-names.js';
 import scaffold from './scaffold.js';
 
+vi.mock('execa');
 vi.mock('@form8ion/javascript');
 vi.mock('@form8ion/readme');
 vi.mock('@form8ion/results-reporter');
 vi.mock('../thirdparty-wrappers/make-dir');
-vi.mock('../thirdparty-wrappers/execa');
 vi.mock('./monorepo-config/config-reader');
 vi.mock('./prompts/questions');
 vi.mock('./package-manager');
@@ -51,7 +51,7 @@ describe('scaffold', () => {
       .calledWith(monorepoRoot)
       .mockResolvedValue({...any.simpleObject(), packagesDirectories, vcs});
     when(packageManager.default).calledWith(monorepoRoot).mockResolvedValue(manager);
-    when(execa.default)
+    when(execa)
       .calledWith(verificationCommand, {shell: true, cwd: pathWithinMonorepo})
       .mockReturnValue({stdout: {pipe: execaPipe}});
   });

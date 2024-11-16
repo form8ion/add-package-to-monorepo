@@ -1,3 +1,4 @@
+import {execa} from 'execa';
 import deepmerge from 'deepmerge';
 import {info} from '@travi/cli-messages';
 import {questionNames as coreQuestionNames} from '@form8ion/core';
@@ -7,7 +8,6 @@ import {lift as liftReadme, scaffold as scaffoldReadme} from '@form8ion/readme';
 import {reportResults} from '@form8ion/results-reporter';
 
 import mkdir from '../thirdparty-wrappers/make-dir.js';
-import execa from '../thirdparty-wrappers/execa.js';
 import getMonorepoConfig from './monorepo-config/config-reader.js';
 import prompt from './prompts/questions.js';
 import {questionNames} from './prompts/question-names.js';

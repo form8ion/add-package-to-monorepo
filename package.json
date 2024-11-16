@@ -55,14 +55,14 @@
   },
   "dependencies": {
     "@form8ion/core": "^4.0.0",
-    "@form8ion/execa-wrapper": "^1.0.0",
-    "@form8ion/javascript": "^13.0.0-beta.13",
+    "@form8ion/javascript": "^13.0.2",
     "@form8ion/javascript-core": "^12.0.0",
     "@form8ion/overridable-prompts": "^1.1.0",
     "@form8ion/readme": "3.1.0",
     "@form8ion/results-reporter": "^1.1.0",
     "@travi/cli-messages": "^1.0.4",
     "deepmerge": "^4.2.2",
+    "execa": "^9.4.0",
     "hosted-git-info": "^8.0.0",
     "make-dir": "^4.0.0"
   },

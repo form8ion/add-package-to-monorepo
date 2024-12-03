@@ -81,7 +81,7 @@
     "debug": "4.3.7",
     "gherkin-lint": "4.2.4",
     "husky": "9.1.7",
-    "jest-when": "3.6.0",
+    "jest-when": "3.7.0",
     "lockfile-lint": "4.14.0",
     "ls-engines": "0.9.3",
     "mdast-zone": "6.1.0",

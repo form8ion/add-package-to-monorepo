@@ -8,7 +8,7 @@ function versionSegment() {
 
 const majorVersion = versionSegment();
 
-function semverStringFactory() {
+export function semverStringFactory() {
   return `v${majorVersion}.${versionSegment()}.${versionSegment()}`;
 }
 

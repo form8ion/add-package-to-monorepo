@@ -3,7 +3,7 @@ import deepmerge from 'deepmerge';
 import {info} from '@travi/cli-messages';
 import {questionNames as coreQuestionNames} from '@form8ion/core';
 import {projectTypes} from '@form8ion/javascript-core';
-import {questionNames as jsQuestionNames, scaffold} from '@form8ion/javascript';
+import {lift, questionNames as jsQuestionNames, scaffold} from '@form8ion/javascript';
 import {lift as liftReadme, scaffold as scaffoldReadme} from '@form8ion/readme';
 import {reportResults} from '@form8ion/results-reporter';
 
@@ -33,7 +33,7 @@ export default async function (options) {
 
   await scaffoldReadme({projectRoot, projectName, description});
 
-  const results = await scaffold(deepmerge(
+  const scaffoldResults = await scaffold(deepmerge(
     options,
     {
       projectRoot,
@@ -50,15 +50,17 @@ export default async function (options) {
     }
   ));
 
-  await liftReadme({projectRoot, results});
+  const liftResults = await lift({projectRoot, results: scaffoldResults, vcs, pathWithinParent: pathWithinMonorepo});
+
+  await liftReadme({projectRoot, results: liftResults});
 
   info('Verifying the generated project');
 
-  const subprocess = execa(results.verificationCommand, {shell: true, cwd: pathWithinMonorepo});
+  const subprocess = execa(scaffoldResults.verificationCommand, {shell: true, cwd: pathWithinMonorepo});
   subprocess.stdout.pipe(process.stdout);
   await subprocess;
 
-  reportResults({nextSteps: results.nextSteps});
+  reportResults({nextSteps: scaffoldResults.nextSteps});
 
-  return results;
+  return scaffoldResults;
 }

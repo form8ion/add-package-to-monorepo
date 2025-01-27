@@ -1,7 +1,11 @@
 import {execa} from 'execa';
 import * as core from '@form8ion/core';
 import {projectTypes} from '@form8ion/javascript-core';
-import * as javascriptScaffolder from '@form8ion/javascript';
+import {
+  scaffold as scaffoldJavascript,
+  lift as liftJavascript,
+  questionNames as jsQuestionNames
+} from '@form8ion/javascript';
 import * as readmeScaffolder from '@form8ion/readme';
 import * as resultsReporter from '@form8ion/results-reporter';
 
@@ -24,6 +28,7 @@ vi.mock('../thirdparty-wrappers/make-dir');
 vi.mock('./monorepo-config/config-reader');
 vi.mock('./prompts/questions');
 vi.mock('./package-manager');
+
 describe('scaffold', () => {
   let execaPipe;
   const originalProcessCwd = process.cwd;
@@ -41,6 +46,7 @@ describe('scaffold', () => {
   const vcs = any.simpleObject();
   const verificationCommand = any.string();
   const scaffoldResults = {...any.simpleObject(), nextSteps, verificationCommand};
+  const liftResults = any.simpleObject();
 
   beforeEach(() => {
     process.cwd = vi.fn();
@@ -78,7 +84,7 @@ describe('scaffold', () => {
     when(prompt.default)
       .calledWith({decisions, overrides: {copyrightHolder}, packagesDirectories})
       .mockResolvedValue(promptAnswers);
-    when(javascriptScaffolder.scaffold)
+    when(scaffoldJavascript)
       .calledWith({
         ...options,
         projectRoot,
@@ -88,18 +94,26 @@ describe('scaffold', () => {
         license,
         decisions: {
           ...options.decisions,
-          [javascriptScaffolder.questionNames.PROJECT_TYPE]: projectTypes.PACKAGE,
-          [javascriptScaffolder.questionNames.PACKAGE_MANAGER]: manager
+          [jsQuestionNames.PROJECT_TYPE]: projectTypes.PACKAGE,
+          [jsQuestionNames.PACKAGE_MANAGER]: manager
         },
         vcs,
         pathWithinParent: `${packagesDirectory}/${projectName}`
       })
       .mockResolvedValue(scaffoldResults);
+    when(liftJavascript)
+      .calledWith({
+        projectRoot,
+        results: scaffoldResults,
+        vcs,
+        pathWithinParent: `${packagesDirectory}/${projectName}`
+      })
+      .mockResolvedValue(liftResults);
 
     expect(await scaffold(options)).toEqual(scaffoldResults);
     expect(mkdir.default).toHaveBeenCalledWith(projectRoot);
     expect(readmeScaffolder.scaffold).toHaveBeenCalledWith({projectRoot, projectName, description});
-    expect(readmeScaffolder.lift).toHaveBeenCalledWith({projectRoot, results: scaffoldResults});
+    expect(readmeScaffolder.lift).toHaveBeenCalledWith({projectRoot, results: liftResults});
     expect(resultsReporter.reportResults).toHaveBeenCalledWith({nextSteps});
     expect(execaPipe).toHaveBeenCalledWith(process.stdout);
   });
@@ -118,7 +132,7 @@ describe('scaffold', () => {
     when(prompt.default)
       .calledWith({decisions, overrides: undefined, packagesDirectories})
       .mockResolvedValue(promptAnswers);
-    when(javascriptScaffolder.scaffold)
+    when(scaffoldJavascript)
       .calledWith({
         ...options,
         projectRoot,
@@ -128,8 +142,8 @@ describe('scaffold', () => {
         license: 'UNLICENSED',
         decisions: {
           ...options.decisions,
-          [javascriptScaffolder.questionNames.PROJECT_TYPE]: projectTypes.PACKAGE,
-          [javascriptScaffolder.questionNames.PACKAGE_MANAGER]: manager
+          [jsQuestionNames.PROJECT_TYPE]: projectTypes.PACKAGE,
+          [jsQuestionNames.PACKAGE_MANAGER]: manager
         },
         vcs,
         pathWithinParent: `${packagesDirectory}/${projectName}`

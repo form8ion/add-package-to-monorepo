@@ -64,7 +64,7 @@
     "deepmerge": "^4.2.2",
     "execa": "^9.4.0",
     "hosted-git-info": "^8.0.0",
-    "make-dir": "^4.0.0"
+    "make-dir": "^5.0.0"
   },
   "devDependencies": {
     "@cucumber/cucumber": "11.3.0",

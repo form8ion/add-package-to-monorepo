@@ -13,3 +13,9 @@ overrides:
   - files: example.js
     rules:
       no-unused-expressions: off
+  - files: "example.js"
+    rules:
+      "import/no-unresolved":
+        - error
+        - ignore:
+            - "yargs/helpers"

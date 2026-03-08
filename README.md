@@ -118,7 +118,7 @@ $ npm test
 
 [license-link]: LICENSE
 
-[license-badge]: https://img.shields.io/github/license/form8ion/add-package-to-monorepo.svg
+[license-badge]: https://img.shields.io/github/license/form8ion/add-package-to-monorepo.svg?logo=opensourceinitiative
 
 [npm-link]: https://www.npmjs.com/package/@form8ion/add-package-to-monorepo
 

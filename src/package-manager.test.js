@@ -3,7 +3,7 @@ import {packageManagers} from '@form8ion/javascript-core';
 
 import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
-import {when} from 'jest-when';
+import {when} from 'vitest-when';
 
 import determinePackageManager from './package-manager.js';
 
@@ -13,8 +13,8 @@ describe('package manager', () => {
   beforeEach(() => {
     vi.mock('@form8ion/core');
 
-    when(core.fileExists).calledWith(`${monorepoRoot}/package-lock.json`).mockResolvedValue(false);
-    when(core.fileExists).calledWith(`${monorepoRoot}/yarn.lock`).mockResolvedValue(false);
+    when(core.fileExists).calledWith(`${monorepoRoot}/package-lock.json`).thenResolve(false);
+    when(core.fileExists).calledWith(`${monorepoRoot}/yarn.lock`).thenResolve(false);
   });
 
   afterEach(() => {
@@ -22,13 +22,13 @@ describe('package manager', () => {
   });
 
   it('should report `npm` as the manager when a `package-lock.json` exists in the parent project', async () => {
-    when(core.fileExists).calledWith(`${monorepoRoot}/package-lock.json`).mockResolvedValue(true);
+    when(core.fileExists).calledWith(`${monorepoRoot}/package-lock.json`).thenResolve(true);
 
     expect(await determinePackageManager(monorepoRoot)).toEqual(packageManagers.NPM);
   });
 
   it('should report `yarn` as the manager when a `yarn.lock` exists in the parent project', async () => {
-    when(core.fileExists).calledWith(`${monorepoRoot}/yarn.lock`).mockResolvedValue(true);
+    when(core.fileExists).calledWith(`${monorepoRoot}/yarn.lock`).thenResolve(true);
 
     expect(await determinePackageManager(monorepoRoot)).toEqual(packageManagers.YARN);
   });

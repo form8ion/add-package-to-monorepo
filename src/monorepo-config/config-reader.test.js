@@ -4,7 +4,7 @@ import * as core from '@form8ion/core';
 
 import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
-import {when} from 'jest-when';
+import {when} from 'vitest-when';
 
 import * as packagesDirectoriesNormalizer from './packages-directories-normalizer.js';
 import getConfig from './config-reader.js';
@@ -30,17 +30,17 @@ describe('config reader', () => {
     const repoName = any.word();
     const repoHost = any.word();
     const repository = any.string();
-    when(core.fileExists).calledWith(`${monorepoRoot}/lerna.json`).mockResolvedValue(true);
-    when(fs.readFile).calledWith(`${monorepoRoot}/package.json`).mockResolvedValue(JSON.stringify({repository}));
+    when(core.fileExists).calledWith(`${monorepoRoot}/lerna.json`).thenResolve(true);
+    when(fs.readFile).calledWith(`${monorepoRoot}/package.json`).thenResolve(JSON.stringify({repository}));
     when(fs.readFile)
       .calledWith(`${monorepoRoot}/lerna.json`)
-      .mockResolvedValue(JSON.stringify({packages: rawPackagesDirectories}));
+      .thenResolve(JSON.stringify({packages: rawPackagesDirectories}));
     when(hostedGitInfo.fromUrl)
       .calledWith(repository)
-      .mockReturnValue({user: repoOwner, project: repoName, type: repoHost});
+      .thenReturn({user: repoOwner, project: repoName, type: repoHost});
     when(packagesDirectoriesNormalizer.default)
       .calledWith(rawPackagesDirectories)
-      .mockReturnValue(normalizedPackagesDirectories);
+      .thenReturn(normalizedPackagesDirectories);
 
     expect(await getConfig(monorepoRoot)).toEqual({
       packagesDirectories: normalizedPackagesDirectories,
@@ -49,14 +49,14 @@ describe('config reader', () => {
   });
 
   it('should not return vcs details if the project does not define a repository', async () => {
-    when(core.fileExists).calledWith(`${monorepoRoot}/lerna.json`).mockResolvedValue(true);
-    when(fs.readFile).calledWith(`${monorepoRoot}/package.json`).mockResolvedValue(JSON.stringify({}));
+    when(core.fileExists).calledWith(`${monorepoRoot}/lerna.json`).thenResolve(true);
+    when(fs.readFile).calledWith(`${monorepoRoot}/package.json`).thenResolve(JSON.stringify({}));
     when(fs.readFile)
       .calledWith(`${monorepoRoot}/lerna.json`)
-      .mockResolvedValue(JSON.stringify({packages: rawPackagesDirectories}));
+      .thenResolve(JSON.stringify({packages: rawPackagesDirectories}));
     when(packagesDirectoriesNormalizer.default)
       .calledWith(rawPackagesDirectories)
-      .mockReturnValue(normalizedPackagesDirectories);
+      .thenReturn(normalizedPackagesDirectories);
 
     expect(await getConfig(monorepoRoot)).toEqual({packagesDirectories: normalizedPackagesDirectories});
   });

@@ -3,7 +3,7 @@ import * as overridablePrompts from '@form8ion/overridable-prompts';
 
 import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
-import {when} from 'jest-when';
+import {when} from 'vitest-when';
 
 import {questionNames} from './question-names.js';
 import prompt from './questions.js';
@@ -34,22 +34,22 @@ describe('questions', () => {
 
   it('should gather information from the user', async () => {
     const copyrightHolder = any.word();
-    when(core.questionsForBaseDetails).calledWith(decisions, undefined, copyrightHolder).mockReturnValue(coreQuestions);
-    when(overridablePrompts.prompt).calledWith(questions, decisions).mockResolvedValue(answers);
+    when(core.questionsForBaseDetails).calledWith(decisions, undefined, copyrightHolder).thenReturn(coreQuestions);
+    when(overridablePrompts.prompt).calledWith(questions, decisions).thenResolve(answers);
 
     expect(await prompt({decisions, overrides: {copyrightHolder}, packagesDirectories})).toEqual(answers);
   });
 
   it('should not result in an error when not providing `overrides`', async () => {
-    when(core.questionsForBaseDetails).calledWith(decisions, undefined, undefined).mockReturnValue(coreQuestions);
-    when(overridablePrompts.prompt).calledWith(questions, decisions).mockResolvedValue(answers);
+    when(core.questionsForBaseDetails).calledWith(decisions, undefined, undefined).thenReturn(coreQuestions);
+    when(overridablePrompts.prompt).calledWith(questions, decisions).thenResolve(answers);
 
     expect(await prompt({decisions, overrides: undefined, packagesDirectories})).toEqual(answers);
   });
 
   it('should skip the question about target directory if only one possibility exists', async () => {
     const packagesDirectory = any.word();
-    when(core.questionsForBaseDetails).calledWith(decisions, undefined, undefined).mockReturnValue(coreQuestions);
+    when(core.questionsForBaseDetails).calledWith(decisions, undefined, undefined).thenReturn(coreQuestions);
     when(overridablePrompts.prompt).calledWith(
       [
         ...coreQuestions,
@@ -61,7 +61,7 @@ describe('questions', () => {
         }
       ],
       {...decisions, [questionNames.TARGET_PACKAGES_DIRECTORY]: packagesDirectory}
-    ).mockResolvedValue(answers);
+    ).thenResolve(answers);
 
     expect(await prompt({decisions, overrides: undefined, packagesDirectories: [packagesDirectory]})).toEqual(answers);
   });

@@ -11,7 +11,7 @@ import * as resultsReporter from '@form8ion/results-reporter';
 
 import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
-import {when} from 'jest-when';
+import {when} from 'vitest-when';
 
 import * as mkdir from '../thirdparty-wrappers/make-dir.js';
 import * as monorepoConfig from './monorepo-config/config-reader.js';
@@ -55,11 +55,11 @@ describe('scaffold', () => {
 
     when(monorepoConfig.default)
       .calledWith(monorepoRoot)
-      .mockResolvedValue({...any.simpleObject(), packagesDirectories, vcs});
-    when(packageManager.default).calledWith(monorepoRoot).mockResolvedValue(manager);
+      .thenResolve({...any.simpleObject(), packagesDirectories, vcs});
+    when(packageManager.default).calledWith(monorepoRoot).thenResolve(manager);
     when(execa)
       .calledWith(verificationCommand, {shell: true, cwd: pathWithinMonorepo})
-      .mockReturnValue({stdout: {pipe: execaPipe}});
+      .thenReturn({stdout: {pipe: execaPipe}});
   });
 
   afterEach(() => {
@@ -83,7 +83,7 @@ describe('scaffold', () => {
     process.cwd.mockReturnValue(monorepoRoot);
     when(prompt.default)
       .calledWith({decisions, overrides: {copyrightHolder}, packagesDirectories})
-      .mockResolvedValue(promptAnswers);
+      .thenResolve(promptAnswers);
     when(scaffoldJavascript)
       .calledWith({
         ...options,
@@ -100,7 +100,7 @@ describe('scaffold', () => {
         vcs,
         pathWithinParent: `${packagesDirectory}/${projectName}`
       })
-      .mockResolvedValue(scaffoldResults);
+      .thenResolve(scaffoldResults);
     when(liftJavascript)
       .calledWith({
         projectRoot,
@@ -108,7 +108,7 @@ describe('scaffold', () => {
         vcs,
         pathWithinParent: `${packagesDirectory}/${projectName}`
       })
-      .mockResolvedValue(liftResults);
+      .thenResolve(liftResults);
 
     expect(await scaffold(options)).toEqual(scaffoldResults);
     expect(mkdir.default).toHaveBeenCalledWith(projectRoot);
@@ -131,7 +131,7 @@ describe('scaffold', () => {
     process.cwd.mockReturnValue(monorepoRoot);
     when(prompt.default)
       .calledWith({decisions, overrides: undefined, packagesDirectories})
-      .mockResolvedValue(promptAnswers);
+      .thenResolve(promptAnswers);
     when(scaffoldJavascript)
       .calledWith({
         ...options,
@@ -148,7 +148,7 @@ describe('scaffold', () => {
         vcs,
         pathWithinParent: `${packagesDirectory}/${projectName}`
       })
-      .mockResolvedValue(scaffoldResults);
+      .thenResolve(scaffoldResults);
 
     expect(await scaffold(options)).toEqual(scaffoldResults);
     expect(mkdir.default).toHaveBeenCalledWith(projectRoot);

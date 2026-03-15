@@ -85,7 +85,7 @@
     "gherkin-lint": "4.2.4",
     "husky": "9.1.7",
     "lockfile-lint": "5.0.0",
-    "ls-engines": "0.9.4",
+    "ls-engines": "0.10.0",
     "mdast-zone": "6.1.0",
     "mock-fs": "5.5.0",
     "nock": "14.0.11",

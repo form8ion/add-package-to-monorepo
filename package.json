@@ -69,7 +69,7 @@
     "make-dir": "^4.0.0"
   },
   "devDependencies": {
-    "@cucumber/cucumber": "12.8.3",
+    "@cucumber/cucumber": "12.9.0",
     "@form8ion/commitlint-config": "2.0.15",
     "@form8ion/eslint-config": "7.0.16",
     "@form8ion/eslint-config-cucumber": "1.4.1",

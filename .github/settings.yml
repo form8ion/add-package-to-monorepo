@@ -4,7 +4,7 @@ repository:
   description: >-
     opinionated scaffolder for adding a JavaScript package to an existing
     monorepo
-  homepage: https://npm.im/@form8ion/add-package-to-monorepo
+  homepage: https://www.npmjs.com/package/@form8ion/add-package-to-monorepo
   private: false
 branches:
   - name: master

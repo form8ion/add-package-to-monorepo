@@ -13,7 +13,7 @@ import prompt from './prompts/questions.js';
 import {questionNames} from './prompts/question-names.js';
 import determinePackageManager from './package-manager.js';
 
-export default async function (options) {
+export default async function (options, dependencies) {
   const monorepoRoot = process.cwd();
   const {overrides, decisions} = options;
   const {packagesDirectories, vcs} = await getMonorepoConfig(monorepoRoot);
@@ -48,9 +48,12 @@ export default async function (options) {
       vcs,
       pathWithinParent: pathWithinMonorepo
     }
-  ));
+  ), dependencies);
 
-  const liftResults = await lift({projectRoot, results: scaffoldResults, vcs, pathWithinParent: pathWithinMonorepo});
+  const liftResults = await lift(
+    {projectRoot, results: scaffoldResults, vcs, pathWithinParent: pathWithinMonorepo},
+    dependencies
+  );
 
   await liftReadme({projectRoot, results: liftResults});
 

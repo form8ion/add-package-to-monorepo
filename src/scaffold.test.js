@@ -47,6 +47,7 @@ describe('scaffold', () => {
   const verificationCommand = any.string();
   const scaffoldResults = {...any.simpleObject(), nextSteps, verificationCommand};
   const liftResults = any.simpleObject();
+  const dependencies = any.simpleObject();
 
   beforeEach(() => {
     process.cwd = vi.fn();
@@ -99,7 +100,7 @@ describe('scaffold', () => {
         },
         vcs,
         pathWithinParent: `${packagesDirectory}/${projectName}`
-      })
+      }, dependencies)
       .thenResolve(scaffoldResults);
     when(liftJavascript)
       .calledWith({
@@ -107,10 +108,10 @@ describe('scaffold', () => {
         results: scaffoldResults,
         vcs,
         pathWithinParent: `${packagesDirectory}/${projectName}`
-      })
+      }, dependencies)
       .thenResolve(liftResults);
 
-    expect(await scaffold(options)).toEqual(scaffoldResults);
+    expect(await scaffold(options, dependencies)).toEqual(scaffoldResults);
     expect(mkdir.default).toHaveBeenCalledWith(projectRoot);
     expect(readmeScaffolder.scaffold).toHaveBeenCalledWith({projectRoot, projectName, description});
     expect(readmeScaffolder.lift).toHaveBeenCalledWith({projectRoot, results: liftResults});
@@ -147,10 +148,10 @@ describe('scaffold', () => {
         },
         vcs,
         pathWithinParent: `${packagesDirectory}/${projectName}`
-      })
+      }, dependencies)
       .thenResolve(scaffoldResults);
 
-    expect(await scaffold(options)).toEqual(scaffoldResults);
+    expect(await scaffold(options, dependencies)).toEqual(scaffoldResults);
     expect(mkdir.default).toHaveBeenCalledWith(projectRoot);
   });
 });

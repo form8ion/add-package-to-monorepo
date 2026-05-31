@@ -2,7 +2,9 @@ import {defineConfig} from 'vitest/config';
 
 export default defineConfig({
   test: {
-    globals: true,
+    globals: false,
+    restoreMocks: true,
+    mockReset: true,
 
     coverage: {
       provider: 'v8',

@@ -1,24 +1,20 @@
 import * as core from '@form8ion/core';
 import {packageManagers} from '@form8ion/javascript-core';
 
-import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest';
+import {beforeEach, describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
 import {when} from 'vitest-when';
 
 import determinePackageManager from './package-manager.js';
 
+vi.mock('@form8ion/core');
+
 describe('package manager', () => {
   const monorepoRoot = any.string();
 
   beforeEach(() => {
-    vi.mock('@form8ion/core');
-
     when(core.fileExists).calledWith(`${monorepoRoot}/package-lock.json`).thenResolve(false);
     when(core.fileExists).calledWith(`${monorepoRoot}/yarn.lock`).thenResolve(false);
-  });
-
-  afterEach(() => {
-    vi.clearAllMocks();
   });
 
   it('should report `npm` as the manager when a `package-lock.json` exists in the parent project', async () => {

@@ -64,9 +64,7 @@ describe('scaffold', () => {
   });
 
   afterEach(() => {
-    vi.clearAllMocks();
-
-    execaPipe = originalProcessCwd;
+    process.cwd = originalProcessCwd;
   });
 
   it('should scaffold the package in the `packages/` directory', async () => {

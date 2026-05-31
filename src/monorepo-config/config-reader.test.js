@@ -2,28 +2,22 @@ import {promises as fs} from 'node:fs';
 import hostedGitInfo from 'hosted-git-info';
 import * as core from '@form8ion/core';
 
-import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest';
+import {describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
 import {when} from 'vitest-when';
 
 import * as packagesDirectoriesNormalizer from './packages-directories-normalizer.js';
 import getConfig from './config-reader.js';
 
+vi.mock('node:fs');
+vi.mock('hosted-git-info');
+vi.mock('@form8ion/core');
+vi.mock('./packages-directories-normalizer.js');
+
 describe('config reader', () => {
   const monorepoRoot = any.string();
   const rawPackagesDirectories = any.listOf(any.word);
   const normalizedPackagesDirectories = any.listOf(any.word);
-
-  beforeEach(() => {
-    vi.mock('node:fs');
-    vi.mock('hosted-git-info');
-    vi.mock('@form8ion/core');
-    vi.mock('./packages-directories-normalizer');
-  });
-
-  afterEach(() => {
-    vi.clearAllMocks();
-  });
 
   it('should return the monorepo details from the `lerna.json` and `package.json`', async () => {
     const repoOwner = any.word();

@@ -47,7 +47,10 @@ describe('scaffold', () => {
   const verificationCommand = any.string();
   const scaffoldResults = {...any.simpleObject(), nextSteps, verificationCommand};
   const liftResults = any.simpleObject();
-  const dependencies = any.simpleObject();
+  const dependencies = {
+    ...any.simpleObject(),
+    logger: {info: () => undefined}
+  };
 
   beforeEach(() => {
     process.cwd = vi.fn();
@@ -55,7 +58,7 @@ describe('scaffold', () => {
     execaPipe = vi.fn();
 
     when(monorepoConfig.default)
-      .calledWith(monorepoRoot)
+      .calledWith(monorepoRoot, dependencies)
       .thenResolve({...any.simpleObject(), packagesDirectories, vcs});
     when(packageManager.default).calledWith(monorepoRoot).thenResolve(manager);
     when(execa)

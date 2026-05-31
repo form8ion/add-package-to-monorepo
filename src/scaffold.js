@@ -1,6 +1,5 @@
 import {execa} from 'execa';
 import deepmerge from 'deepmerge';
-import {info} from '@travi/cli-messages';
 import {questionNames as coreQuestionNames} from '@form8ion/core';
 import {projectTypes} from '@form8ion/javascript-core';
 import {lift, questionNames as jsQuestionNames, scaffold} from '@form8ion/javascript';
@@ -16,7 +15,8 @@ import determinePackageManager from './package-manager.js';
 export default async function scaffoldMonorepo(options, dependencies) {
   const monorepoRoot = process.cwd();
   const {overrides, decisions} = options;
-  const {packagesDirectories, vcs} = await getMonorepoConfig(monorepoRoot);
+  const {logger} = dependencies;
+  const {packagesDirectories, vcs} = await getMonorepoConfig(monorepoRoot, dependencies);
   const answers = await prompt({decisions, overrides, packagesDirectories});
 
   const {
@@ -57,7 +57,7 @@ export default async function scaffoldMonorepo(options, dependencies) {
 
   await liftReadme({projectRoot, results: liftResults});
 
-  info('Verifying the generated project');
+  logger.info('Verifying the generated project');
 
   const subprocess = execa(scaffoldResults.verificationCommand, {shell: true, cwd: pathWithinMonorepo});
   subprocess.stdout.pipe(process.stdout);

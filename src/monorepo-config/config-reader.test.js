@@ -18,6 +18,7 @@ describe('config reader', () => {
   const monorepoRoot = any.string();
   const rawPackagesDirectories = any.listOf(any.word);
   const normalizedPackagesDirectories = any.listOf(any.word);
+  const logger = {info: () => undefined};
 
   it('should return the monorepo details from the `lerna.json` and `package.json`', async () => {
     const repoOwner = any.word();
@@ -36,7 +37,7 @@ describe('config reader', () => {
       .calledWith(rawPackagesDirectories)
       .thenReturn(normalizedPackagesDirectories);
 
-    expect(await getConfig(monorepoRoot)).toEqual({
+    expect(await getConfig(monorepoRoot, {logger})).toEqual({
       packagesDirectories: normalizedPackagesDirectories,
       vcs: {host: repoHost, owner: repoOwner, name: repoName}
     });
@@ -52,11 +53,11 @@ describe('config reader', () => {
       .calledWith(rawPackagesDirectories)
       .thenReturn(normalizedPackagesDirectories);
 
-    expect(await getConfig(monorepoRoot)).toEqual({packagesDirectories: normalizedPackagesDirectories});
+    expect(await getConfig(monorepoRoot, {logger})).toEqual({packagesDirectories: normalizedPackagesDirectories});
   });
 
   it('should throw an error for an unknown monorepo type', async () => {
-    await expect(() => getConfig()).rejects.toThrowError(
+    await expect(() => getConfig(undefined, {logger})).rejects.toThrow(
       'Unable to determine monorepo type. Supported types include: Lerna. Are you scaffolding from the monorepo root?'
     );
   });

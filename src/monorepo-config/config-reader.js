@@ -6,7 +6,7 @@ import {fileExists} from '@form8ion/core';
 
 import normalizePackagesDirectories from './packages-directories-normalizer.js';
 
-export default async function (monorepoRoot) {
+export default async function readConfig(monorepoRoot) {
   info('Inspecting existing monorepo');
 
   if (!await fileExists(`${monorepoRoot}/lerna.json`)) {

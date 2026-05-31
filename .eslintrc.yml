@@ -6,9 +6,7 @@ extends:
   - '@form8ion/cucumber'
 
 rules:
-  import/extensions:
-    - error
-    - ignorePackages
+  depend/ban-dependencies: warn
 
 overrides:
   - files: example.js

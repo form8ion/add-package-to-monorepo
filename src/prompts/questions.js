@@ -3,7 +3,7 @@ import {prompt} from '@form8ion/overridable-prompts';
 
 import {questionNames} from './question-names.js';
 
-export default function ({decisions, overrides: {copyrightHolder} = {}, packagesDirectories}) {
+export default function promptForMonorepoDetails({decisions, overrides: {copyrightHolder} = {}, packagesDirectories}) {
   const questions = questionsForBaseDetails(decisions, undefined, copyrightHolder);
 
   return prompt(

@@ -13,7 +13,7 @@ import prompt from './prompts/questions.js';
 import {questionNames} from './prompts/question-names.js';
 import determinePackageManager from './package-manager.js';
 
-export default async function (options, dependencies) {
+export default async function scaffoldMonorepo(options, dependencies) {
   const monorepoRoot = process.cwd();
   const {overrides, decisions} = options;
   const {packagesDirectories, vcs} = await getMonorepoConfig(monorepoRoot);

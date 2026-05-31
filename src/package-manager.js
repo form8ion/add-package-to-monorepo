@@ -1,7 +1,7 @@
 import {fileExists} from '@form8ion/core';
 import {packageManagers} from '@form8ion/javascript-core';
 
-export default async function (monorepoRoot) {
+export default async function determinePackageManager(monorepoRoot) {
   const [packageLockExists, yarnLockExists] = await Promise.all([
     fileExists(`${monorepoRoot}/package-lock.json`),
     fileExists(`${monorepoRoot}/yarn.lock`)

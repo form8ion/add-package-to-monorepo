@@ -114,7 +114,7 @@ $ npm test
 
 [coverage-link]: https://codecov.io/github/form8ion/add-package-to-monorepo
 
-[coverage-badge]: https://img.shields.io/codecov/c/github/form8ion/add-package-to-monorepo?logo=codecov
+[coverage-badge]: https://img.shields.io/codecov/c/github/form8ion/add-package-to-monorepo/master?logo=codecov
 
 [license-link]: LICENSE
 

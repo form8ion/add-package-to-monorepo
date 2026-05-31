@@ -25,7 +25,12 @@ jobs:
           cache: npm
       - run: npm clean-install
       - run: npm test
-      - uses: codecov/codecov-action@e79a6962e0d4c0c17b229090214935d2e33f8354 # v6.0.1
+      - name: Upload unit test coverage to Codecov
+        uses: codecov/codecov-action@e79a6962e0d4c0c17b229090214935d2e33f8354 # v6.0.1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          flags: unit
+          report_type: coverage
   verify-matrix:
     runs-on: ubuntu-latest
     strategy:

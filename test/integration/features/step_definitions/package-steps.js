@@ -24,6 +24,14 @@ Then('the package is added to the monorepo', async function () {
   assert.equal(description, this.projectDescription);
 });
 
+Then('the scaffold results are returned', async function () {
+  assert.isDefined(this.results);
+  assert.isString(this.results.verificationCommand);
+  assert.isNotEmpty(this.results.verificationCommand);
+  assert.isArray(this.results.nextSteps);
+  assert.isNotEmpty(this.results.nextSteps);
+});
+
 Then('the project is configured as a package', async function () {
   const packageContents = JSON.parse(await fs.readFile(
     `${this.packagesDirectory}/${this.projectName}/package.json`,

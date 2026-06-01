@@ -5,7 +5,7 @@
   "version": "0.0.0-semantically-released",
   "type": "module",
   "engines": {
-    "node": "^20.19.0 || >=22.14.0"
+    "node": "^22.21.0 || >=24.12"
   },
   "author": "Matt Travi <npm@travi.org> (https://matt.travi.org)",
   "repository": "form8ion/add-package-to-monorepo",
@@ -32,7 +32,7 @@
     "test:integration": "run-s 'test:integration:base -- --profile noWip'",
     "pretest:integration:base": "run-s build",
     "test:integration:base": "NODE_OPTIONS=--enable-source-maps cucumber-js test/integration",
-    "test:integration:debug": "DEBUG=test run-s test:integration",
+    "test:integration:debug": "DEBUG=test:* run-s test:integration",
     "test:integration:focus": "run-s 'test:integration:base -- --profile focus'",
     "test:integration:wip": "run-s 'test:integration:base -- --profile wip'",
     "test:integration:wip:debug": "DEBUG=test run-s 'test:integration:wip'",
@@ -56,13 +56,11 @@
   },
   "packageManager": "npm@11.16.0+sha512.03be172fc3b199c7a06433163e459be5b110a6983c1dd6305b7ac10f6b0fa12e1440755a8df6b1064ab2ccb789df0474919fb9c684e322dc57685ede21752ccb",
   "dependencies": {
-    "@form8ion/core": "^4.0.0",
-    "@form8ion/javascript": "^15.0.0",
+    "@form8ion/core": "^5.0.0-beta.10",
+    "@form8ion/javascript": "^16.0.0-beta.1",
     "@form8ion/javascript-core": "^12.0.0",
     "@form8ion/overridable-prompts": "^1.1.0",
     "@form8ion/readme": "3.1.0",
-    "@form8ion/results-reporter": "^1.1.0",
-    "@travi/cli-messages": "^1.0.4",
     "deepmerge": "^4.2.2",
     "execa": "^9.4.0",
     "hosted-git-info": "^9.0.0",
@@ -71,7 +69,7 @@
   "devDependencies": {
     "@cucumber/cucumber": "12.9.0",
     "@form8ion/commitlint-config": "2.0.15",
-    "@form8ion/eslint-config": "7.0.18",
+    "@form8ion/eslint-config": "8.0.0-beta.1",
     "@form8ion/eslint-config-cucumber": "1.4.1",
     "@form8ion/eslint-config-vitest": "1.1.0",
     "@form8ion/remark-lint-preset": "6.0.7",
@@ -101,6 +99,6 @@
     "unist-util-find": "3.0.0",
     "vitest": "4.1.7",
     "vitest-when": "0.10.0",
-    "yargs": "17.7.2"
+    "yargs": "18.0.0"
   }
 }

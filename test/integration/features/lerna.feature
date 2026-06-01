@@ -9,6 +9,7 @@ Feature: Lerna
     And nvm is properly configured
     When the project is scaffolded
     Then no error is thrown
+    And the scaffold results are returned
     And the package is added to the monorepo
     And the project is configured as a package
     And project-level tools are not installed for the new package

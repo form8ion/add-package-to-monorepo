@@ -1,12 +1,15 @@
 import * as core from '@form8ion/core';
 import * as overridablePrompts from '@form8ion/overridable-prompts';
 
-import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest';
+import {describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
 import {when} from 'vitest-when';
 
 import {questionNames} from './question-names.js';
 import prompt from './questions.js';
+
+vi.mock('@form8ion/core');
+vi.mock('@form8ion/overridable-prompts');
 
 describe('questions', () => {
   const answers = any.simpleObject();
@@ -22,15 +25,6 @@ describe('questions', () => {
       choices: packagesDirectories
     }
   ];
-
-  beforeEach(() => {
-    vi.mock('@form8ion/core');
-    vi.mock('@form8ion/overridable-prompts');
-  });
-
-  afterEach(() => {
-    vi.clearAllMocks();
-  });
 
   it('should gather information from the user', async () => {
     const copyrightHolder = any.word();

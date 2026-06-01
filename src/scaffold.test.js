@@ -7,7 +7,6 @@ import {
   questionNames as jsQuestionNames
 } from '@form8ion/javascript';
 import * as readmeScaffolder from '@form8ion/readme';
-import * as resultsReporter from '@form8ion/results-reporter';
 
 import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
@@ -47,6 +46,10 @@ describe('scaffold', () => {
   const verificationCommand = any.string();
   const scaffoldResults = {...any.simpleObject(), nextSteps, verificationCommand};
   const liftResults = any.simpleObject();
+  const dependencies = {
+    ...any.simpleObject(),
+    logger: {info: () => undefined}
+  };
 
   beforeEach(() => {
     process.cwd = vi.fn();
@@ -54,7 +57,7 @@ describe('scaffold', () => {
     execaPipe = vi.fn();
 
     when(monorepoConfig.default)
-      .calledWith(monorepoRoot)
+      .calledWith(monorepoRoot, dependencies)
       .thenResolve({...any.simpleObject(), packagesDirectories, vcs});
     when(packageManager.default).calledWith(monorepoRoot).thenResolve(manager);
     when(execa)
@@ -63,9 +66,7 @@ describe('scaffold', () => {
   });
 
   afterEach(() => {
-    vi.clearAllMocks();
-
-    execaPipe = originalProcessCwd;
+    process.cwd = originalProcessCwd;
   });
 
   it('should scaffold the package in the `packages/` directory', async () => {
@@ -99,7 +100,7 @@ describe('scaffold', () => {
         },
         vcs,
         pathWithinParent: `${packagesDirectory}/${projectName}`
-      })
+      }, dependencies)
       .thenResolve(scaffoldResults);
     when(liftJavascript)
       .calledWith({
@@ -107,14 +108,13 @@ describe('scaffold', () => {
         results: scaffoldResults,
         vcs,
         pathWithinParent: `${packagesDirectory}/${projectName}`
-      })
+      }, dependencies)
       .thenResolve(liftResults);
 
-    expect(await scaffold(options)).toEqual(scaffoldResults);
+    expect(await scaffold(options, dependencies)).toEqual(scaffoldResults);
     expect(mkdir.default).toHaveBeenCalledWith(projectRoot);
     expect(readmeScaffolder.scaffold).toHaveBeenCalledWith({projectRoot, projectName, description});
     expect(readmeScaffolder.lift).toHaveBeenCalledWith({projectRoot, results: liftResults});
-    expect(resultsReporter.reportResults).toHaveBeenCalledWith({nextSteps});
     expect(execaPipe).toHaveBeenCalledWith(process.stdout);
   });
 
@@ -147,10 +147,10 @@ describe('scaffold', () => {
         },
         vcs,
         pathWithinParent: `${packagesDirectory}/${projectName}`
-      })
+      }, dependencies)
       .thenResolve(scaffoldResults);
 
-    expect(await scaffold(options)).toEqual(scaffoldResults);
+    expect(await scaffold(options, dependencies)).toEqual(scaffoldResults);
     expect(mkdir.default).toHaveBeenCalledWith(projectRoot);
   });
 });

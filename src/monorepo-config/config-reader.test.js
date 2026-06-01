@@ -2,28 +2,23 @@ import {promises as fs} from 'node:fs';
 import hostedGitInfo from 'hosted-git-info';
 import * as core from '@form8ion/core';
 
-import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest';
+import {describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
 import {when} from 'vitest-when';
 
 import * as packagesDirectoriesNormalizer from './packages-directories-normalizer.js';
 import getConfig from './config-reader.js';
 
+vi.mock('node:fs');
+vi.mock('hosted-git-info');
+vi.mock('@form8ion/core');
+vi.mock('./packages-directories-normalizer.js');
+
 describe('config reader', () => {
   const monorepoRoot = any.string();
   const rawPackagesDirectories = any.listOf(any.word);
   const normalizedPackagesDirectories = any.listOf(any.word);
-
-  beforeEach(() => {
-    vi.mock('node:fs');
-    vi.mock('hosted-git-info');
-    vi.mock('@form8ion/core');
-    vi.mock('./packages-directories-normalizer');
-  });
-
-  afterEach(() => {
-    vi.clearAllMocks();
-  });
+  const logger = {info: () => undefined};
 
   it('should return the monorepo details from the `lerna.json` and `package.json`', async () => {
     const repoOwner = any.word();
@@ -42,7 +37,7 @@ describe('config reader', () => {
       .calledWith(rawPackagesDirectories)
       .thenReturn(normalizedPackagesDirectories);
 
-    expect(await getConfig(monorepoRoot)).toEqual({
+    expect(await getConfig(monorepoRoot, {logger})).toEqual({
       packagesDirectories: normalizedPackagesDirectories,
       vcs: {host: repoHost, owner: repoOwner, name: repoName}
     });
@@ -58,11 +53,11 @@ describe('config reader', () => {
       .calledWith(rawPackagesDirectories)
       .thenReturn(normalizedPackagesDirectories);
 
-    expect(await getConfig(monorepoRoot)).toEqual({packagesDirectories: normalizedPackagesDirectories});
+    expect(await getConfig(monorepoRoot, {logger})).toEqual({packagesDirectories: normalizedPackagesDirectories});
   });
 
   it('should throw an error for an unknown monorepo type', async () => {
-    await expect(() => getConfig()).rejects.toThrowError(
+    await expect(() => getConfig(undefined, {logger})).rejects.toThrow(
       'Unable to determine monorepo type. Supported types include: Lerna. Are you scaffolding from the monorepo root?'
     );
   });

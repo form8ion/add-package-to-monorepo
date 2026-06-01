@@ -1,18 +1,25 @@
 import {dirname, resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
+import {visibilityOptions} from '@form8ion/core';
 
 import {After, Before, Then, When} from '@cucumber/cucumber';
 import stubbedFs from 'mock-fs';
 import nock from 'nock';
 import * as td from 'testdouble';
 import any from '@travi/any';
-import debug from 'debug';
+import createDebugFor from 'debug';
 
 let questionNames, scaffold;
 const __dirname = dirname(fileURLToPath(import.meta.url));                  // eslint-disable-line no-underscore-dangle
 const pathToNodeModules = [__dirname, '..', '..', '..', '..', 'node_modules'];
 const stubbedNodeModules = stubbedFs.load(resolve(...pathToNodeModules));
-const debugTest = debug('test');
+const debug = createDebugFor('test:common-steps');
+const logger = {
+  success: debug,
+  info: debug,
+  warn: debug,
+  error: debug
+};
 
 Before(async function () {
   ({execa: this.execa} = (await td.replaceEsm('execa')));
@@ -31,9 +38,9 @@ After(function () {
 });
 
 When('the project is scaffolded', async function () {
-  const visibility = any.fromList(['Public', 'Private']);
+  const visibility = any.fromList(Object.keys(visibilityOptions));
   const shouldBeScoped = any.boolean();
-  const scope = shouldBeScoped || 'Private' === visibility ? any.word() : undefined;
+  const scope = shouldBeScoped || ['ISS', 'OS'].includes(visibility) ? any.word() : undefined;
   this.projectName = any.word();
   this.projectDescription = any.sentence();
   this.packageName = scope ? `@${scope}/${this.projectName}` : this.projectName;
@@ -53,18 +60,18 @@ When('the project is scaffolded', async function () {
   });
 
   try {
-    await scaffold({
+    this.results = await scaffold({
       decisions: {
         [questionNames.PROJECT_NAME]: this.projectName,
         [questionNames.DESCRIPTION]: this.projectDescription,
         [questionNames.VISIBILITY]: visibility,
         [questionNames.PROVIDE_EXAMPLE]: true,
-        ...'Public' === visibility && {
+        ...'OSS' === visibility && {
           [questionNames.LICENSE]: 'MIT',
           [questionNames.COPYRIGHT_HOLDER]: any.word(),
           [questionNames.COPYRIGHT_YEAR]: 2000
         },
-        ...'Private' === visibility && {[questionNames.UNLICENSED]: true},
+        ...['ISS', 'CS'].includes(visibility) && {[questionNames.UNLICENSED]: true},
         [questionNames.AUTHOR_NAME]: any.word(),
         [questionNames.AUTHOR_EMAIL]: any.email(),
         [questionNames.AUTHOR_URL]: any.url(),
@@ -78,9 +85,9 @@ When('the project is scaffolded', async function () {
       },
       plugins: {unitTestFrameworks: {}},
       configs: {...this.babelPreset && {babelPreset: this.babelPreset}}
-    });
+    }, {logger});
   } catch (e) {
-    debugTest(e);
+    debug(e);
     this.error = e;
   }
 });

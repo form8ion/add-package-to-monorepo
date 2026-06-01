@@ -1,13 +1,12 @@
 import {promises as fs} from 'fs';
 import hostedGitInfo from 'hosted-git-info';
 
-import {info} from '@travi/cli-messages';
 import {fileExists} from '@form8ion/core';
 
 import normalizePackagesDirectories from './packages-directories-normalizer.js';
 
-export default async function (monorepoRoot) {
-  info('Inspecting existing monorepo');
+export default async function readConfig(monorepoRoot, {logger}) {
+  logger.info('Inspecting existing monorepo');
 
   if (!await fileExists(`${monorepoRoot}/lerna.json`)) {
     throw new Error(
@@ -15,7 +14,7 @@ export default async function (monorepoRoot) {
     );
   }
 
-  info('Found `lerna.json`', {level: 'secondary'});
+  logger.info('Found `lerna.json`', {level: 'secondary'});
 
   const [packageContent, lernaContent] = await Promise.all([
     fs.readFile(`${monorepoRoot}/package.json`),

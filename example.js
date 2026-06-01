@@ -12,10 +12,21 @@ stubbedFs();
 yargs(hideBin(process.argv))
   .scriptName('form8ion-utils')
   .usage('Usage: $0 <cmd> [args]')
-  .command('add-package', 'Add a JavaScript package to an existing monorepo', () => scaffold({
-    decisions: {},
-    overrides: {copyrightHolder: 'Foo Bar'}
-  }))
+  .command(
+    'add-package',
+    'Add a JavaScript package to an existing monorepo',
+    () => scaffold(
+      {decisions: {}, overrides: {copyrightHolder: 'Foo Bar'}},
+      {
+        logger: {
+          info: () => undefined,
+          warn: () => undefined,
+          error: () => undefined,
+          success: () => undefined
+        }
+      }
+    )
+  )
   .help('h')
   .alias('h', 'help')
   .argv;

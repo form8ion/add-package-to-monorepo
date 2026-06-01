@@ -61,7 +61,6 @@
     "@form8ion/javascript-core": "^12.0.0",
     "@form8ion/overridable-prompts": "^1.1.0",
     "@form8ion/readme": "3.1.0",
-    "@form8ion/results-reporter": "^1.1.0",
     "deepmerge": "^4.2.2",
     "execa": "^9.4.0",
     "hosted-git-info": "^9.0.0",

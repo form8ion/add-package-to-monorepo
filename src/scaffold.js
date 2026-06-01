@@ -4,7 +4,6 @@ import {questionNames as coreQuestionNames} from '@form8ion/core';
 import {projectTypes} from '@form8ion/javascript-core';
 import {lift, questionNames as jsQuestionNames, scaffold} from '@form8ion/javascript';
 import {lift as liftReadme, scaffold as scaffoldReadme} from '@form8ion/readme';
-import {reportResults} from '@form8ion/results-reporter';
 
 import mkdir from '../thirdparty-wrappers/make-dir.js';
 import getMonorepoConfig from './monorepo-config/config-reader.js';
@@ -62,8 +61,6 @@ export default async function scaffoldMonorepo(options, dependencies) {
   const subprocess = execa(scaffoldResults.verificationCommand, {shell: true, cwd: pathWithinMonorepo});
   subprocess.stdout.pipe(process.stdout);
   await subprocess;
-
-  reportResults({nextSteps: scaffoldResults.nextSteps});
 
   return scaffoldResults;
 }

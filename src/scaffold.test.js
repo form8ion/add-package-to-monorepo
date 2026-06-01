@@ -7,7 +7,6 @@ import {
   questionNames as jsQuestionNames
 } from '@form8ion/javascript';
 import * as readmeScaffolder from '@form8ion/readme';
-import * as resultsReporter from '@form8ion/results-reporter';
 
 import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
@@ -116,7 +115,6 @@ describe('scaffold', () => {
     expect(mkdir.default).toHaveBeenCalledWith(projectRoot);
     expect(readmeScaffolder.scaffold).toHaveBeenCalledWith({projectRoot, projectName, description});
     expect(readmeScaffolder.lift).toHaveBeenCalledWith({projectRoot, results: liftResults});
-    expect(resultsReporter.reportResults).toHaveBeenCalledWith({nextSteps});
     expect(execaPipe).toHaveBeenCalledWith(process.stdout);
   });
 

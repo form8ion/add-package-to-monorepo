@@ -60,7 +60,7 @@ When('the project is scaffolded', async function () {
   });
 
   try {
-    await scaffold({
+    this.results = await scaffold({
       decisions: {
         [questionNames.PROJECT_NAME]: this.projectName,
         [questionNames.DESCRIPTION]: this.projectDescription,

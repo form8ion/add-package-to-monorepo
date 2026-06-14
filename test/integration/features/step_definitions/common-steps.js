@@ -40,7 +40,7 @@ After(function () {
 When('the project is scaffolded', async function () {
   const visibility = any.fromList(Object.keys(visibilityOptions));
   const shouldBeScoped = any.boolean();
-  const scope = shouldBeScoped || ['ISS', 'OS'].includes(visibility) ? any.word() : undefined;
+  const scope = shouldBeScoped || ['ISS', 'CS'].includes(visibility) ? any.word() : undefined;
   this.projectName = any.word();
   this.projectDescription = any.sentence();
   this.packageName = scope ? `@${scope}/${this.projectName}` : this.projectName;

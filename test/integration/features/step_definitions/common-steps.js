@@ -53,7 +53,7 @@ When('the project is scaffolded', async function () {
     },
     'package.json': JSON.stringify({
       ...any.simpleObject(),
-      ...'GitHub' === this.vcsHost && {repository: `${this.repoOwner}/${this.repoName}`}
+      ...'github.com' === this.vcsHost && {repository: `${this.repoOwner}/${this.repoName}`}
     }),
     ...'npm' === this.packageManager && {'package-lock.json': JSON.stringify(any.simpleObject())},
     ...'yarn' === this.packageManager && {'yarn.lock': any.string()}

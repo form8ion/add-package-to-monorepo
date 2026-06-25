@@ -63,7 +63,7 @@
     "@form8ion/readme": "3.1.0",
     "deepmerge": "^4.2.2",
     "execa": "^9.4.0",
-    "hosted-git-info": "^10.0.0",
+    "git-url-parse": "^16.1.0",
     "make-dir": "^4.0.0"
   },
   "devDependencies": {

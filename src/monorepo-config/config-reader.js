@@ -1,5 +1,5 @@
 import {promises as fs} from 'fs';
-import hostedGitInfo from 'hosted-git-info';
+import parseGitUrl from 'git-url-parse';
 
 import {fileExists} from '@form8ion/core';
 
@@ -25,9 +25,9 @@ export default async function readConfig(monorepoRoot, {logger}) {
   const packagesDirectories = normalizePackagesDirectories(rawPackagesDirectories);
 
   if (repository) {
-    const {user, project, type} = hostedGitInfo.fromUrl(repository);
+    const {owner, name, host} = parseGitUrl(repository);
 
-    return {packagesDirectories, vcs: {owner: user, name: project, host: type}};
+    return {packagesDirectories, vcs: {owner, name, host}};
   }
 
   return {packagesDirectories};

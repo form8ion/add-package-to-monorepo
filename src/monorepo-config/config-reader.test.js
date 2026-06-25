@@ -1,5 +1,5 @@
 import {promises as fs} from 'node:fs';
-import hostedGitInfo from 'hosted-git-info';
+import parseGitUrl from 'git-url-parse';
 import * as core from '@form8ion/core';
 
 import {describe, expect, it, vi} from 'vitest';
@@ -10,7 +10,7 @@ import * as packagesDirectoriesNormalizer from './packages-directories-normalize
 import getConfig from './config-reader.js';
 
 vi.mock('node:fs');
-vi.mock('hosted-git-info');
+vi.mock('git-url-parse');
 vi.mock('@form8ion/core');
 vi.mock('./packages-directories-normalizer.js');
 
@@ -30,9 +30,9 @@ describe('config reader', () => {
     when(fs.readFile)
       .calledWith(`${monorepoRoot}/lerna.json`)
       .thenResolve(JSON.stringify({packages: rawPackagesDirectories}));
-    when(hostedGitInfo.fromUrl)
+    when(parseGitUrl)
       .calledWith(repository)
-      .thenReturn({user: repoOwner, project: repoName, type: repoHost});
+      .thenReturn({owner: repoOwner, name: repoName, host: repoHost});
     when(packagesDirectoriesNormalizer.default)
       .calledWith(rawPackagesDirectories)
       .thenReturn(normalizedPackagesDirectories);

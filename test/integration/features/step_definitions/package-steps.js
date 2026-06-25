@@ -57,7 +57,7 @@ Then('the package will have repository details defined', async function () {
     JSON.parse(await fs.readFile(`${this.packagesDirectory}/${this.projectName}/package.json`)).repository,
     {
       type: 'git',
-      url: `https://github.com/${this.repoOwner}/${this.repoName}.git`,
+      url: `git+https://github.com/${this.repoOwner}/${this.repoName}.git`,
       directory: `${this.packagesDirectory}/${this.projectName}`
     }
   );

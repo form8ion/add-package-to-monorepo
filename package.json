@@ -85,7 +85,7 @@
     "ls-engines": "0.10.1",
     "mdast-zone": "6.1.0",
     "mock-fs": "5.5.0",
-    "nock": "14.0.15",
+    "nock": "14.0.16",
     "npm-run-all2": "9.0.2",
     "publint": "0.3.21",
     "remark": "15.0.1",

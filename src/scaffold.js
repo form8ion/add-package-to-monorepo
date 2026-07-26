@@ -30,7 +30,7 @@ export default async function scaffoldMonorepo(options, dependencies) {
 
   await mkdir(projectRoot);
 
-  await scaffoldReadme({projectRoot, projectName, description});
+  await scaffoldReadme({projectRoot, projectName, description}, dependencies);
 
   const scaffoldResults = await scaffold(deepmerge(
     options,
@@ -54,7 +54,7 @@ export default async function scaffoldMonorepo(options, dependencies) {
     dependencies
   );
 
-  await liftReadme({projectRoot, results: liftResults});
+  await liftReadme({projectRoot, results: liftResults}, dependencies);
 
   logger.info('Verifying the generated project');
 

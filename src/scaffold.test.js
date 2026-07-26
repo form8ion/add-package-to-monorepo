@@ -113,8 +113,8 @@ describe('scaffold', () => {
 
     expect(await scaffold(options, dependencies)).toEqual(scaffoldResults);
     expect(mkdir.default).toHaveBeenCalledWith(projectRoot);
-    expect(readmeScaffolder.scaffold).toHaveBeenCalledWith({projectRoot, projectName, description});
-    expect(readmeScaffolder.lift).toHaveBeenCalledWith({projectRoot, results: liftResults});
+    expect(readmeScaffolder.scaffold).toHaveBeenCalledWith({projectRoot, projectName, description}, dependencies);
+    expect(readmeScaffolder.lift).toHaveBeenCalledWith({projectRoot, results: liftResults}, dependencies);
     expect(execaPipe).toHaveBeenCalledWith(process.stdout);
   });
 

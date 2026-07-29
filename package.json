@@ -99,6 +99,6 @@
     "unist-util-find": "3.0.0",
     "vitest": "4.1.10",
     "vitest-when": "0.10.0",
-    "yargs": "18.0.0"
+    "yargs": "18.1.0"
   }
 }

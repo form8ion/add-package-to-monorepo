@@ -83,7 +83,7 @@
     "debug": "4.4.3",
     "gplint": "2.5.2",
     "husky": "9.1.7",
-    "lockfile-lint": "5.0.0",
+    "lockfile-lint": "5.0.1",
     "ls-engines": "0.9.4",
     "mdast-zone": "6.1.0",
     "mock-fs": "5.5.0",

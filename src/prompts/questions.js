@@ -1,24 +1,30 @@
 import {questionsForBaseDetails} from '@form8ion/core';
-import {prompt} from '@form8ion/overridable-prompts';
 
-import {questionNames} from './question-names.js';
+import {PACKAGE_DETAILS_PROMPT_ID, questionNames} from './question-names.js';
 
-export default function promptForMonorepoDetails({decisions, overrides: {copyrightHolder} = {}, packagesDirectories}) {
-  const questions = questionsForBaseDetails(decisions, undefined, copyrightHolder);
+const {TARGET_PACKAGES_DIRECTORY} = questionNames[PACKAGE_DETAILS_PROMPT_ID];
 
-  return prompt(
-    [
-      ...questions,
-      {
-        name: questionNames.TARGET_PACKAGES_DIRECTORY,
-        message: 'Which packages directory should be targeted?',
-        type: 'list',
-        choices: packagesDirectories
-      }
-    ],
-    {
-      ...decisions,
-      ...1 === packagesDirectories.length && {[questionNames.TARGET_PACKAGES_DIRECTORY]: packagesDirectories[0]}
-    }
-  );
+export default async function promptForPackageDetails(
+  {overrides: {copyrightHolder} = {}, packagesDirectories},
+  prompt
+) {
+  const baseDetailsQuestions = questionsForBaseDetails(undefined, undefined, copyrightHolder);
+  const targetPackagesDirectoryQuestion = {
+    name: TARGET_PACKAGES_DIRECTORY,
+    message: 'Which packages directory should be targeted?',
+    type: 'list',
+    choices: packagesDirectories
+  };
+
+  if (1 === packagesDirectories.length) {
+    return {
+      ...await prompt({id: PACKAGE_DETAILS_PROMPT_ID, questions: baseDetailsQuestions}),
+      [TARGET_PACKAGES_DIRECTORY]: packagesDirectories[0]
+    };
+  }
+
+  return prompt({
+    id: PACKAGE_DETAILS_PROMPT_ID,
+    questions: [...baseDetailsQuestions, targetPackagesDirectoryQuestion]
+  });
 }

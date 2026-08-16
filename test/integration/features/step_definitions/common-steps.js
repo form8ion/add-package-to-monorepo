@@ -9,7 +9,7 @@ import * as td from 'testdouble';
 import any from '@travi/any';
 import createDebugFor from 'debug';
 
-let questionNames, scaffold;
+let promptConstants, scaffold;
 const __dirname = dirname(fileURLToPath(import.meta.url));                  // eslint-disable-line no-underscore-dangle
 const pathToNodeModules = [__dirname, '..', '..', '..', '..', 'node_modules'];
 const stubbedNodeModules = stubbedFs.load(resolve(...pathToNodeModules));
@@ -25,7 +25,7 @@ Before(async function () {
   ({execa: this.execa} = (await td.replaceEsm('execa')));
 
   // eslint-disable-next-line import/no-extraneous-dependencies,import/no-unresolved
-  ({questionNames, scaffold} = await import('@form8ion/add-package-to-monorepo'));
+  ({promptConstants, scaffold} = await import('@form8ion/add-package-to-monorepo'));
 
   nock.disableNetConnect();
 });
@@ -44,6 +44,7 @@ When('the project is scaffolded', async function () {
   this.projectName = any.word();
   this.projectDescription = any.sentence();
   this.packageName = scope ? `@${scope}/${this.projectName}` : this.projectName;
+  const {PACKAGE_DETAILS: packageDetailsQuestionNames} = promptConstants.questionNames;
 
   stubbedFs({
     node_modules: stubbedNodeModules,
@@ -61,31 +62,61 @@ When('the project is scaffolded', async function () {
 
   try {
     this.results = await scaffold({
-      decisions: {
-        [questionNames.PROJECT_NAME]: this.projectName,
-        [questionNames.DESCRIPTION]: this.projectDescription,
-        [questionNames.VISIBILITY]: visibility,
-        [questionNames.PROVIDE_EXAMPLE]: true,
-        ...'OSS' === visibility && {
-          [questionNames.LICENSE]: 'MIT',
-          [questionNames.COPYRIGHT_HOLDER]: any.word(),
-          [questionNames.COPYRIGHT_YEAR]: 2000
-        },
-        ...['ISS', 'CS'].includes(visibility) && {[questionNames.UNLICENSED]: true},
-        [questionNames.AUTHOR_NAME]: any.word(),
-        [questionNames.AUTHOR_EMAIL]: any.email(),
-        [questionNames.AUTHOR_URL]: any.url(),
-        [questionNames.UNIT_TESTS]: this.tested,
-        [questionNames.INTEGRATION_TESTS]: this.tested,
-        [questionNames.CONFIGURE_LINTING]: this.configureLinting,
-        [questionNames.SHOULD_BE_SCOPED]: shouldBeScoped,
-        [questionNames.SCOPE]: scope,
-        [questionNames.DIALECT]: this.dialect,
-        ...this.targetDirectoryAnswer && {[questionNames.TARGET_PACKAGES_DIRECTORY]: this.targetDirectoryAnswer}
-      },
       plugins: {unitTestFrameworks: {}},
       configs: {...this.babelPreset && {babelPreset: this.babelPreset}}
-    }, {logger});
+    }, {
+      logger,
+      prompt: async promptDetails => {
+        const {id} = promptDetails;
+
+        switch (id) {
+          case promptConstants.ids.PACKAGE_DETAILS:
+            return {
+              [packageDetailsQuestionNames.PROJECT_NAME]: this.projectName,
+              [packageDetailsQuestionNames.DESCRIPTION]: this.projectDescription,
+              [packageDetailsQuestionNames.VISIBILITY]: visibility,
+              ...'OSS' === visibility && {
+                [packageDetailsQuestionNames.LICENSE]: 'MIT',
+                [packageDetailsQuestionNames.COPYRIGHT_HOLDER]: any.word(),
+                [packageDetailsQuestionNames.COPYRIGHT_YEAR]: 2000
+              },
+              ...['ISS', 'CS'].includes(visibility) && {[packageDetailsQuestionNames.UNLICENSED]: true},
+              ...this.targetDirectoryAnswer && {
+                [packageDetailsQuestionNames.TARGET_PACKAGES_DIRECTORY]: this.targetDirectoryAnswer
+              }
+            };
+          case promptConstants.ids.BASE_DETAILS: {
+            const {
+              AUTHOR_NAME,
+              AUTHOR_EMAIL,
+              AUTHOR_URL,
+              UNIT_TESTS,
+              INTEGRATION_TESTS,
+              CONFIGURE_LINTING,
+              SHOULD_BE_SCOPED,
+              SCOPE,
+              DIALECT,
+              PROVIDE_EXAMPLE
+            } = promptConstants.questionNames.BASE_DETAILS;
+
+            return {
+              [AUTHOR_NAME]: any.word(),
+              [AUTHOR_EMAIL]: any.email(),
+              [AUTHOR_URL]: any.url(),
+              [UNIT_TESTS]: this.tested,
+              [INTEGRATION_TESTS]: this.tested,
+              [CONFIGURE_LINTING]: this.configureLinting,
+              [SHOULD_BE_SCOPED]: shouldBeScoped,
+              [SCOPE]: scope,
+              [DIALECT]: this.dialect,
+              [PROVIDE_EXAMPLE]: true
+            };
+          }
+          default:
+            throw new Error(`Unknown prompt: ${id}`);
+        }
+      }
+    });
   } catch (e) {
     debug(e);
     this.error = e;

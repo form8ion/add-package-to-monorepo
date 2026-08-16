@@ -3,7 +3,6 @@
 import stubbedFs from 'mock-fs';
 import yargs from 'yargs';
 import {hideBin} from 'yargs/helpers';
-import {promptConstants as javascriptPromptConstants} from '@form8ion/javascript';
 import {dialects} from '@form8ion/javascript-core';
 import {promptConstants, scaffold} from './lib/index.js';
 
@@ -49,7 +48,7 @@ yargs(hideBin(process.argv))
                 [TARGET_PACKAGES_DIRECTORY]: 'packages'
               };
             }
-            case javascriptPromptConstants.ids.BASE_DETAILS: {
+            case promptConstants.ids.BASE_DETAILS: {
               const {
                 AUTHOR_NAME,
                 AUTHOR_EMAIL,
@@ -61,7 +60,7 @@ yargs(hideBin(process.argv))
                 SCOPE,
                 DIALECT,
                 PROVIDE_EXAMPLE
-              } = javascriptPromptConstants.questionNames.BASE_DETAILS;
+              } = promptConstants.questionNames.BASE_DETAILS;
 
               return {
                 [AUTHOR_NAME]: 'John Smith',

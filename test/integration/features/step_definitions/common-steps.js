@@ -1,7 +1,6 @@
 import {dirname, resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {visibilityOptions} from '@form8ion/core';
-import {promptConstants as javascriptPromptConstants} from '@form8ion/javascript';
 
 import {After, Before, Then, When} from '@cucumber/cucumber';
 import stubbedFs from 'mock-fs';
@@ -86,7 +85,7 @@ When('the project is scaffolded', async function () {
                 [monorepoDetailsQuestionNames.TARGET_PACKAGES_DIRECTORY]: this.targetDirectoryAnswer
               }
             };
-          case javascriptPromptConstants.ids.BASE_DETAILS: {
+          case promptConstants.ids.BASE_DETAILS: {
             const {
               AUTHOR_NAME,
               AUTHOR_EMAIL,
@@ -98,7 +97,7 @@ When('the project is scaffolded', async function () {
               SCOPE,
               DIALECT,
               PROVIDE_EXAMPLE
-            } = javascriptPromptConstants.questionNames.BASE_DETAILS;
+            } = promptConstants.questionNames.BASE_DETAILS;
 
             return {
               [AUTHOR_NAME]: any.word(),

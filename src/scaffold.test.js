@@ -1,11 +1,6 @@
 import {execa} from 'execa';
 import * as core from '@form8ion/core';
-import {projectTypes} from '@form8ion/javascript-core';
-import {
-  scaffold as scaffoldJavascript,
-  lift as liftJavascript,
-  questionNames as jsQuestionNames
-} from '@form8ion/javascript';
+import {scaffold as scaffoldJavascript, lift as liftJavascript} from '@form8ion/javascript';
 import * as readmeScaffolder from '@form8ion/readme';
 
 import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest';
@@ -16,7 +11,8 @@ import * as mkdir from '../thirdparty-wrappers/make-dir.js';
 import * as monorepoConfig from './monorepo-config/config-reader.js';
 import * as prompt from './prompts/questions.js';
 import * as packageManager from './package-manager.js';
-import {questionNames} from './prompts/question-names.js';
+import {MONOREPO_DETAILS_PROMPT_ID, questionNames} from './prompts/question-names.js';
+import injectJavascriptAnswersIntoPrompt from './javascript-answers-prompt.js';
 import scaffold from './scaffold.js';
 
 vi.mock('execa');
@@ -27,6 +23,9 @@ vi.mock('../thirdparty-wrappers/make-dir');
 vi.mock('./monorepo-config/config-reader');
 vi.mock('./prompts/questions');
 vi.mock('./package-manager');
+vi.mock('./javascript-answers-prompt.js');
+
+const {TARGET_PACKAGES_DIRECTORY} = questionNames[MONOREPO_DETAILS_PROMPT_ID];
 
 describe('scaffold', () => {
   let execaPipe;
@@ -48,7 +47,8 @@ describe('scaffold', () => {
   const liftResults = any.simpleObject();
   const dependencies = {
     ...any.simpleObject(),
-    logger: {info: () => undefined}
+    logger: {info: () => undefined},
+    prompt: vi.fn()
   };
 
   beforeEach(() => {
@@ -76,15 +76,18 @@ describe('scaffold', () => {
       [core.questionNames.VISIBILITY]: visibility,
       [core.questionNames.LICENSE]: license,
       [core.questionNames.DESCRIPTION]: description,
-      [questionNames.TARGET_PACKAGES_DIRECTORY]: packagesDirectory
+      [TARGET_PACKAGES_DIRECTORY]: packagesDirectory
     };
-    const decisions = any.simpleObject();
     const copyrightHolder = any.word();
-    const options = {...any.simpleObject(), decisions, overrides: {copyrightHolder}};
+    const options = {...any.simpleObject(), overrides: {copyrightHolder}};
+    const injectedJavascriptPrompt = vi.fn();
     process.cwd.mockReturnValue(monorepoRoot);
     when(prompt.default)
-      .calledWith({decisions, overrides: {copyrightHolder}, packagesDirectories})
+      .calledWith({overrides: {copyrightHolder}, packagesDirectories}, dependencies.prompt)
       .thenResolve(promptAnswers);
+    when(injectJavascriptAnswersIntoPrompt)
+      .calledWith(dependencies.prompt, manager)
+      .thenReturn(injectedJavascriptPrompt);
     when(scaffoldJavascript)
       .calledWith({
         ...options,
@@ -93,14 +96,9 @@ describe('scaffold', () => {
         description,
         visibility,
         license,
-        decisions: {
-          ...options.decisions,
-          [jsQuestionNames.PROJECT_TYPE]: projectTypes.PACKAGE,
-          [jsQuestionNames.PACKAGE_MANAGER]: manager
-        },
         vcs,
         pathWithinParent: `${packagesDirectory}/${projectName}`
-      }, dependencies)
+      }, {...dependencies, prompt: injectedJavascriptPrompt})
       .thenResolve(scaffoldResults);
     when(liftJavascript)
       .calledWith({
@@ -124,14 +122,17 @@ describe('scaffold', () => {
       [core.questionNames.PROJECT_NAME]: projectName,
       [core.questionNames.VISIBILITY]: visibility,
       [core.questionNames.DESCRIPTION]: description,
-      [questionNames.TARGET_PACKAGES_DIRECTORY]: packagesDirectory
+      [TARGET_PACKAGES_DIRECTORY]: packagesDirectory
     };
-    const decisions = any.simpleObject();
-    const options = {...any.simpleObject(), decisions};
+    const options = any.simpleObject();
+    const injectedJavascriptPrompt = vi.fn();
     process.cwd.mockReturnValue(monorepoRoot);
     when(prompt.default)
-      .calledWith({decisions, overrides: undefined, packagesDirectories})
+      .calledWith({overrides: undefined, packagesDirectories}, dependencies.prompt)
       .thenResolve(promptAnswers);
+    when(injectJavascriptAnswersIntoPrompt)
+      .calledWith(dependencies.prompt, manager)
+      .thenReturn(injectedJavascriptPrompt);
     when(scaffoldJavascript)
       .calledWith({
         ...options,
@@ -140,14 +141,9 @@ describe('scaffold', () => {
         description,
         visibility,
         license: 'UNLICENSED',
-        decisions: {
-          ...options.decisions,
-          [jsQuestionNames.PROJECT_TYPE]: projectTypes.PACKAGE,
-          [jsQuestionNames.PACKAGE_MANAGER]: manager
-        },
         vcs,
         pathWithinParent: `${packagesDirectory}/${projectName}`
-      }, dependencies)
+      }, {...dependencies, prompt: injectedJavascriptPrompt})
       .thenResolve(scaffoldResults);
 
     expect(await scaffold(options, dependencies)).toEqual(scaffoldResults);

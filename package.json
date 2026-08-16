@@ -57,9 +57,8 @@
   "packageManager": "npm@12.0.2+sha512.b885e890b9418fa1693544d05f53e64f9a73ec194837d4258b15fecdd692347b1dd2a517b1b0cbaf9d31cd8e92c3b70956bd2ecc72833a57b4b3098f5bfa7943",
   "dependencies": {
     "@form8ion/core": "^5.0.0-beta.10",
-    "@form8ion/javascript": "^16.0.0-beta.18",
+    "@form8ion/javascript": "^16.0.0-beta.21",
     "@form8ion/javascript-core": "^13.0.0",
-    "@form8ion/overridable-prompts": "^1.1.0",
     "@form8ion/readme": "^4.0.0-beta.2",
     "deepmerge": "^4.2.2",
     "execa": "^10.0.0",

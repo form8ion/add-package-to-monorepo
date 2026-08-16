@@ -90,7 +90,7 @@ yargs(hideBin(process.argv))
                 [TARGET_PACKAGES_DIRECTORY]: 'packages'
               };
             }
-            case promptConstants.ids.BASE_DETAILS: {
+            case promptConstants.ids.JAVASCRIPT_BASE_DETAILS: {
               const {
                 AUTHOR_NAME,
                 AUTHOR_EMAIL,
@@ -102,7 +102,7 @@ yargs(hideBin(process.argv))
                 SCOPE,
                 DIALECT,
                 PROVIDE_EXAMPLE
-              } = promptConstants.questionNames.BASE_DETAILS;
+              } = promptConstants.questionNames.JAVASCRIPT_BASE_DETAILS;
 
               return {
                 [AUTHOR_NAME]: 'John Smith',

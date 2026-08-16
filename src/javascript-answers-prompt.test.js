@@ -8,7 +8,7 @@ import any from '@travi/any';
 import injectJavascriptAnswersIntoPrompt from './javascript-answers-prompt.js';
 
 const {
-  [jsPromptConstants.ids.BASE_DETAILS]: baseDetailsQuestionNames
+  [jsPromptConstants.ids.JAVASCRIPT_BASE_DETAILS]: baseDetailsQuestionNames
 } = jsPromptConstants.questionNames;
 
 describe('javascript answers prompt', () => {
@@ -29,7 +29,7 @@ describe('javascript answers prompt', () => {
       {name: baseDetailsQuestionNames.PACKAGE_MANAGER, ...any.simpleObject()},
       otherQuestion
     ];
-    const promptDetails = {id: jsPromptConstants.ids.BASE_DETAILS, questions};
+    const promptDetails = {id: jsPromptConstants.ids.JAVASCRIPT_BASE_DETAILS, questions};
     const prompt = vi.fn();
     const answersFromCaller = any.simpleObject();
     when(prompt).calledWith({...promptDetails, questions: [otherQuestion]}).thenResolve(answersFromCaller);

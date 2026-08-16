@@ -85,7 +85,7 @@ When('the project is scaffolded', async function () {
                 [packageDetailsQuestionNames.TARGET_PACKAGES_DIRECTORY]: this.targetDirectoryAnswer
               }
             };
-          case promptConstants.ids.BASE_DETAILS: {
+          case promptConstants.ids.JAVASCRIPT_BASE_DETAILS: {
             const {
               AUTHOR_NAME,
               AUTHOR_EMAIL,
@@ -97,7 +97,7 @@ When('the project is scaffolded', async function () {
               SCOPE,
               DIALECT,
               PROVIDE_EXAMPLE
-            } = promptConstants.questionNames.BASE_DETAILS;
+            } = promptConstants.questionNames.JAVASCRIPT_BASE_DETAILS;
 
             return {
               [AUTHOR_NAME]: any.word(),

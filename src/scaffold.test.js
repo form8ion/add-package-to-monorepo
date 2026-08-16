@@ -11,7 +11,7 @@ import * as mkdir from '../thirdparty-wrappers/make-dir.js';
 import * as monorepoConfig from './monorepo-config/config-reader.js';
 import * as prompt from './prompts/questions.js';
 import * as packageManager from './package-manager.js';
-import {MONOREPO_DETAILS_PROMPT_ID, questionNames} from './prompts/question-names.js';
+import {PACKAGE_DETAILS_PROMPT_ID, questionNames} from './prompts/question-names.js';
 import injectJavascriptAnswersIntoPrompt from './javascript-answers-prompt.js';
 import scaffold from './scaffold.js';
 
@@ -25,7 +25,7 @@ vi.mock('./prompts/questions');
 vi.mock('./package-manager');
 vi.mock('./javascript-answers-prompt.js');
 
-const {TARGET_PACKAGES_DIRECTORY} = questionNames[MONOREPO_DETAILS_PROMPT_ID];
+const {TARGET_PACKAGES_DIRECTORY} = questionNames[PACKAGE_DETAILS_PROMPT_ID];
 
 describe('scaffold', () => {
   let execaPipe;

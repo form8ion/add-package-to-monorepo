@@ -7,11 +7,11 @@ import {lift as liftReadme, scaffold as scaffoldReadme} from '@form8ion/readme';
 import mkdir from '../thirdparty-wrappers/make-dir.js';
 import getMonorepoConfig from './monorepo-config/config-reader.js';
 import prompt from './prompts/questions.js';
-import {MONOREPO_DETAILS_PROMPT_ID, questionNames} from './prompts/question-names.js';
+import {PACKAGE_DETAILS_PROMPT_ID, questionNames} from './prompts/question-names.js';
 import determinePackageManager from './package-manager.js';
 import injectJavascriptAnswersIntoPrompt from './javascript-answers-prompt.js';
 
-const {TARGET_PACKAGES_DIRECTORY} = questionNames[MONOREPO_DETAILS_PROMPT_ID];
+const {TARGET_PACKAGES_DIRECTORY} = questionNames[PACKAGE_DETAILS_PROMPT_ID];
 
 export default async function scaffoldMonorepo(options, dependencies) {
   const monorepoRoot = process.cwd();

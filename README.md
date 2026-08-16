@@ -69,7 +69,7 @@ yargs(hideBin(process.argv))
         },
         prompt: ({id}) => {
           switch (id) {
-            case promptConstants.ids.MONOREPO_DETAILS: {
+            case promptConstants.ids.PACKAGE_DETAILS: {
               const {
                 PROJECT_NAME,
                 DESCRIPTION,
@@ -78,7 +78,7 @@ yargs(hideBin(process.argv))
                 COPYRIGHT_HOLDER,
                 COPYRIGHT_YEAR,
                 TARGET_PACKAGES_DIRECTORY
-              } = promptConstants.questionNames.MONOREPO_DETAILS;
+              } = promptConstants.questionNames.PACKAGE_DETAILS;
 
               return {
                 [PROJECT_NAME]: 'foo',

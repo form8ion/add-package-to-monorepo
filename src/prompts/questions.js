@@ -1,10 +1,10 @@
 import {questionsForBaseDetails} from '@form8ion/core';
 
-import {MONOREPO_DETAILS_PROMPT_ID, questionNames} from './question-names.js';
+import {PACKAGE_DETAILS_PROMPT_ID, questionNames} from './question-names.js';
 
-const {TARGET_PACKAGES_DIRECTORY} = questionNames[MONOREPO_DETAILS_PROMPT_ID];
+const {TARGET_PACKAGES_DIRECTORY} = questionNames[PACKAGE_DETAILS_PROMPT_ID];
 
-export default async function promptForMonorepoDetails(
+export default async function promptForPackageDetails(
   {overrides: {copyrightHolder} = {}, packagesDirectories},
   prompt
 ) {
@@ -18,13 +18,13 @@ export default async function promptForMonorepoDetails(
 
   if (1 === packagesDirectories.length) {
     return {
-      ...await prompt({id: MONOREPO_DETAILS_PROMPT_ID, questions: baseDetailsQuestions}),
+      ...await prompt({id: PACKAGE_DETAILS_PROMPT_ID, questions: baseDetailsQuestions}),
       [TARGET_PACKAGES_DIRECTORY]: packagesDirectories[0]
     };
   }
 
   return prompt({
-    id: MONOREPO_DETAILS_PROMPT_ID,
+    id: PACKAGE_DETAILS_PROMPT_ID,
     questions: [...baseDetailsQuestions, targetPackagesDirectoryQuestion]
   });
 }

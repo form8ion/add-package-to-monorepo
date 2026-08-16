@@ -4,12 +4,12 @@ import {describe, expect, it, vi} from 'vitest';
 import any from '@travi/any';
 import {when} from 'vitest-when';
 
-import {MONOREPO_DETAILS_PROMPT_ID, questionNames} from './question-names.js';
+import {PACKAGE_DETAILS_PROMPT_ID, questionNames} from './question-names.js';
 import prompt from './questions.js';
 
 vi.mock('@form8ion/core');
 
-const {TARGET_PACKAGES_DIRECTORY} = questionNames[MONOREPO_DETAILS_PROMPT_ID];
+const {TARGET_PACKAGES_DIRECTORY} = questionNames[PACKAGE_DETAILS_PROMPT_ID];
 
 describe('questions', () => {
   const answers = any.simpleObject();
@@ -30,7 +30,7 @@ describe('questions', () => {
     const injectedPrompt = vi.fn();
     when(core.questionsForBaseDetails).calledWith(undefined, undefined, copyrightHolder).thenReturn(coreQuestions);
     when(injectedPrompt)
-      .calledWith({id: MONOREPO_DETAILS_PROMPT_ID, questions})
+      .calledWith({id: PACKAGE_DETAILS_PROMPT_ID, questions})
       .thenResolve(answers);
 
     expect(await prompt({overrides: {copyrightHolder}, packagesDirectories}, injectedPrompt)).toEqual(answers);
@@ -40,7 +40,7 @@ describe('questions', () => {
     const injectedPrompt = vi.fn();
     when(core.questionsForBaseDetails).calledWith(undefined, undefined, undefined).thenReturn(coreQuestions);
     when(injectedPrompt)
-      .calledWith({id: MONOREPO_DETAILS_PROMPT_ID, questions})
+      .calledWith({id: PACKAGE_DETAILS_PROMPT_ID, questions})
       .thenResolve(answers);
 
     expect(await prompt({overrides: undefined, packagesDirectories}, injectedPrompt)).toEqual(answers);
@@ -52,7 +52,7 @@ describe('questions', () => {
     const answersFromPrompt = any.simpleObject();
     when(core.questionsForBaseDetails).calledWith(undefined, undefined, undefined).thenReturn(coreQuestions);
     when(injectedPrompt)
-      .calledWith({id: MONOREPO_DETAILS_PROMPT_ID, questions: coreQuestions})
+      .calledWith({id: PACKAGE_DETAILS_PROMPT_ID, questions: coreQuestions})
       .thenResolve(answersFromPrompt);
 
     expect(await prompt({overrides: undefined, packagesDirectories: [packagesDirectory]}, injectedPrompt)).toEqual({

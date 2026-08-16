@@ -44,7 +44,7 @@ When('the project is scaffolded', async function () {
   this.projectName = any.word();
   this.projectDescription = any.sentence();
   this.packageName = scope ? `@${scope}/${this.projectName}` : this.projectName;
-  const {MONOREPO_DETAILS: monorepoDetailsQuestionNames} = promptConstants.questionNames;
+  const {PACKAGE_DETAILS: packageDetailsQuestionNames} = promptConstants.questionNames;
 
   stubbedFs({
     node_modules: stubbedNodeModules,
@@ -70,19 +70,19 @@ When('the project is scaffolded', async function () {
         const {id} = promptDetails;
 
         switch (id) {
-          case promptConstants.ids.MONOREPO_DETAILS:
+          case promptConstants.ids.PACKAGE_DETAILS:
             return {
-              [monorepoDetailsQuestionNames.PROJECT_NAME]: this.projectName,
-              [monorepoDetailsQuestionNames.DESCRIPTION]: this.projectDescription,
-              [monorepoDetailsQuestionNames.VISIBILITY]: visibility,
+              [packageDetailsQuestionNames.PROJECT_NAME]: this.projectName,
+              [packageDetailsQuestionNames.DESCRIPTION]: this.projectDescription,
+              [packageDetailsQuestionNames.VISIBILITY]: visibility,
               ...'OSS' === visibility && {
-                [monorepoDetailsQuestionNames.LICENSE]: 'MIT',
-                [monorepoDetailsQuestionNames.COPYRIGHT_HOLDER]: any.word(),
-                [monorepoDetailsQuestionNames.COPYRIGHT_YEAR]: 2000
+                [packageDetailsQuestionNames.LICENSE]: 'MIT',
+                [packageDetailsQuestionNames.COPYRIGHT_HOLDER]: any.word(),
+                [packageDetailsQuestionNames.COPYRIGHT_YEAR]: 2000
               },
-              ...['ISS', 'CS'].includes(visibility) && {[monorepoDetailsQuestionNames.UNLICENSED]: true},
+              ...['ISS', 'CS'].includes(visibility) && {[packageDetailsQuestionNames.UNLICENSED]: true},
               ...this.targetDirectoryAnswer && {
-                [monorepoDetailsQuestionNames.TARGET_PACKAGES_DIRECTORY]: this.targetDirectoryAnswer
+                [packageDetailsQuestionNames.TARGET_PACKAGES_DIRECTORY]: this.targetDirectoryAnswer
               }
             };
           case promptConstants.ids.BASE_DETAILS: {

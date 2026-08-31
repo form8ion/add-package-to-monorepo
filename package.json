@@ -78,7 +78,7 @@
     "chai": "6.2.2",
     "cz-conventional-changelog": "3.3.0",
     "debug": "4.4.3",
-    "gplint": "2.5.2",
+    "gplint": "2.6.0",
     "husky": "9.1.7",
     "lockfile-lint": "5.0.1",
     "ls-engines": "0.10.1",
